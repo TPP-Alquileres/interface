@@ -20,7 +20,13 @@ yarn install
 ## Run project
 
 ```bash
-next dev
+yarn next dev
+```
+
+## Run migrations
+
+```bash
+yarn prisma migrate dev
 ```
 
 ## Features
