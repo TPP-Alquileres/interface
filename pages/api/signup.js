@@ -1,17 +1,33 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
+import { IncomingForm } from 'formidable';
+import { UserSerializer } from '../serializers/user_serializer';
+
+export const config = {
+  api: {
+    bodyParser: false, // Deshabilita el análisis automático de bodyParser en Next.js
+  },
+};
 
 export default async function handler(req, res) {
-  const email = req.body.email;
-  const password = req.body.password;
+  const form = new IncomingForm();
 
-  const prisma = new PrismaClient()
-  // const user = await prisma.user.create({
-  //   data: { password, email },
-  // })
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      res.status(500).json({ error: "Form could not be processed" });
+      return;
+    }
 
-  if (req.method === 'POST') {
-    res.status(200).json({ user: { email, password } });
-  } else {
-    res.status(404).json({ text: 'Not found' });
-  }
-}
+    const email = fields.email;
+    const password = fields.password;
+    const prisma = new PrismaClient();
+    let user = await prisma.user.findUnique( { where: { email: email } } );
+
+    if (!user) {
+      user = await prisma.user.create( { data: { password, email } } );
+      res.status(200).json( new UserSerializer(user) );
+      return;
+    }
+
+    res.status(400).json( { error: "User is already created" } );
+  });
+};
