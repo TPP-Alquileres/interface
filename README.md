@@ -3,7 +3,7 @@
 A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
 
 ## Requirements
-- node 17.X.X
+- node 18.19.1
 
 ## Usage
 

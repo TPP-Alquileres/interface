@@ -3,6 +3,9 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import ErrorAlert from '@/components/ui/error-alert';
+import { Api } from '@/javascript/api';
 
 const SigninSchema = Yup.object().shape({
   email: Yup.string().email('Correo electrónico inválido').required('Requerido'),
@@ -11,24 +14,29 @@ const SigninSchema = Yup.object().shape({
 
 export default function SignIn() {
   const router = useRouter();
+  const [ error, setError ] = useState(null);
 
   const submitForm = async ( formData ) => {
-    delete formData.confirmPassword;
-
-    const response = await fetch('/api/signin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-
-    if (response.status === 200) { router.push('/'); }
+    const api = new Api();
+    try {
+      const response = await api.post( { url: '/api/signin', body: formData } );
+      localStorage.setItem("currentUser", JSON.stringify(response.user));
+      router.push('/home');
+    } catch (error) {
+      setError(error.message);
+    }
   };
+
+  const onCloseErrorAlert = () => {
+    setError(null);
+  }
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        { !!error && <ErrorAlert error={error} onCloseAlert={onCloseErrorAlert}/> }
         <Formik
-          initialValues={ { email: '', password: '', confirmPassword: '' } }
+          initialValues={ { email: '', password: '' } }
           validationSchema={SigninSchema}
           onSubmit={submitForm}
         >
@@ -63,16 +71,9 @@ export default function SignIn() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center my-4">
-                    <input id="terms-and-conditions" name="terms-and-conditions" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
-                    <label htmlFor="terms-and-conditions" className="ml-2 block text-sm text-gray-900"> Acepto los términos y condiciones </label>
-                  </div>
-                </div>
-
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-6"
                 >
                   Log In
                 </button>
