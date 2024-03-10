@@ -3,10 +3,10 @@
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/s"
 import { Button } from "@/components/ui/button"
-import { ContractCreate } from "@/components/contract-create"
+import { ContractPending } from "@/components/contract-pending"
 
 export default function Component() {
   return (
-    <ContractCreate />
+    <ContractPending />
   )
 }

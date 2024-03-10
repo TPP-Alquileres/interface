@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-export function Contract() {
+export function ContractCreate() {
   return (
     <div className="p-6 space-y-6">
       <div className="space-y-2">
