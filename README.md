@@ -17,6 +17,10 @@ npx create-next-app -e https://github.com/shadcn/next-template
 yarn install
 ```
 
+``` Crear Archivo .env
+Copiar el contenido de .env.example
+
+
 ## Run project
 
 ```bash
