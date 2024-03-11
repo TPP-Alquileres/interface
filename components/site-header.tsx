@@ -16,10 +16,10 @@ export function SiteHeader() {
   
   if (currentUser == null) {
     return (
-      <header className="bg-background sticky top-0 z-40 w-full border-b">
-        <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+      <header className=" bg-background sticky top-0 z-40 w-full border-b">
+        <div className="ml-5 mr-5 flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
           <MainNav items={siteConfig.mainNav} />
-          <div className="flex flex-1 items-center justify-end space-x-4">
+          <div className="flex flex-1 items-center justify-end space-x-4 float-end">
             <nav className="flex items-center space-x-1">
   
   
@@ -38,12 +38,12 @@ export function SiteHeader() {
   } else {
     return (
       <header className="bg-background sticky top-0 z-40 w-full border-b">
-        <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+        <div className="ml-5 mr-5 flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
           <MainNav items={siteConfig.mainNav} />
           <div className="flex flex-1 items-center justify-end space-x-4 ">
-            <nav className="flex items-center space-x-1">
+            <nav className="flex items-center space-x-3">
               <Button
-                className="ml-auto h-8 w-8 rounded-full border-gray-200 dark:border-gray-800"
+                className="ml-auto h-10 w-10 rounded-full border-gray-200 dark:border-gray-800"
                 size="icon"
                 variant="outline"
               >
@@ -62,7 +62,7 @@ export function SiteHeader() {
                   alt="Avatar"
                   className="rounded-full"
                   height="32"
-                  src="/placeholder.svg"
+                  src="/user.svg"
                   style={{
                     aspectRatio: "32/32",
                     objectFit: "cover",
@@ -72,6 +72,7 @@ export function SiteHeader() {
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Mi perfil</DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -81,6 +82,7 @@ export function SiteHeader() {
               <DropdownMenuItem>Cerrar sesión</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          {/* <ThemeToggle /> */}
 
             </nav>
           </div>
@@ -94,6 +96,6 @@ export function SiteHeader() {
 }
 
 function getUser() {
-  let currentUser = null;
+  let currentUser = {};
   return currentUser;
 }
