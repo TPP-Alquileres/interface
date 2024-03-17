@@ -96,6 +96,6 @@ export function SiteHeader() {
 }
 
 function getUser() {
-  let currentUser = {};
+  let currentUser = null;
   return currentUser;
 }
