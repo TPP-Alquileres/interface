@@ -48,7 +48,7 @@ export default function Landing() {
                 alt="Image"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
                 height="400"
-                src="/seguros.jpeg"
+                src="/inquilino.jpeg"
                 width="700"
               />
             </div>
@@ -67,7 +67,7 @@ export default function Landing() {
                 alt="Image"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
                 height="400"
-                src="/seguros.jpeg"
+                src="/propietario.jpeg"
                 width="700"
               />
             </div>
@@ -78,7 +78,7 @@ export default function Landing() {
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Inversor</h2>
               <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                Potencia tu capital invirtien
+                Potencia tu capital invirtiendo en nuestra plataforma para respaldar los seguros obteniendo distintas tasas de inversión dependiendo del riesgo.
               </p>
             </div>
             <div className="mx-auto flex w-full items-center justify-center p-4 sm:p-8">
@@ -86,7 +86,7 @@ export default function Landing() {
                 alt="Image"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
                 height="400"
-                src="/seguros.jpeg"
+                src="/inversor.jpeg"
                 width="700"
               />
             </div>
