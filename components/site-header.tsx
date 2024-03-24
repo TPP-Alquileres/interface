@@ -62,7 +62,8 @@ export function SiteHeader() {
                     alt="Avatar"
                     className="rounded-full"
                     height="32"
-                    src="/user.svg"
+                    src={session?.user?.image}
+                    alt="/user.svg"
                     style={{
                       aspectRatio: "32/32",
                       objectFit: "cover",
