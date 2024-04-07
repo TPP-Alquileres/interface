@@ -21,7 +21,7 @@ export function SiteHeader() {
     router.push("/");
   });
 
-  const onClickSignIn = () => signIn('github', { callbackUrl: '/home' } );
+  const onClickSignIn = () => signIn('github|google', { callbackUrl: '/home' } );
 
   const renderNotSignedInHeader = () => (
     <header className=" bg-background sticky top-0 z-40 w-full border-b">

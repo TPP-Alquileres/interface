@@ -17,9 +17,10 @@ npx create-next-app -e https://github.com/shadcn/next-template
 yarn install
 ```
 
-``` Crear Archivo .env
-Copiar el contenido de .env.example
-
+### Copy .env file
+```bash
+cp .env.example .env
+```
 
 ## Run project
 
@@ -33,6 +34,7 @@ yarn next dev
 yarn prisma migrate dev
 ```
 
+
 ## Features
 
 - Next.js 13 App Directory
@@ -41,6 +43,19 @@ yarn prisma migrate dev
 - Icons from [Lucide](https://lucide.dev)
 - Dark mode with `next-themes`
 - Tailwind CSS class sorting, merging and linting.
+
+
+## Setting Variables
+
+| Setting Variable           | Description |
+|--|:--:|
+| DATABASE_URL | Path to the sqlite file  |
+| GITHUB_CLIENT_ID | Github client id used for auth |
+| GITHUB_CLIENT_SECRET | Github client secret used for auth |
+| GOOGLE_CLIENT_ID | Google client id used for auth |
+| GOOGLE_CLIENT_SECRET | Google client secret used for auth |
+| POLYGON_MUMBAI_API_KEY | Alchemy's mumbai chain API KEY |
+| POLYGON_MAINNET_API_KEY | Alchemy's mainnet chain API KEY |
 
 ## License
 
