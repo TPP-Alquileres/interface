@@ -5,14 +5,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { BellIcon } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from 'next/navigation';
-import { useSDK, MetaMaskProvider } from "@metamask/sdk-react";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { siteConfig } from "@/config/site";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ConnectWalletButton } from "./ConnectWalletButton";
 
 export function SiteHeader() {
   const { data: session, status } = useSession();
@@ -23,17 +22,6 @@ export function SiteHeader() {
   });
 
   const onClickSignIn = () => signIn('github', { callbackUrl: '/home' } );
-
-  const host = typeof window !== "undefined" ? window.location.host : "defaultHost";
-
-  const sdkOptions = {
-    logging: { developerMode: false },
-    checkInstallationImmediately: false,
-    dappMetadata: {
-      name: "Alquileres",
-      url: host,
-    },
-  };
 
   const renderNotSignedInHeader = () => (
     <header className=" bg-background sticky top-0 z-40 w-full border-b">
@@ -55,9 +43,7 @@ export function SiteHeader() {
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4 ">
           <nav className="flex items-center space-x-3">
-            <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
-              <ConnectWalletButton />
-            </MetaMaskProvider>
+            <ConnectButton />
             <Button
               className="ml-auto h-10 w-10 rounded-full border-gray-200 dark:border-gray-800"
               size="icon"
