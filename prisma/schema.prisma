@@ -14,27 +14,27 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name String
-  ownerContracts Contract[]
-  // tenantContracts Contract[]
+  ownerContracts Contract[] @relation("owner")
+  tenantContracts Contract[] @relation("tenant")
 }
 
-
-
 model Contract {
-  id    Int     @id @default(autoincrement())
+  id String @id @default(uuid()) 
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
-  
-  // tenant User @relation(fields: [tenantId], references: [id])
-  // tenantId Int // relation scalar field  (used in the `@relation` attribute above)
-  
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId Int // relation scalar field  (used in the `@relation` attribute above)
+  // Owner
+  owner User @relation("owner", fields: [ownerId], references: [id])
+  ownerId Int
 
+  // Tenant
+  tenant User? @relation("tenant", fields: [tenantId], references: [id])
+  tenantId Int?
+  
+  // Attributes
   description String
   startDate DateTime
-  price  Float
+  endDate DateTime
+  ammount  Float
   documentUrl String
-
   state String
 }
