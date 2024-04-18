@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         
         // Validate data from post
         let contract = { 
-            ownerId: 1,
+            ownerId: 10,
             description: "Este es el primer contrato",
             startDate: new Date(2024, 6, 1),
             endDate: new Date(2024, 6, 1),
