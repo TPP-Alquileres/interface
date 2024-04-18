@@ -25,6 +25,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 data: contract
             })
         res.status(200).json(contract)
+    } else if (req.method === 'GET') {
+        let ownerId = 10
+        const contracts = await prisma.contract.findMany({
+            where: {
+              ownerId: ownerId
+            }
+        })
+        res.status(200).json(contracts)
     } else {
         res.status(404).json({message: "Method not allowed"})
     }
