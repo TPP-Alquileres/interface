@@ -6,111 +6,79 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu"
 import { CardTitle, CardHeader, CardContent, Card, CardDescription } from "@/components/ui/card"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
+import ComponentWithSideBar from "@/components/component-with-side-bar";
 
 export default function Home() {
   return (
     <div key="1" className="flex min-h-screen w-full">
-      <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
-        <div className="flex h-full flex-col gap-2">
+      <ComponentWithSideBar>
 
-          <div className="flex-1 overflow-auto py-2">
-            <nav className="grid items-start px-4 text-sm font-medium">
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
-              >
-                <LayoutGridIcon className="h-4 w-4" />
-                Home
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
-              >
-                <ShoppingCartIcon className="h-4 w-4" />
-                Propietario
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
-              >
-                <ShoppingCartIcon className="h-4 w-4" />
-                Inquilino
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                href="#"
-              >
-                <PackageIcon className="h-4 w-4" />
-                Inversiones
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full">
 
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-          <div className="grid gap-4 md:grid-cols-2">
+          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <CardTitle>Propietario</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-auto justify-content:flex-end">
+                    0 Contratos vigentes
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <CardTitle>Inquilino</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">2 contratos vigentes</p>
+                </CardContent>
+              </Card>
+            </div>
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle>Propietario</CardTitle>
+              <CardHeader className="pb-4">
+                <CardTitle>Inversiones</CardTitle>
+                <CardDescription>Fondos</CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-auto justify-content:flex-end">
-                  0 Contratos vigentes
-                </p>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[100px]">Pool</TableHead>
+                      <TableHead>Riesgo</TableHead>
+                      <TableHead className="text-right">Tasa promedio</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="font-medium">Pool 1</TableCell>
+                      <TableCell>Bajo</TableCell>
+                      <TableCell className="text-right">10%</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Pool 2</TableCell>
+                      <TableCell>Medio</TableCell>
+                      <TableCell className="text-right">12%</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Pool 3</TableCell>
+                      <TableCell>Alto</TableCell>
+                      <TableCell className="text-right">16%</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-medium">Pool 5</TableCell>
+                      <TableCell>Medio</TableCell>
+                      <TableCell className="text-right">12%</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle>Inquilino</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs text-gray-500 dark:text-gray-400">2 contratos vigentes</p>
-              </CardContent>
-            </Card>
+          </main>
+        
           </div>
-          <Card>
-            <CardHeader className="pb-4">
-              <CardTitle>Inversiones</CardTitle>
-              <CardDescription>Fondos</CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">Pool</TableHead>
-                    <TableHead>Riesgo</TableHead>
-                    <TableHead className="text-right">Tasa promedio</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-medium">Pool 1</TableCell>
-                    <TableCell>Bajo</TableCell>
-                    <TableCell className="text-right">10%</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">Pool 2</TableCell>
-                    <TableCell>Medio</TableCell>
-                    <TableCell className="text-right">12%</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">Pool 3</TableCell>
-                    <TableCell>Alto</TableCell>
-                    <TableCell className="text-right">16%</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">Pool 5</TableCell>
-                    <TableCell>Medio</TableCell>
-                    <TableCell className="text-right">12%</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </main>
-      </div>
+        </ComponentWithSideBar>
     </div>
   )
 }

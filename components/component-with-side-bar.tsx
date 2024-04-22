@@ -10,30 +10,30 @@ export default function ComponentWithSideBar({children}: any) {
             <div className="flex h-full flex-col gap-2">
                 <div className="flex-1 overflow-auto py-2">
                 <nav className="grid items-start px-4 text-sm font-medium">
-                    <Link
+                    <Link href="/home"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    href="#"
+                    
                     >
                     <LayoutGridIcon className="h-4 w-4" />
                     Home
                     </Link>
-                    <Link
+                    <Link href="/owner/contracts"
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    href="#"
+                    
                     >
                     <ShoppingCartIcon className="h-4 w-4" />
                     Propietario
                     </Link>
                     <Link
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    href="#"
+                    href="/tenant/contracts"
                     >
                     <ShoppingCartIcon className="h-4 w-4" />
                     Inquilino
                     </Link>
                         <Link
                             className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                            href="#"
+                            href="/investments"
                         >
                         <PackageIcon className="h-4 w-4" />
                         Inversiones
