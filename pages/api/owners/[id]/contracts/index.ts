@@ -3,6 +3,7 @@ import prisma from "../../../_base";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    await new Promise(r => setTimeout(r, 2000));
     if (req.method === 'GET') {
         let ownerId = Number(req.query["id"])
         console.log(ownerId)

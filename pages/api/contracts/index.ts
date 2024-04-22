@@ -8,23 +8,31 @@ enum ContractState {
   }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    await new Promise(r => setTimeout(r, 2000));
     if (req.method === 'POST') {
         
         // Validate data from post
+        let ownerId = req.body["owner_id"]
+        let description = req.body["description"]
+        let startDate = req.body["start_date"]
+        let endDate = req.body["end_date"]
+        let ammount = req.body["ammount"]
+        let documentUrl = req.body["document_url"]
+        
+        console.log(ownerId)
         let contract = { 
-            ownerId: 10,
-            description: "Este es el primer contrato",
-            startDate: new Date(2024, 6, 1),
-            endDate: new Date(2024, 6, 1),
-            ammount:  10.5,
-            documentUrl: "hola.com",
+            ownerId: ownerId,
+            description: description,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            ammount:  ammount,
+            documentUrl: documentUrl,
             state: ContractState.PENDING
         }
-        await prisma.contract.create(
-            { 
+        let response = await prisma.contract.create({ 
                 data: contract
             })
-        res.status(200).json(contract)
+        res.status(200).json(response)
     } else if (req.method === 'GET') {
         let ownerId = 10
         const contracts = await prisma.contract.findMany({
