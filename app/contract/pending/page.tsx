@@ -20,11 +20,26 @@ export default function Component() {
   }, [])
 
   let onSignContractButtonClick = () =>  {
-    console.log("tengo que firmar el documento")
+    setLoading(true)
+    fetch(`/api/contracts/${contractId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "tenantId": 2,
+        "state": "ACTIVE"
+      }),
+    }).then((res) => res.json())
+    .then((data) => {
+      setData(data)
+      setLoading(false)
+    })
   }
  
   if (isLoading) return <p>Cargando ...</p>
-  if (!data) return <p>No existe contrato</p>
+  if (data.state === 'ACTIVE') return <p>Este contrato ya fue firmado!!</p>
+  if (!data || data.state != 'PENDING') return <p>No existe contrato a firmar</p>
   console.log(data.description)
   return (
     <ContractPending 
