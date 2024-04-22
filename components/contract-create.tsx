@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-export function ContractCreate() {
+export function ContractCreate(props) {
   return (
     <div className="p-6 space-y-6">
       <div className="space-y-2">
@@ -43,7 +43,7 @@ export function ContractCreate() {
             <Input id="amount" placeholder="$0.00" step="0.01" type="number" />
           </div>
         </div>
-        <Button className="w-full">Generar Link</Button>
+        <Button onClick={props.onGenerateLinkButtonClick}>Generar Link</Button>
       </div>
     </div>
   )
