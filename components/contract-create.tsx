@@ -6,8 +6,11 @@
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useState, useEffect } from 'react'
 
 export function ContractCreate(props) {
+  const [data, setData] = useState(null)
+
   return (
     <div className="p-6 space-y-6">
       <div className="space-y-2">
@@ -17,7 +20,7 @@ export function ContractCreate(props) {
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">Nombre que le vas a dar al contrato</Label>
-          <Input id="name" placeholder="Contrato de alquiler de Libertador al 12000" required />
+          <Input id="name" placeholder="Contrato de alquiler de Libertador al 12000" required value={props.description} onChange={props.onChange}/>
         </div>
         <div className="flex items-center space-x-4">
           <Label
@@ -32,11 +35,11 @@ export function ContractCreate(props) {
         <div className="grid grid-cols-2 items-start gap-4">
           <div className="space-y-2">
             <Label htmlFor="start-date">Inicio del contrato</Label>
-            <Input id="start-date" type="date" />
+            <Input id="start-date" type="date" value={props.startDate} onChange={props.onChange}/>
           </div>
           <div className="space-y-2">
             <Label htmlFor="end-date">Fin del contrato</Label>
-            <Input id="end-date" type="date" />
+            <Input id="end-date" type="date" value={props.endDate} onChange={props.onChange}/>
           </div>
           <div className="space-y-2">
             <Label htmlFor="amount">Cantidad de dinero a asegurar</Label>
