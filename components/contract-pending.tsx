@@ -6,19 +6,20 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-export function ContractPending() {
+export function ContractPending(props) {
+  console.log(props)
   return (
     <div key="1" className="p-6 space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">User Information</h1>
-        <p className="text-gray-500 dark:text-gray-400">Please enter your information to proceed</p>
+        <h1 className="text-3xl font-bold">Contrato</h1>
+        <p className="text-gray-500 dark:text-gray-400">Por favor, leer el contrato antes de firmarlo</p>
       </div>
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="Jane Doe" readOnly />
+          <Label htmlFor="name">Descripción</Label>
+          <Input id="name" readOnly value={props.description}/>
         </div>
-        <Button>Download Contract</Button>
+        <Button>Descargar contrato</Button>
         <div className="grid grid-cols-2 items-start gap-4">
           <div className="space-y-2">
             <Label htmlFor="start-date">Start Date</Label>
@@ -33,7 +34,7 @@ export function ContractPending() {
             <Input id="amount" placeholder="$0.00" readOnly step="0.01" type="number" />
           </div>
         </div>
-        <Button className="w-full">Submit</Button>
+        <Button onClick={props.onSignContractButtonClick}>Firmar Documento</Button>
       </div>
     </div>
   )
