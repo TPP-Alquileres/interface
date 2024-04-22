@@ -8,6 +8,7 @@ enum ContractState {
   }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    await new Promise(r => setTimeout(r, 2000));
     if (req.method === 'POST') {
         
         // Validate data from post
@@ -28,10 +29,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             documentUrl: documentUrl,
             state: ContractState.PENDING
         }
-        await prisma.contract.create({ 
+        let response = await prisma.contract.create({ 
                 data: contract
             })
-        res.status(200).json(contract)
+        res.status(200).json(response)
     } else if (req.method === 'GET') {
         let ownerId = 10
         const contracts = await prisma.contract.findMany({
