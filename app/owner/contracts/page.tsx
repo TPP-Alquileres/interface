@@ -11,18 +11,29 @@ import { Api } from "@/javascript/api"
 
 export default function Contracts() {
   
-  // const [contracts, setContracts]  = useState([]);
+  const [contracts, setContracts]  = useState([]);
   const url = "http://localhost:3000/api/owners/1/contracts";
   
-  // useEffect(async () => {
-  //   const contractsJson = await (new Api()).get({url: url});
-  //   console.log("Contracts: " + contractsJson)
-  //   setContracts(contractsJson);
-  // }, [])
-  const contracts = [{name:"sasa", tenant:"tenant", owner:"owner", amount:"200", status:"Firmado"},
-  {name:"contract2", tenant:"tenant", owner:"owner", amount:"200", status:"Firmado"},
-  {name:"wetrqerr", tenant:"tenant", owner:"owner", amount:"200", status:"Pending"}
-  ];
+
+    
+
+  useEffect(() => {
+    async function getContracts() {
+      const contractsJson = await (new Api()).get({url: url});
+      console.log("Contracts: " + contractsJson);
+      setContracts(contractsJson);
+      return contractsJson;
+    }
+    getContracts();
+  }, [])
+
+  // contracts = [{name:"sasa", tenant:"tenant", owner:"owner", amount:"200", status:"Firmado"},
+  // {name:"contract2", tenant:"tenant", owner:"owner", amount:"200", status:"Firmado"},
+  // {name:"wetrqerr", tenant:"tenant", owner:"owner", amount:"200", status:"Pending"}
+  // ];
+
+  console.log("Here are the contractws: " + contracts);
+
 
   return (
     
@@ -46,6 +57,7 @@ export default function Contracts() {
                 </tr>
               </thead>
               <tbody>
+            
                 {contracts.map((contract, index) => <ContractItem contract={contract} index={index} />)}
               </tbody>
             </table>

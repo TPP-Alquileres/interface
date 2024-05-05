@@ -37,3 +37,4 @@ yarn-error.log*
 
 ./prisma/dev.db
 prisma/dev.db.sqlite
+prisma/dev.db

@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const description = req.body["description"];
     const startDate = req.body["start_date"];
     const endDate = req.body["end_date"];
-    const ammount = req.body["ammount"];
+    const amount = req.body["amount"];
     const documentUrl = req.body["document_url"];
 
     const contract = { 
@@ -23,9 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       description: description,
       startDate: new Date(startDate),
       endDate: new Date(endDate),
-      ammount:  ammount,
+      amount:  amount,
       documentUrl: documentUrl,
-      state: ContractState.PENDING
+      status: ContractState.PENDING
     };
     const response = await prisma.contract.create({ 
       data: contract

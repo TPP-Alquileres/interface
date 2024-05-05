@@ -28,7 +28,7 @@ export default function Component() {
       },
       body: JSON.stringify({
         "tenantId": 2,
-        "state": "ACTIVE"
+        "status": "ACTIVE"
       }),
     }).then((res) => res.json())
     .then((data) => {
@@ -38,8 +38,8 @@ export default function Component() {
   }
  
   if (isLoading) return <p>Cargando ...</p>
-  if (data.state === 'ACTIVE') return <p>Este contrato ya fue firmado!!</p>
-  if (!data || data.state != 'PENDING') return <p>No existe contrato a firmar</p>
+  if (data.status === 'ACTIVE') return <p>Este contrato ya fue firmado!!</p>
+  if (!data || data.status != 'PENDING') return <p>No existe contrato a firmar</p>
   console.log(data.description)
   return (
     <ContractPending 
