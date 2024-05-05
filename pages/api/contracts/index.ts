@@ -10,7 +10,6 @@ enum ContractState {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     await new Promise(r => setTimeout(r, 2000));
     if (req.method === 'POST') {
-        
         // Validate data from post
         let ownerId = req.body["owner_id"]
         let description = req.body["description"]

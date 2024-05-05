@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
 
 export function ContractCreate(props) {
-  const [data, setData] = useState(null)
 
   return (
     <div className="p-6 space-y-6">

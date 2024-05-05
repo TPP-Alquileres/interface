@@ -7,8 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 export function ContractPending(props) {
-
-
   return (
     <div key="1" className="p-6 space-y-6">
       <div className="space-y-2">

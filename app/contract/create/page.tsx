@@ -4,16 +4,13 @@ import { ContractCreate } from "@/components/contract-create"
 import { useState, useEffect } from 'react'
 
 
-export default function Component() {
+export default function CreateContractPage() {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate,] = useState("");
   const [ammount, setAmmount] = useState("");
-
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
-
-
 
   const onChangeHandler = (event: any) => {
     console.log(event.target.id)
