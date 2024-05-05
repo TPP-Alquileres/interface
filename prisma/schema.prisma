@@ -34,7 +34,7 @@ model Contract {
   description String
   startDate DateTime
   endDate DateTime
-  ammount  Float
+  amount  Float
   documentUrl String
-  state String
+  status String
 }

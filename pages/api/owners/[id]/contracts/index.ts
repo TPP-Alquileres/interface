@@ -11,6 +11,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const contracts = await prisma.contract.findMany({
             where: {
               ownerId: ownerId
+            }, include: {
+                owner: true,
+                tenant: true
             }
         })
         res.status(200).json(contracts)

@@ -4,24 +4,14 @@ import { ContractCreate } from "@/components/contract-create";
 import { useState, useEffect } from 'react';
 import { useWriteContract } from 'wagmi';
 
-<<<<<<< HEAD
-
 export default function CreateContractPage() {
-=======
-export default function CreateContract() {
->>>>>>> a42b7c8fe4732163a5150108193a67489b3d3a10
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate,] = useState("");
   const [ammount, setAmmount] = useState("");
-<<<<<<< HEAD
+
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
-=======
-
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
->>>>>>> a42b7c8fe4732163a5150108193a67489b3d3a10
 
   const onChangeHandler = (event: any) => {
     const value = event.target.value;
