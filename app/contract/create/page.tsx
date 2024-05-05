@@ -1,47 +1,37 @@
 "use client"
 
-import { ContractCreate } from "@/components/contract-create"
-import { useState, useEffect } from 'react'
+import { ContractCreate } from "@/components/contract-create";
+import { useState, useEffect } from 'react';
+import { useWriteContract } from 'wagmi';
 
-
-export default function Component() {
+export default function CreateContract() {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate,] = useState("");
   const [ammount, setAmmount] = useState("");
 
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(false)
-
-
+  const [data, setData] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const onChangeHandler = (event: any) => {
-    console.log(event.target.id)
-    let value = event.target.value
-    if (event.target.id === "name") {
-      setDescription(value);
-    }
-    if (event.target.id === "start-date") {
-      setStartDate(value)
-    }
-    if (event.target.id === "end-date") {
-      setEndDate(value)
-    }
-    if (event.target.id === "ammount") {
-      setAmmount(value)
-    }
+    const value = event.target.value;
+    const event_id = event.target.id;
+    if (event_id === "name") { setDescription(value); }
+    if (event_id === "start-date") { setStartDate(value); }
+    if (event_id === "end-date") { setEndDate(value); }
+    if (event_id === "ammount") { setAmmount(value); }
   };
-  
-  let generateLink = () => {
-    let body = {
+
+  const generateLink = () => {
+    const body = { 
       "owner_id": 1,
       "description": description,
       "start_date": 1713797894,
       "end_date": 1713797894,
       "ammount": 10.4,
       "document_url": "hola.com"
-    }
-    setLoading(true)
+    };
+    setLoading(true);
     fetch('/api/contracts', {
       method: 'POST',
       headers: {
@@ -52,7 +42,7 @@ export default function Component() {
     .then((data) => {
       setData(data)
       setLoading(false)
-    })
+    });
   }
 
   if (isLoading) return <p>Cargando ...</p>
