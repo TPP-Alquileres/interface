@@ -22,6 +22,10 @@ yarn install
 cp .env.example .env
 ```
 
+### Set up db
+## Create db and change credentials in .env file 
+
+
 ## Run project
 
 ```bash
