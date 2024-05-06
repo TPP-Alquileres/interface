@@ -12,7 +12,7 @@ import { Api } from "@/javascript/api"
 export default function Contracts() {
   
   const [contracts, setContracts]  = useState([]);
-  const url = "http://localhost:3000/api/owners/1/contracts";
+  const url = "http://localhost:3000/api/tenants/1/contracts";
   
 
     
@@ -27,6 +27,10 @@ export default function Contracts() {
     getContracts();
   }, [])
 
+  // contracts = [{name:"sasa", tenant:"tenant", owner:"owner", amount:"200", status:"Firmado"},
+  // {name:"contract2", tenant:"tenant", owner:"owner", amount:"200", status:"Firmado"},
+  // {name:"wetrqerr", tenant:"tenant", owner:"owner", amount:"200", status:"Pending"}
+  // ];
 
   console.log("Here are the contractws: " + contracts);
 
@@ -37,7 +41,7 @@ export default function Contracts() {
     <ComponentWithSideBar>
       <Card className="w-full">
         <CardHeader className="pb-2">
-          <div className="text-xl font-bold">Contratos Propietario</div>
+          <div className="text-xl font-bold">Contratos Inquilino</div>
         </CardHeader>
         <CardContent className="pt-2">
           <div className="overflow-auto w-full max-h-[500px]">
@@ -53,9 +57,9 @@ export default function Contracts() {
                 </tr>
               </thead>
               <tbody>
-              {contracts.length === 0 ? (              <tr className="bg-gray-100/40 dark:bg-gray-800/40">
+                {contracts.length === 0 ? (              <tr className="bg-gray-100/40 dark:bg-gray-800/40">
                 <td className="px-6 py-3 text-center text-gray-500 dark:text-gray-400" colSpan={6}>
-                  No tenés ningún contrato como propietario.
+                  No tenés ningún contrato como inquilino.
                 </td>
               </tr>) : "" }
                 {contracts.map((contract, index) => <ContractItem contract={contract} index={index} />)}
