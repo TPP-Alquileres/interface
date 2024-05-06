@@ -2,13 +2,17 @@
 
 import { ContractCreate } from "@/components/contract-create";
 import { useState, useEffect } from 'react';
-import { useWriteContract } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { abi } from '../../../abi';
 
 export default function CreateContractPage() {
+  const { data: hash, isPending, writeContract } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate,] = useState("");
-  const [ammount, setAmmount] = useState("");
+  const [amount, setamount] = useState("");
 
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
@@ -19,7 +23,7 @@ export default function CreateContractPage() {
     if (event_id === "name") { setDescription(value); }
     if (event_id === "start-date") { setStartDate(value); }
     if (event_id === "end-date") { setEndDate(value); }
-    if (event_id === "ammount") { setAmmount(value); }
+    if (event_id === "amount") { setamount(value); }
   };
 
   const generateLink = () => {
@@ -28,24 +32,29 @@ export default function CreateContractPage() {
       "description": description,
       "start_date": 1713797894,
       "end_date": 1713797894,
-      "ammount": 10.4,
+      "amount": 10.4,
       "document_url": "hola.com"
     };
     setLoading(true);
+
     fetch('/api/contracts', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    }).then((res) => res.json())
-    .then((data) => {
-      setData(data)
-      setLoading(false)
+    }).then((res) => 
+      res.json()
+    ).then((data) => {
+      writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
+        args: [BigInt(100), BigInt(2)],
+      });
+      setData(data);
+      setLoading(false);
     });
   }
 
-  if (isLoading) return <p>Cargando ...</p>
+  if (isPending || isLoading) return <p>Cargando ...</p>;
+
+  if (isConfirming) return <p>Confirmando ...</p>
 
   if (data) return (
     <div>
@@ -67,7 +76,7 @@ export default function CreateContractPage() {
       description={description}
       startDate={startDate}
       endDate={endDate}
-      ammount={ammount}
+      amount={amount}
       onChange={onChangeHandler}
     />
   )
