@@ -1,20 +1,24 @@
 "use client";
 
-import { CardHeader, CardContent, Card } from "@/components/ui/card"
+import { CardHeader, CardContent, Card, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { LayoutGridIcon, PackageIcon, ShoppingCartIcon } from "lucide-react"
+import { LayoutGridIcon, PackageIcon, PlusIcon, ShoppingCartIcon } from "lucide-react"
 import Link from "next/link"
 import ComponentWithSideBar from "@/components/component-with-side-bar"
 import ContractItem from "@/components/contract-item"
 import { useEffect, useState } from "react"
 import { Api } from "@/javascript/api"
+import { useRouter } from 'next/navigation';
+
 
 export default function Contracts() {
   
   const [contracts, setContracts]  = useState([]);
   const url = "http://localhost:3000/api/owners/1/contracts";
   
+  const contractCreateUrl = '/contract/create'
 
+  const router = useRouter();
     
 
   useEffect(() => {
@@ -63,6 +67,11 @@ export default function Contracts() {
             </table>
           </div>
         </CardContent>
+        <CardFooter className="absolute bottom-10 right-10 p-4">
+        <Button className="transition-all hover:scale-125" size="sm" variant="outline" onClick={() => router.push(contractCreateUrl)}>
+          <PlusIcon className="h-8 w-8" />
+        </Button>
+        </CardFooter>
       </Card>
       
     </ComponentWithSideBar>
