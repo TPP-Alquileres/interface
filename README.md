@@ -60,6 +60,7 @@ yarn prisma migrate dev
 | GOOGLE_CLIENT_SECRET | Google client secret used for auth |
 | POLYGON_MUMBAI_API_KEY | Alchemy's mumbai chain API KEY |
 | POLYGON_MAINNET_API_KEY | Alchemy's mainnet chain API KEY |
+| NEXT_PUBLIC_RENT_INSURANCE_ADDRESS | Smart contract address |
 
 ## License
 

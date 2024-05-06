@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react"
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider, http } from 'wagmi';
-import { polygon, polygonMumbai } from 'wagmi/chains';
+import { polygon, polygonMumbai, sepolia } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import { siteConfig } from "@/config/site"
@@ -24,11 +24,12 @@ interface RootLayoutProps {
 const config = getDefaultConfig({
   appName: 'Alquileres',
   projectId: 'e5e67a4d0dd7a2df9793a84b1acc6b28',
-  chains: [polygon, polygonMumbai],
+  chains: [polygon, polygonMumbai, sepolia],
   ssr: true,
   transports: {
     [polygonMumbai.id]: http(`https://polygon-mumbai.g.alchemy.com/v2/${process.env.POLYGON_MUMBAI_API_KEY}`),
     [polygon.id]: http(`https://polygon-mainnet.g.alchemy.com/v2/${process.env.POLYGON_MAINNET_API_KEY}`),
+    [sepolia.id]: http(),
   },
 });
 
