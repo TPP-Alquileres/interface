@@ -37,8 +37,9 @@ export default function CreateContractPage() {
       url: 'contracts', currentUser: session?.user, body
     } );
 
+    const durationInSeconds = (new Date(endDate) - new Date(startDate)) / 1000;
     writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
-      args: [BigInt(amount), BigInt(2)],
+      args: [BigInt(amount), BigInt(durationInSeconds)],
     });
     setContract(contractResponse);
     setLoading(false);
