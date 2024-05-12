@@ -12,13 +12,13 @@ export default function CreateContractPage() {
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate,] = useState("");
-  const [amount, setAmount] = useState("");
+  const [ description, setDescription ] = useState("");
+  const [ startDate, setStartDate ] = useState("");
+  const [ endDate, setEndDate ] = useState("");
+  const [ amount, setAmoun ] = useState("");
 
-  const [contract, setContract] = useState(null)
-  const [isLoading, setLoading] = useState(false)
+  const [ contract, setContract ] = useState(null);
+  const [ isLoading, setLoading ] = useState(false);
 
   const onChangeHandler = (event: any) => {
     const value = event.target.value;

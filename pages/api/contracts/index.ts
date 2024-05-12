@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "../_base";
-
-enum ContractState {
-  PENDING = "PENDING",
-  ACTIVE = "ACTIVE",
-  CLOSE = "CLOSE"
-}
+import { ContractState } from "../../../utils/contract";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const currentUser = await prisma.user.findUnique({ where: { email: req.headers.user_email } });
@@ -15,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'POST') {
-    // Validate data from post
     const description = req.body["description"];
     const startDate = req.body["start_date"];
     const endDate = req.body["end_date"];

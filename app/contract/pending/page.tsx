@@ -1,26 +1,35 @@
 "use client"
 
-import { ContractPending } from "@/components/contract-pending"
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
+import { ContractPending } from "@/components/contract-pending";
+import { useSearchParams } from 'next/navigation';
+import { Api } from "@/javascript/api";
 
-export default function Component() {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(true)
-  const searchParams = useSearchParams()
-  const contractId = String(searchParams.get('contract_id'))
+export default function PendingContractPage() {
+  const { data: session } = useSession();
+  const [ contract, setContract ] = useState(null);
+  const [ loading, setLoading ] = useState(true);
+  const searchParams = useSearchParams();
+  const contractId = String(searchParams.get('contract_id'));
 
   useEffect(() => {
-    fetch(`/api/contracts/${String(contractId)}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
+    async function getContract() {
+      const contractJson = await (new Api()).get( { 
+        url: `contracts/${contractId}`, currentUser: session?.user
+      } );
+      setContract(contractJson);
+      return contractJson;
+    };
 
-  let onSignContractButtonClick = () =>  {
-    setLoading(true)
+    if ( session?.user ) {
+      getContract();
+      setLoading(false);
+    }
+  }, [session?.user] );
+
+  const onSignContractClick = () =>  {
+    setLoading(true);
     fetch(`/api/contracts/${contractId}`, {
       method: 'PUT',
       headers: {
@@ -34,17 +43,16 @@ export default function Component() {
     .then((data) => {
       setData(data)
       setLoading(false)
-    })
+    });
   }
- 
-  if (isLoading) return <p>Cargando ...</p>
-  if (data.status === 'ACTIVE') return <p>Este contrato ya fue firmado!!</p>
-  if (!data || data.status != 'PENDING') return <p>No existe contrato a firmar</p>
+
+  if ( loading || !contract ) return <p>Cargando ...</p>;
+  if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
 
   return (
     <ContractPending 
-      description={data.description}
-      onSignContractButtonClick={onSignContractButtonClick}
+      contract={contract}
+      onSignContractClick={onSignContractClick}
     />
-  )
+  );
 }
