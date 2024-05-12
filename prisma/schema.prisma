@@ -35,6 +35,6 @@ model Contract {
   startDate DateTime
   endDate DateTime
   amount  Float
-  documentUrl String
+  documentUrl String?
   status String
 }

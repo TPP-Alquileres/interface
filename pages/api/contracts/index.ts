@@ -8,7 +8,7 @@ enum ContractState {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const currentUser = await prisma.user.findUnique({ where: { id: req.headers.user_id } });
+  const currentUser = await prisma.user.findFirst({ where: { email: req.headers.user_email } });
 
   if (!currentUser) {
     return res.status(401).json({ error: 'You must be signed in to view the protected content on this page.' });
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const description = req.body["description"];
     const startDate = req.body["start_date"];
     const endDate = req.body["end_date"];
-    const amount = req.body["amount"];
+    const amount = Number(req.body["amount"]);
     const documentUrl = req.body["document_url"];
 
     const contract = { ownerId: currentUser.id, description, startDate: new Date(startDate), endDate: new Date(endDate),

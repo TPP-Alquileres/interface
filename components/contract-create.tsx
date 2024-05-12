@@ -27,7 +27,7 @@ export function ContractCreate(props) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="amount">Cantidad de dinero a asegurar</Label>
-            <Input id="amount" placeholder="$0.00" step="0.01" type="number" />
+            <Input id="amount" value={props.amount} onChange={props.onChange} placeholder="$0.00" step="0.01" type="number" />
           </div>
         </div>
         <Button onClick={props.onGenerateLinkButtonClick}>Generar Link</Button>

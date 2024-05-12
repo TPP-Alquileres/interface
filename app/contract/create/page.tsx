@@ -14,7 +14,7 @@ export default function CreateContractPage() {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate,] = useState("");
-  const [amount, setamount] = useState("");
+  const [amount, setAmount] = useState("");
 
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(false)
@@ -25,7 +25,7 @@ export default function CreateContractPage() {
     if (event_id === "name") { setDescription(value); }
     if (event_id === "start-date") { setStartDate(value); }
     if (event_id === "end-date") { setEndDate(value); }
-    if (event_id === "amount") { setamount(value); }
+    if (event_id === "amount") { setAmount(value); }
   };
 
   const generateLink = () => {
@@ -34,7 +34,7 @@ export default function CreateContractPage() {
 
     fetch('/api/contracts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', user_id: session.user.id },
+      headers: { 'Content-Type': 'application/json', user_email: session.user.email },
       body: JSON.stringify(body),
     }).then((res) => 
       res.json()
@@ -42,6 +42,7 @@ export default function CreateContractPage() {
       writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
         args: [BigInt(amount), BigInt(2)],
       });
+      console.log(data);
       setData(data);
       setLoading(false);
     });
@@ -60,7 +61,7 @@ export default function CreateContractPage() {
       Mandale este link a tu inquilino para que pueda abrirlo y firmarlo
     </p>
     <p>
-      {`http://localhost:3000/contract/pending?contract_id=/${String(data.id)}`}
+      {`http://localhost:3000/contract/pending?contract_id=${String(data.id)}`}
     </p>
   </div>
   )

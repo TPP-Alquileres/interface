@@ -19,12 +19,14 @@ export const authOptions = {
     async jwt({ token, account, user }) {
       if (account && user) {
         token.uid = user.id;
+        token.email = user.email;
         token.accessToken = account.access_token;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.uid;
+      session.user.email = token.email;
       session.accessToken = token.accessToken;
       return session;
     },
