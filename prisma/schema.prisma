@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
+  id    String     @id @default(uuid())
   email String  @unique
   name String
   ownerContracts Contract[] @relation("owner")
@@ -24,12 +24,12 @@ model Contract {
   updatedAt  DateTime   @updatedAt
   // Owner
   owner User @relation("owner", fields: [ownerId], references: [id])
-  ownerId Int
+  ownerId String
 
   // Tenant
   tenant User? @relation("tenant", fields: [tenantId], references: [id])
-  tenantId Int?
-  
+  tenantId String?
+
   // Attributes
   description String
   startDate DateTime

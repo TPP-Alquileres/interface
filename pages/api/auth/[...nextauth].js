@@ -14,16 +14,19 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
     })
   ],
+  database: process.env.DATABASE_URL,
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token
+    async jwt({ token, account, user }) {
+      if (account && user) {
+        token.uid = user.id;
+        token.accessToken = account.access_token;
       }
-      return token
+      return token;
     },
-    async session({ session, token, user }) {
-      session.accessToken = token.accessToken
-      return session 
+    async session({ session, token }) {
+      session.user.id = token.uid;
+      session.accessToken = token.accessToken;
+      return session;
     },
     async signIn( { user } ) {
       const aUser = await prisma.user.findUnique( { where: { email: user.email } } );
@@ -32,7 +35,7 @@ export const authOptions = {
           { email: user.email, name: user.name } 
         } );
       }
-      return true
+      return true;
     }
   }
 }

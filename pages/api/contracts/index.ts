@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "../_base";
 
 enum ContractState {
@@ -8,36 +8,27 @@ enum ContractState {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await new Promise(r => setTimeout(r, 2000));
+  const currentUser = await prisma.user.findUnique({ where: { id: req.headers.user_id } });
+
+  if (!currentUser) {
+    return res.status(401).json({ error: 'You must be signed in to view the protected content on this page.' });
+  }
+
   if (req.method === 'POST') {
     // Validate data from post
-    const ownerId = req.body["owner_id"];
     const description = req.body["description"];
     const startDate = req.body["start_date"];
     const endDate = req.body["end_date"];
     const amount = req.body["amount"];
     const documentUrl = req.body["document_url"];
 
-    const contract = { 
-      ownerId: ownerId,
-      description: description,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      amount:  amount,
-      documentUrl: documentUrl,
-      status: ContractState.PENDING
+    const contract = { ownerId: currentUser.id, description, startDate: new Date(startDate), endDate: new Date(endDate),
+      amount, documentUrl, status: ContractState.PENDING
     };
-    const response = await prisma.contract.create({ 
-      data: contract
-    })
+    const response = await prisma.contract.create({ data: contract });
     res.status(200).json(response);
   } else if (req.method === 'GET') {
-    let ownerId = 10
-    const contracts = await prisma.contract.findMany({
-      where: {
-        ownerId: ownerId
-      }
-    })
+    const contracts = await prisma.contract.findMany({ where: { ownerId: currentUser.id } });
     res.status(200).json(contracts)
   } else {
     res.status(404).json({message: "Method not allowed"})

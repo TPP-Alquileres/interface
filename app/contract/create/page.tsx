@@ -1,11 +1,13 @@
 "use client"
 
-import { ContractCreate } from "@/components/contract-create";
 import { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { ContractCreate } from "@/components/contract-create";
 import { abi } from '../../../abi';
 
 export default function CreateContractPage() {
+  const { data: session } = useSession();
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
@@ -27,25 +29,18 @@ export default function CreateContractPage() {
   };
 
   const generateLink = () => {
-    const body = { 
-      "owner_id": 1,
-      "description": description,
-      "start_date": 1713797894,
-      "end_date": 1713797894,
-      "amount": 10.4,
-      "document_url": "hola.com"
-    };
+    const body = { description, start_date: startDate, end_date: endDate, amount };
     setLoading(true);
 
     fetch('/api/contracts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', user_id: session.user.id },
       body: JSON.stringify(body),
     }).then((res) => 
       res.json()
     ).then((data) => {
       writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
-        args: [BigInt(100), BigInt(2)],
+        args: [BigInt(amount), BigInt(2)],
       });
       setData(data);
       setLoading(false);

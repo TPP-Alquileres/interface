@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/Agg8L7THrmW
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -20,16 +15,6 @@ export function ContractCreate(props) {
         <div className="space-y-2">
           <Label htmlFor="name">Nombre que le vas a dar al contrato</Label>
           <Input id="name" placeholder="Contrato de alquiler de Libertador al 12000" required value={props.description} onChange={props.onChange}/>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Label
-            className="border-dashed border-2 rounded-lg p-4 w-full cursor-pointer flex items-center justify-center"
-            htmlFor="file"
-          >
-            <UploadIcon className="w-6 h-6" />
-            <span className="ml-2 text-sm font-medium">Subí el pdf del contrato de alquiler firmado</span>
-            <Input className="sr-only" id="file" type="file" />
-          </Label>
         </div>
         <div className="grid grid-cols-2 items-start gap-4">
           <div className="space-y-2">
