@@ -3,7 +3,7 @@ import prisma from "../../../_base";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const currentUser = await prisma.user.findUnique({ where: { id: req.headers.user_id } });
+  const currentUser = await prisma.user.findUnique({ where: { email: req.headers.user_email } });
 
   if (!currentUser) {
     return res.status(401).json({ error: 'You must be signed in to view the protected content on this page.' });

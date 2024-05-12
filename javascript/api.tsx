@@ -3,17 +3,23 @@ import { ApiError } from "./api-error";
 interface PostParams {
   url: string;
   body: any;
+  currentUser: any;
 }
 
 interface GetParams {
   url: string;
+  currentUser: any;
 }
 
 export class Api {
-  async post({ url, body }: PostParams) {
-    const response = await fetch(url, {
+  constructor() {
+    this.baseUrl = 'http://localhost:3000/api/';
+  }
+
+  async post( { url, body, currentUser } : PostParams) {
+    const response = await fetch(`${this.baseUrl}${url}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', user_email: currentUser.email },
       body: JSON.stringify(body)
     });
     const data = await response.json();
@@ -23,10 +29,10 @@ export class Api {
     throw new ApiError(data.error);
   }
 
-  async get({ url }: GetParams) {
-    const response = await fetch(url, {
+  async get( { url, currentUser } : GetParams) {
+    const response = await fetch(`${this.baseUrl}${url}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', user_email: currentUser.email },
     });
     const data = await response.json();
 

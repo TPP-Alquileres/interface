@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { ContractCreate } from "@/components/contract-create";
 import { abi } from '../../../abi';
+import { Api } from '@/javascript/api';
 
 export default function CreateContractPage() {
   const { data: session } = useSession();
@@ -16,7 +17,7 @@ export default function CreateContractPage() {
   const [endDate, setEndDate,] = useState("");
   const [amount, setAmount] = useState("");
 
-  const [data, setData] = useState(null)
+  const [contract, setContract] = useState(null)
   const [isLoading, setLoading] = useState(false)
 
   const onChangeHandler = (event: any) => {
@@ -28,43 +29,32 @@ export default function CreateContractPage() {
     if (event_id === "amount") { setAmount(value); }
   };
 
-  const generateLink = () => {
+  const generateLink = async () => {
     const body = { description, start_date: startDate, end_date: endDate, amount };
     setLoading(true);
 
-    fetch('/api/contracts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', user_email: session.user.email },
-      body: JSON.stringify(body),
-    }).then((res) => 
-      res.json()
-    ).then((data) => {
-      writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
-        args: [BigInt(amount), BigInt(2)],
-      });
-      console.log(data);
-      setData(data);
-      setLoading(false);
+    const contractResponse = await (new Api()).post( { 
+      url: 'contracts', currentUser: session?.user, body
+    } );
+
+    writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
+      args: [BigInt(amount), BigInt(2)],
     });
+    setContract(contractResponse);
+    setLoading(false);
   }
 
   if (isPending || isLoading) return <p>Cargando ...</p>;
 
-  if (isConfirming) return <p>Confirmando ...</p>
+  if (isConfirming) return <p>Confirmando ...</p>;
 
-  if (data) return (
+  if (contract) return (
     <div>
-    <h1>
-      Link generado
-    </h1>
-    <p>
-      Mandale este link a tu inquilino para que pueda abrirlo y firmarlo
-    </p>
-    <p>
-      {`http://localhost:3000/contract/pending?contract_id=${String(data.id)}`}
-    </p>
-  </div>
-  )
+      <h1>Link generado</h1>
+      <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
+      <p>{`http://localhost:3000/contract/pending?contract_id=${String(contract.id)}`}</p>
+    </div>
+  );
 
   return (
     <ContractCreate 
