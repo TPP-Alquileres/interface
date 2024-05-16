@@ -18,7 +18,6 @@ export default function ContractItem({contract, index}: any) {
       <td className="px-6 py-3">{contract.status}</td>
       <td className="px-6 py-3">
         <Button size="sm" variant="outline" onClick={() => router.push(contractUrl)}>Ver</Button>
-        <Button size="sm" variant="outline">Borrar</Button>
       </td>
     </tr>
   );
