@@ -2,6 +2,7 @@ import moment from "moment"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { ContractBody } from "./contract-body"
 
 export function ContractPending( { contract, onSignContractClick } ) {
   return (
@@ -15,20 +16,7 @@ export function ContractPending( { contract, onSignContractClick } ) {
           <Label htmlFor="name">Descripción</Label>
           <Input id="name" readOnly value={contract.description}/>
         </div>
-        <div className="grid grid-cols-2 items-start gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="start-date">Start Date</Label>
-            <Input id="start-date" readOnly value={moment(contract.startDate).format("DD/MM/YYYY")} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="end-date">End Date</Label>
-            <Input id="end-date" readOnly value={moment(contract.endDate).format("DD/MM/YYYY")} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount</Label>
-            <Input id="amount" placeholder="$0.00" readOnly step="0.01" type="number" value={contract.amount} />
-          </div>
-        </div>
+        <ContractBody contract={contract} />
         <Button onClick={onSignContractClick}>Firmar Documento</Button>
       </div>
     </div>

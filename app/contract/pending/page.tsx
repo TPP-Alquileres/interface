@@ -26,7 +26,7 @@ export default function PendingContractPage() {
       getContract();
       setLoading(false);
     }
-  }, [session?.user] );
+  }, [ session?.user ] );
 
   const onSignContractClick = () =>  {
     setLoading(true);

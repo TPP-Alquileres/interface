@@ -4,10 +4,11 @@ import { Button } from "./ui/button";
 import { useRouter } from 'next/navigation';
 
 export default function ContractItem({contract, index}: any) {
-  const tableRowClassName = index % 2 === 0 ? "bg-gray-100/40 dark:bg-gray-800/40" : "";
-  const contractUrl = '/contracts/' + contract.id
-
   const router = useRouter();
+
+  const tableRowClassName = index % 2 === 0 ? "bg-gray-100/40 dark:bg-gray-800/40" : "";
+  const contractUrl = `/contract/${contract.id}`;
+
   return (
     <tr key={contract.id} className={tableRowClassName}>
       <td className="px-6 py-3">{contract.description}</td>

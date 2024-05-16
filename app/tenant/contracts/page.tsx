@@ -21,8 +21,11 @@ export default function Contracts() {
       setContracts(contractsJson);
       return contractsJson;
     }
-    getContracts();
-  }, []);
+
+    if ( session?.user ) {
+      getContracts();
+    }
+  }, [ session?.user ] );
 
   return (
     <div key="1" className="flex min-h-screen w-full">

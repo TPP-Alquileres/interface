@@ -21,12 +21,15 @@ export default function Contracts() {
 
   useEffect(() => {
     async function getContracts() {
-      const contractsJson = await (new Api()).get( { url, currentUser: session?.user } );
+      const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
       setContracts(contractsJson);
       return contractsJson;
     }
-    getContracts();
-  }, []);
+
+    if ( session?.user ) {
+      getContracts();
+    }
+  }, [ session?.user ]);
 
   return (
     <div key="1" className="flex min-h-screen w-full">
