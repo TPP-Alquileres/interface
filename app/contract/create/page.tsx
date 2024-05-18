@@ -15,7 +15,7 @@ export default function CreateContractPage() {
   const [ description, setDescription ] = useState("");
   const [ startDate, setStartDate ] = useState("");
   const [ endDate, setEndDate ] = useState("");
-  const [ amount, setAmoun ] = useState("");
+  const [ amount, setAmount ] = useState("");
 
   const [ contract, setContract ] = useState(null);
   const [ isLoading, setLoading ] = useState(false);

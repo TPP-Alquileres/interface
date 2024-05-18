@@ -9,7 +9,7 @@ import { Api } from "@/javascript/api";
 export default function PendingContractPage() {
   const { data: session } = useSession();
   const [ contract, setContract ] = useState(null);
-  const [ loading, setLoading ] = useState(true);
+  const [ isLoading, setLoading ] = useState(true);
   const searchParams = useSearchParams();
   const contractId = String(searchParams.get('contract_id'));
 
@@ -28,25 +28,18 @@ export default function PendingContractPage() {
     }
   }, [ session?.user ] );
 
-  const onSignContractClick = () =>  {
+  const onSignContractClick = async () =>  {
     setLoading(true);
-    fetch(`/api/contracts/${contractId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "tenantId": 2,
-        "status": "ACTIVE"
-      }),
-    }).then((res) => res.json())
-    .then((data) => {
-      setData(data)
-      setLoading(false)
-    });
+
+    const contractJson = await (new Api()).post( { 
+      url: `contracts/${contractId}/sign`, currentUser: session?.user
+    } );
+
+    setContract(contractJson);
+    setLoading(false);
   }
 
-  if ( loading || !contract ) return <p>Cargando ...</p>;
+  if ( isLoading || !contract ) return <p>Cargando ...</p>;
   if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
 
   return (
