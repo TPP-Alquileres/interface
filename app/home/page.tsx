@@ -1,14 +1,39 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from "next/link"
-
 import { Button } from "@/components/ui/button"
+import { useSession } from "next-auth/react";
 import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu"
 import { CardTitle, CardHeader, CardContent, Card, CardDescription } from "@/components/ui/card"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import ComponentWithSideBar from "@/components/component-with-side-bar";
+import { Api } from "@/javascript/api";
+import { ContractState } from '@/utils/contract';
 
 export default function Home() {
+  const { data: session } = useSession();
+  const [ contracts, setContracts ] = useState();
+
+  useEffect(() => {
+    async function getContracts() {
+      const contractsJson = await (new Api()).get( { 
+        url: `contracts`, currentUser: session?.user
+      } );
+      setContracts(contractsJson);
+      return contractsJson;
+    };
+
+    console.log("Chano", session?.user)
+    if ( session?.user ) {
+      getContracts();
+    }
+  }, [ session?.user ] );
+
+  const activeContracts = contracts?.filter(contract => contract.status === ContractState.ACTIVE);
+  const ownerContractsCount = activeContracts?.filter(contract => contract.ownerId === session?.user.id).length || 0;
+  const tenantContractsCount = contracts?.filter(contract => contract.tenantId === session?.user.id).length || 0;
+
   return (
     <div key="1" className="flex min-h-screen w-full">
       <ComponentWithSideBar>
@@ -23,7 +48,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-auto justify-content:flex-end">
-                    0 Contratos vigentes
+                    {ownerContractsCount} contratos vigentes
                   </p>
                 </CardContent>
               </Card>
@@ -32,7 +57,7 @@ export default function Home() {
                   <CardTitle>Inquilino</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">2 contratos vigentes</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{tenantContractsCount} contratos vigentes</p>
                 </CardContent>
               </Card>
             </div>
