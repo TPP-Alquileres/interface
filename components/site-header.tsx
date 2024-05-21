@@ -44,14 +44,6 @@ export function SiteHeader() {
         <div className="flex flex-1 items-center justify-end space-x-4 ">
           <nav className="flex items-center space-x-3">
             <ConnectButton />
-            <Button
-              className="ml-auto h-10 w-10 rounded-full border-gray-200 dark:border-gray-800"
-              size="icon"
-              variant="outline"
-            >
-              <BellIcon className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-            </Button>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
