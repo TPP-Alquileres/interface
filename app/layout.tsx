@@ -8,7 +8,6 @@ import { WagmiProvider, http } from 'wagmi';
 import { polygon, polygonMumbai, sepolia } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"

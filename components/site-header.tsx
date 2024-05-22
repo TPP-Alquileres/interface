@@ -7,7 +7,6 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { useRouter } from 'next/navigation';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-import { siteConfig } from "@/config/site";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
@@ -26,7 +25,7 @@ export function SiteHeader() {
   const renderNotSignedInHeader = () => (
     <header className=" bg-background sticky top-0 z-40 w-full border-b">
       <div className="ml-5 mr-5 flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-        <MainNav items={siteConfig.mainNav} />
+        <MainNav />
         <div className="flex flex-1 items-center justify-end space-x-4 float-end">
           <nav className="flex items-center space-x-1">
             <button className="mr-3 decoration-solid font-medium hover:opacity-75" onClick={onClickSignIn}>Sign in</button>
@@ -40,7 +39,7 @@ export function SiteHeader() {
   const renderSignedInHeader = () => (
     <header className="bg-background sticky top-0 z-40 w-full border-b">
       <div className="ml-5 mr-5 flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-        <MainNav items={siteConfig.mainNav} />
+        <MainNav />
         <div className="flex flex-1 items-center justify-end space-x-4 ">
           <nav className="flex items-center space-x-3">
             <ConnectButton />
