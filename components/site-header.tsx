@@ -67,14 +67,11 @@ export function SiteHeader() {
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Mi perfil</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Configuración</DropdownMenuItem>
-                <DropdownMenuItem>Soporte</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={onClickSignOut}>Cerrar sesión</DropdownMenuItem>
-              </DropdownMenuContent>
+              <div className="bg-background">
+                <DropdownMenuContent align="end" className="bg-gray-100/90 dark:bg-gray-800/90 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 cursor-pointer p-2 rounded">
+                  <DropdownMenuItem className="p-2" onClick={onClickSignOut}>Cerrar sesión</DropdownMenuItem>
+                </DropdownMenuContent>
+              </div>
             </DropdownMenu>
           </nav>
         </div>
