@@ -24,7 +24,6 @@ export default function Home() {
       return contractsJson;
     };
 
-    console.log("Chano", session?.user)
     if ( session?.user ) {
       getContracts();
     }
@@ -32,7 +31,9 @@ export default function Home() {
 
   const activeContracts = contracts?.filter(contract => contract.status === ContractState.ACTIVE);
   const ownerContractsCount = activeContracts?.filter(contract => contract.ownerId === session?.user.id).length || 0;
-  const tenantContractsCount = contracts?.filter(contract => contract.tenantId === session?.user.id).length || 0;
+  const tenantContractsCount = activeContracts?.filter(contract => contract.tenantId === session?.user.id).length || 0;
+  console.log("Chano", "activeContracts", activeContracts);
+  console.log("Chano", "tenantContractsCount", tenantContractsCount);
 
   return (
     <div key="1" className="flex min-h-screen w-full">

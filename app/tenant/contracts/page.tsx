@@ -13,11 +13,11 @@ import { Api } from "@/javascript/api";
 export default function Contracts() {
   const { data: session } = useSession();
   const [contracts, setContracts]  = useState([]);
-  const url = "tenants/1/contracts";
+  const url = `tenants/${session?.user.id}/contracts`;
 
   useEffect(() => {
     async function getContracts() {
-      const contractsJson = await (new Api()).get( { url, currentUser: session?.user } );
+      const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
       setContracts(contractsJson);
       return contractsJson;
     }
