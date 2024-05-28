@@ -6,6 +6,7 @@ import { BellIcon } from "lucide-react";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from 'next/navigation';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useTheme } from "next-themes";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -14,7 +15,14 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteHeader() {
   const { data: session, status } = useSession();
+  const { setTheme, theme } = useTheme();
   const router = useRouter();
+
+  const modeText = theme === "light" ? "Dark Mode" : "Light Mode";
+
+  const onClickToggleMode = () => {
+    setTheme(theme === "light" ? "dark" : "light")
+  };
 
   const onClickSignOut = () => signOut({ redirect: false }).then(() => {
     router.push("/");
@@ -69,6 +77,7 @@ export function SiteHeader() {
 
               <div className="bg-background">
                 <DropdownMenuContent align="end" className="bg-gray-100/90 dark:bg-gray-800/90 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 cursor-pointer p-2 rounded">
+                  <DropdownMenuItem className="p-2" onClick={onClickToggleMode}>{modeText}</DropdownMenuItem>
                   <DropdownMenuItem className="p-2" onClick={onClickSignOut}>Cerrar sesión</DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
