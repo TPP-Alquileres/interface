@@ -67,7 +67,7 @@ export default function OwnerContracts() {
               </table>
             </div>
           </CardContent>
-          <Button className="absolute h-10 w-10 p-2 rounded-full bottom-10 right-10 transition-all hover:scale-125 dark:bg-white" size="sm" variant="outline" 
+          <Button className="absolute h-10 w-10 p-2 rounded-full bottom-10 right-10 transition-all bg-[color:rgb(3,7,18)] dark:bg-white hover:scale-125 hover:bg-[color:rgb(3,7,18)]" size="sm" variant="outline" 
             onClick={() => router.push(contractCreateUrl)}
           >
             <PlusIcon className="h-full w-full text-white dark:text-[color:rgb(3,7,18)]"/>
