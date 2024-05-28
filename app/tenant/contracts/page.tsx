@@ -9,8 +9,9 @@ import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
 import { useEffect, useState } from "react";
 import { Api } from "@/javascript/api";
+import PageBase from "@/components/page-base";
 
-export default function Contracts() {
+export default function TenantContracts() {
   const { data: session } = useSession();
   const [contracts, setContracts]  = useState([]);
   const url = `tenants/${session?.user.id}/contracts`;
@@ -28,9 +29,9 @@ export default function Contracts() {
   }, [ session?.user ] );
 
   return (
-    <div key="1" className="flex min-h-screen w-full">
+    <PageBase>
       <ComponentWithSideBar>
-        <Card className="w-full">
+        <Card className="w-full overflow-auto">
           <CardHeader className="pb-2">
             <div className="text-xl font-bold">Contratos Inquilino</div>
           </CardHeader>
@@ -57,13 +58,13 @@ export default function Contracts() {
                       </tr>
                     )
                   }
-                  { contracts.map( ( contract, index ) => <ContractItem contract={contract} index={index} /> ) }
+                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} /> ) }
                 </tbody>
               </table>
             </div>
           </CardContent>
         </Card>
       </ComponentWithSideBar>
-    </div>
+    </PageBase>
   )
 }

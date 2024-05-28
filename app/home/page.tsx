@@ -10,6 +10,7 @@ import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import { Api } from "@/javascript/api";
 import { ContractState } from '@/utils/contract';
+import PageBase from '@/components/page-base';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -32,15 +33,11 @@ export default function Home() {
   const activeContracts = contracts?.filter(contract => contract.status === ContractState.ACTIVE);
   const ownerContractsCount = activeContracts?.filter(contract => contract.ownerId === session?.user.id).length || 0;
   const tenantContractsCount = activeContracts?.filter(contract => contract.tenantId === session?.user.id).length || 0;
-  console.log("Chano", "activeContracts", activeContracts);
-  console.log("Chano", "tenantContractsCount", tenantContractsCount);
 
   return (
-    <div key="1" className="flex min-h-screen w-full">
+    <PageBase>
       <ComponentWithSideBar>
-
         <div className="flex flex-col w-full">
-
           <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
@@ -102,10 +99,9 @@ export default function Home() {
               </CardContent>
             </Card>
           </main>
-        
-          </div>
-        </ComponentWithSideBar>
-    </div>
+        </div>
+      </ComponentWithSideBar>
+    </PageBase>
   )
 }
 

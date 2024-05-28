@@ -10,8 +10,9 @@ import ContractItem from "@/components/contract-item";
 import { useEffect, useState } from "react";
 import { Api } from "@/javascript/api";
 import { useRouter } from 'next/navigation';
+import PageBase from "@/components/page-base";
 
-export default function Contracts() {
+export default function OwnerContracts() {
   const { data: session } = useSession();
   const router = useRouter();
   const [contracts, setContracts] = useState([]);
@@ -32,14 +33,14 @@ export default function Contracts() {
   }, [ session?.user ]);
 
   return (
-    <div key="1" className="flex min-h-screen w-full">
+    <PageBase>
       <ComponentWithSideBar>
-        <Card className="w-full">
+        <Card className="w-full overflow-auto">
           <CardHeader className="pb-2">
             <div className="text-xl font-bold">Contratos Propietario</div>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="overflow-auto w-full max-h-[500px]">
+            <div className="w-full">
               <table className="w-full text-left border-collapse text-base">
                 <thead>
                   <tr>
@@ -61,18 +62,18 @@ export default function Contracts() {
                       </tr>
                     )
                   }
-                  { contracts.map( ( contract, index ) => <ContractItem contract={contract} index={index} /> ) }
+                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} /> ) }
                 </tbody>
               </table>
             </div>
           </CardContent>
-          <CardFooter className="absolute bottom-10 right-10 p-4">
-          <Button className="transition-all hover:scale-125" size="sm" variant="outline" onClick={() => router.push(contractCreateUrl)}>
-            <PlusIcon className="h-8 w-8" />
+          <Button className="absolute h-10 w-10 p-2 rounded-full bottom-10 right-10 transition-all hover:scale-125 dark:bg-white" size="sm" variant="outline" 
+            onClick={() => router.push(contractCreateUrl)}
+          >
+            <PlusIcon className="h-full w-full text-white dark:text-[color:rgb(3,7,18)]"/>
           </Button>
-          </CardFooter>
         </Card>
       </ComponentWithSideBar>
-    </div>
+    </PageBase>
   )
 }
