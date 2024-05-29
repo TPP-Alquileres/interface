@@ -12,7 +12,7 @@ export default function ComponentWithSideBar( { children } : any ) {
     { path: "/home", label: "Home", iconComponent: LayoutGridIcon }, 
     { path: "/owner/contracts", label: "Propietario", iconComponent: ShoppingCartIcon }, 
     { path: "/tenant/contracts", label: "Inquilino", iconComponent: ShoppingCartIcon }, 
-    { path: "/investments", label: "Inversiones", iconComponent: PackageIcon } 
+    { path: "/investor/investments", label: "Inversiones", iconComponent: PackageIcon } 
   ];
 
   const sidebarItem = ( { item } ) => (

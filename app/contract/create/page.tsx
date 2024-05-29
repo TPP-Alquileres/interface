@@ -7,6 +7,9 @@ import { ContractCreate } from "@/components/contract-create";
 import { abi } from '../../../abi';
 import { Api } from '@/javascript/api';
 
+import ComponentWithSideBar from "@/components/component-with-side-bar";
+import PageBase from "@/components/page-base";
+
 export default function CreateContractPage() {
   const { data: session } = useSession();
   const { data: hash, isPending, writeContract } = useWriteContract();
@@ -58,13 +61,18 @@ export default function CreateContractPage() {
   );
 
   return (
-    <ContractCreate 
-      onGenerateLinkButtonClick={generateLink}
-      description={description}
-      startDate={startDate}
-      endDate={endDate}
-      amount={amount}
-      onChange={onChangeHandler}
-    />
+    <PageBase>
+      <ComponentWithSideBar>
+      <ContractCreate 
+        onGenerateLinkButtonClick={generateLink}
+        description={description}
+        startDate={startDate}
+        endDate={endDate}
+        amount={amount}
+        onChange={onChangeHandler}
+      />
+      </ComponentWithSideBar>
+    </PageBase>
   )
 }
+
