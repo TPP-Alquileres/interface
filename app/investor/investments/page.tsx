@@ -33,7 +33,7 @@ export default function InvestorInvestments() {
       <ComponentWithSideBar>
         <Card className="w-full overflow-auto">
           <CardHeader className="pb-2">
-            <div className="text-xl font-bold">Contratos Inquilino</div>
+            <div className="text-xl font-bold">Productos para invertir</div>
           </CardHeader>
           <CardContent className="pt-2">
             <div className="overflow-auto w-full max-h-[500px]">
