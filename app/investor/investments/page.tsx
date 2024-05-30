@@ -41,24 +41,43 @@ export default function InvestorInvestments() {
                 <thead>
                   <tr>
                     <th className="font-semibold px-6 py-3">Titulo</th>
-                    <th className="font-semibold px-6 py-3">Propietario</th>
-                    <th className="font-semibold px-6 py-3">Inquilino</th>
-                    <th className="font-semibold px-6 py-3">Monto Asegurado</th>
-                    <th className="font-semibold px-6 py-3">Estado</th>
-                    <th className="font-semibold px-6 py-3">Acciones</th>
+                    <th className="font-semibold px-6 py-3">Descripción</th>
+                    <th className="font-semibold px-6 py-3">Tasa de interés anual</th>
+                    <th className="font-semibold px-6 py-3">Acción</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    contracts.length === 0 && (
-                      <tr className="bg-gray-100/40 dark:bg-gray-800/40">
-                        <td className="px-6 py-3 text-center text-gray-500 dark:text-gray-400" colSpan={6}>
-                          No tenés ningún contrato como inquilino.
-                        </td>
-                      </tr>
-                    )
+                  { 
+                   <tr key={0} className={"bg-gray-100/40 dark:bg-gray-800/40"}>
+                   <td className="px-6 py-3">Low risk pool</td>
+                   <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los inquilinos mas confiables</td>
+                   <td className="px-6 py-3">10%</td>
+                   <td className="px-6 py-3">
+                     <Button size="sm" variant="outline">Invertir</Button>
+                   </td>
+                 </tr>
                   }
-                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} /> ) }
+                  { 
+                   <tr key={0} className={"bg-gray-100/40 dark:bg-gray-800/40"}>
+                   <td className="px-6 py-3">Mid risk pool</td>
+                   <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los inquilinos confiables y nuevos</td>
+                   <td className="px-6 py-3">13%</td>
+                   <td className="px-6 py-3">
+                     <Button size="sm" variant="outline">Invertir</Button>
+                   </td>
+                 </tr>
+                  }
+{ 
+                   <tr key={0} className={"bg-gray-100/40 dark:bg-gray-800/40"}>
+                   <td className="px-6 py-3">High risk pool</td>
+                   <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los con menos información, si bien el riesgo es bajo, hay mas incertidumbre </td>
+                   <td className="px-6 py-3">15%</td>
+                   <td className="px-6 py-3">
+                     <Button size="sm" variant="outline">Invertir</Button>
+                   </td>
+                 </tr>
+                  }
+
                 </tbody>
               </table>
             </div>
