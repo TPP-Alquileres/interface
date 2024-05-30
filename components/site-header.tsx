@@ -76,9 +76,9 @@ export function SiteHeader() {
               </DropdownMenuTrigger>
 
               <div className="bg-background">
-                <DropdownMenuContent align="end" className="bg-gray-100/90 dark:bg-gray-800/90 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 cursor-pointer p-2 rounded">
-                  <DropdownMenuItem className="p-2" onClick={onClickToggleMode}>{modeText}</DropdownMenuItem>
-                  <DropdownMenuItem className="p-2" onClick={onClickSignOut}>Cerrar sesión</DropdownMenuItem>
+                <DropdownMenuContent align="end" className="bg-gray-100/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-400 cursor-pointer p-2">
+                  <DropdownMenuItem className="p-2 hover:text-gray-900 dark:hover:text-gray-50" onClick={onClickToggleMode}>{modeText}</DropdownMenuItem>
+                  <DropdownMenuItem className="p-2 hover:text-gray-900 dark:hover:text-gray-50" onClick={onClickSignOut}>Cerrar sesión</DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
             </DropdownMenu>
