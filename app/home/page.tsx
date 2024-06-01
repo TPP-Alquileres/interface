@@ -61,7 +61,7 @@ export default function Home() {
             </div>
             <Card>
               <CardHeader className="pb-4">
-                <CardTitle>Inversiones</CardTitle>
+                <CardTitle>Tus inversiones</CardTitle>
                 <CardDescription>Fondos</CardDescription>
               </CardHeader>
               <CardContent className="p-0">

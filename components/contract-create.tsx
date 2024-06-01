@@ -1,9 +1,32 @@
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useState, useEffect } from 'react'
+"use client"
 
-export function ContractCreate(props) {
+import { useState, useEffect } from 'react';
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { es } from 'date-fns/locale';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+const formSchema = z.object({
+  description: z.string().min(1, { message: "El título es obligatorio" }),
+  startDate: z.date({ message: "La fecha de inicio es obligatoria" }),
+  endDate: z.date({ message: "La fecha de fin es obligatoria" }),
+  amount: z.coerce.number().min(1, { message: "El monto a asegurar es inválido" })
+})
+
+export function ContractCreate( { onGenerateLinkButtonClick } ) {
+  const form = useForm( {
+    resolver: zodResolver(formSchema),
+    defaultValues: { description: "", startDate: "" }
+  } );
 
   return (
     <div className="p-6 space-y-6">
@@ -12,47 +35,101 @@ export function ContractCreate(props) {
         <p className="text-gray-500 dark:text-gray-400">Por favor, ingresá la siguiente información sobre tu contrato, para que podamos generar un link para que el inquilino lo acepte</p>
       </div>
       <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Nombre que le vas a dar al contrato</Label>
-          <Input id="name" placeholder="Contrato de alquiler de Libertador al 12000" required value={props.description} onChange={props.onChange}/>
-        </div>
-        <div className="grid grid-cols-2 items-start gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="start-date">Inicio del contrato</Label>
-            <Input id="start-date" type="date" value={props.startDate} onChange={props.onChange}/>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="end-date">Fin del contrato</Label>
-            <Input id="end-date" type="date" value={props.endDate} onChange={props.onChange}/>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="amount">Cantidad de dinero a asegurar</Label>
-            <Input id="amount" value={props.amount} onChange={props.onChange} placeholder="$0.00" step="0.01" type="number" />
-          </div>
-        </div>
-        <Button onClick={props.onGenerateLinkButtonClick}>Generar Link</Button>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onGenerateLinkButtonClick)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre que le vas a dar al contrato</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Contrato de alquiler de Libertador al 12000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-2 items-start gap-4">
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Inicio del contrato</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                            >
+                              { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de inicio</span> }
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Fin del contrato</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                            >
+                              { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de fin</span> }
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="amount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Monto a asegurar</FormLabel>
+                      <FormControl>
+                        <Input placeholder="$0.00" step="1.00" type="number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <Button type="submit">Generar Link</Button>
+          </form>
+        </Form>
       </div>
     </div>
-  )
-}
-
-function UploadIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="17 8 12 3 7 8" />
-      <line x1="12" x2="12" y1="3" y2="15" />
-    </svg>
   )
 }

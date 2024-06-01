@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { format } from "date-fns";
 import { ContractCreate } from "@/components/contract-create";
 import { abi } from '../../../abi';
 import { Api } from '@/javascript/api';
@@ -15,25 +16,15 @@ export default function CreateContractPage() {
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
 
-  const [ description, setDescription ] = useState("");
-  const [ startDate, setStartDate ] = useState("");
-  const [ endDate, setEndDate ] = useState("");
-  const [ amount, setAmount ] = useState("");
-
   const [ contract, setContract ] = useState(null);
   const [ isLoading, setLoading ] = useState(false);
 
-  const onChangeHandler = (event: any) => {
-    const value = event.target.value;
-    const event_id = event.target.id;
-    if (event_id === "name") { setDescription(value); }
-    if (event_id === "start-date") { setStartDate(value); }
-    if (event_id === "end-date") { setEndDate(value); }
-    if (event_id === "amount") { setAmount(value); }
-  };
+  const generateLink = async ( values ) => {
+    const startDate = values.startDate;
+    const endDate = values.endDate;
+    const amount = values.amount;
+    const body = { description: values.description, start_date: startDate, end_date: endDate, amount };
 
-  const generateLink = async () => {
-    const body = { description, start_date: startDate, end_date: endDate, amount };
     setLoading(true);
 
     const contractResponse = await (new Api()).post( { 
@@ -63,14 +54,7 @@ export default function CreateContractPage() {
   return (
     <PageBase>
       <ComponentWithSideBar>
-      <ContractCreate 
-        onGenerateLinkButtonClick={generateLink}
-        description={description}
-        startDate={startDate}
-        endDate={endDate}
-        amount={amount}
-        onChange={onChangeHandler}
-      />
+      <ContractCreate onGenerateLinkButtonClick={generateLink} />
       </ComponentWithSideBar>
     </PageBase>
   )
