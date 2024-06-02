@@ -12,7 +12,8 @@ export default function ComponentWithSideBar( { children } : any ) {
     { path: "/home", label: "Home", iconComponent: LayoutGridIcon }, 
     { path: "/owner/contracts", label: "Propietario", iconComponent: ShoppingCartIcon }, 
     { path: "/tenant/contracts", label: "Inquilino", iconComponent: ShoppingCartIcon }, 
-    { path: "/investor/investments", label: "Inversiones", iconComponent: PackageIcon } 
+    { path: "/investor/investments", label: "Inversiones", iconComponent: PackageIcon }, 
+    { path: "/admin/moderate", label: "Moderar", iconComponent: PackageIcon } 
   ];
 
   const sidebarItem = ( { item } ) => (
