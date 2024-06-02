@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi';
 import { format } from "date-fns";
 import { ContractCreate } from "@/components/contract-create";
-import { abi } from '../../../abi';
+import { rentInsuranceAbi } from '../../../abis/RentInsurance';
 import { Api } from '@/javascript/api';
 
 import ComponentWithSideBar from "@/components/component-with-side-bar";
@@ -15,9 +15,12 @@ export default function CreateContractPage() {
   const { data: session } = useSession();
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
+  const { isConnected } = useAccount();
 
   const [ contract, setContract ] = useState(null);
   const [ isLoading, setLoading ] = useState(false);
+
+  const showHeader = !isPending && !isLoading && !isConfirming && isConnected && !contract;
 
   const generateLink = async ( values ) => {
     const startDate = values.startDate;
@@ -32,19 +35,21 @@ export default function CreateContractPage() {
     } );
 
     const durationInSeconds = (new Date(endDate) - new Date(startDate)) / 1000;
-    writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi, functionName: 'initializeInsurance',
-      args: [BigInt(amount), BigInt(durationInSeconds)],
+    writeContract({ address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS, abi: rentInsuranceAbi, 
+      functionName: 'initializeInsurance', args: [BigInt(amount), BigInt(durationInSeconds)],
     });
     setContract(contractResponse);
     setLoading(false);
   }
 
   const renderPage = () => { 
-    if (isPending || isLoading) return <p className='pt-4'>Cargando ...</p>;
+    if (!isConnected) { return <p className='pt-4'>Conecta tu wallet para crear el contrato</p>; }
 
-    if (isConfirming) return <p className='pt-4'>Confirmando ...</p>;
+    if (isPending || isLoading) return <p className='pt-4'>Cargando...</p>;
 
-    if (contract) return (
+    if (isConfirming) return <p className='pt-4'>Confirmando...</p>;
+
+    if (!!contract) return (
       <div className='pt-4'>
         <h1>Link generado</h1>
         <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
@@ -61,7 +66,7 @@ export default function CreateContractPage() {
         <div className="p-6 space-y-6">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Crear contrato</h1>
-            { !isPending && !isLoading && !isConfirming && !contract && (
+            { showHeader && (
               <p className="text-gray-500 dark:text-gray-400">Por favor, ingresá la siguiente información sobre tu contrato, para que podamos generar un link para que el inquilino lo acepte</p> 
             )}
             { renderPage() }
