@@ -127,7 +127,7 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
               />
             </div>
           </div>
-          <Button type="submit">Generar Link</Button>
+          <Button type="submit" disabled={!form.formState.isValid}>Generar Link</Button>
         </form>
       </Form>
     </div>
