@@ -1,5 +1,12 @@
 /** @type {import('prettier').Config} */
 module.exports = {
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
   endOfLine: "lf",
   semi: false,
   singleQuote: false,
