@@ -33,6 +33,12 @@ export default function OwnerContracts() {
     }
   }, [ session?.user ]);
 
+  async function claimContract(contractId) {
+    const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
+    setContracts(contractsJson);
+    return contractsJson;
+  }
+
   return (
     <PageBase>
       <ComponentWithSideBar>
@@ -63,7 +69,7 @@ export default function OwnerContracts() {
                       </tr>
                     )
                   }
-                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} /> ) }
+                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} claimContract={claimContract}/> ) }
                 </tbody>
               </table>
             </div>
