@@ -13,7 +13,6 @@ import { Api } from "@/javascript/api";
 import { ContractState } from '@/utils/contract';
 import PageBase from '@/components/page-base';
 import { insurancePoolAbi } from '../../abis/InsurancePool';
-import { render } from 'react-dom';
 
 export default function Home() {
   const { data: session } = useSession();
