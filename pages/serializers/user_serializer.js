@@ -1,3 +1,8 @@
+const  Context = ()=>{
+  
+}
+export default Context
+
 export class UserSerializer {
   constructor(user) {
     delete user.password;
