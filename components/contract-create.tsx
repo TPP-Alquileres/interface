@@ -20,7 +20,9 @@ const formSchema = z.object({
   startDate: z.date({ message: "La fecha de inicio es obligatoria" }),
   endDate: z.date({ message: "La fecha de fin es obligatoria" }),
   amount: z.coerce.number().min(1, { message: "El monto a asegurar es inválido" })
-})
+}).refine((object) => object.endDate > object.startDate, 
+  { message: "La fecha de fin tiene que ser posterior a la de inicio", path: ["endDate"] }
+);
 
 export function ContractCreate( { onGenerateLinkButtonClick } ) {
   const form = useForm( {
@@ -101,7 +103,11 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
                           </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                          <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus 
+                            disabled={(date) =>
+                              date <= form.getValues("startDate")
+                            }
+                          />
                         </PopoverContent>
                       </Popover>
                       <FormMessage />
