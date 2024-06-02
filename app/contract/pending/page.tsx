@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSession } from "next-auth/react";
 import { ContractPending } from "@/components/contract-pending";
 import { useSearchParams } from 'next/navigation';
@@ -11,7 +11,7 @@ export default function PendingContractPage() {
   const [ contract, setContract ] = useState(null);
   const [ isLoading, setLoading ] = useState(true);
   const searchParams = useSearchParams();
-  const contractId = String(searchParams.get('contract_id'));
+  const contractId = String(searchParams?.get('contract_id'));
 
   useEffect(() => {
     async function getContract() {
@@ -43,9 +43,11 @@ export default function PendingContractPage() {
   if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
 
   return (
-    <ContractPending 
-      contract={contract}
-      onSignContractClick={onSignContractClick}
-    />
+    <Suspense>
+      <ContractPending 
+        contract={contract}
+        onSignContractClick={onSignContractClick}
+      />
+    </Suspense>
   );
 }

@@ -60,7 +60,6 @@ export function SiteHeader() {
                   variant="ghost"
                 >
                   <img
-                    alt="Avatar"
                     className="rounded-full"
                     height="32"
                     src={session?.user?.image}

@@ -23,7 +23,7 @@ const postHandler = async ( { currentUser, req, res } ) => {
   const startDate = req.body["start_date"];
   const endDate = req.body["end_date"];
   const amount = Number(req.body["amount"]);
-  const documentUrl = req.body["document_url"];
+  const documentUrl = req.body["document_url"] || "";
 
   const contract = { ownerId: currentUser.id, description, startDate: new Date(startDate), endDate: new Date(endDate),
     amount, documentUrl, status: ContractState.PENDING
