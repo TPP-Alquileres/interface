@@ -39,24 +39,35 @@ export default function CreateContractPage() {
     setLoading(false);
   }
 
-  if (isPending || isLoading) return <p>Cargando ...</p>;
+  const renderPage = () => { 
+    if (isPending || isLoading) return <p className='pt-4'>Cargando ...</p>;
 
-  if (isConfirming) return <p>Confirmando ...</p>;
+    if (isConfirming) return <p className='pt-4'>Confirmando ...</p>;
 
-  if (contract) return (
-    <div>
-      <h1>Link generado</h1>
-      <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
-      <p>{`http://localhost:3000/contract/pending?contract_id=${String(contract.id)}`}</p>
-    </div>
-  );
+    if (contract) return (
+      <div className='pt-4'>
+        <h1>Link generado</h1>
+        <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
+        <p>{`http://localhost:3000/contract/pending?contract_id=${String(contract.id)}`}</p>
+      </div>
+    );
+
+    return <ContractCreate onGenerateLinkButtonClick={generateLink} />;
+  };
 
   return (
     <PageBase>
       <ComponentWithSideBar>
-      <ContractCreate onGenerateLinkButtonClick={generateLink} />
+        <div className="p-6 space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">Crear contrato</h1>
+            { !isPending && !isLoading && !isConfirming && !contract && (
+              <p className="text-gray-500 dark:text-gray-400">Por favor, ingresá la siguiente información sobre tu contrato, para que podamos generar un link para que el inquilino lo acepte</p> 
+            )}
+            { renderPage() }
+          </div>
+        </div>
       </ComponentWithSideBar>
     </PageBase>
   )
-}
-
+};

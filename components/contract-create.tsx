@@ -31,111 +31,105 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
   } );
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Cargar un contrato</h1>
-        <p className="text-gray-500 dark:text-gray-400">Por favor, ingresá la siguiente información sobre tu contrato, para que podamos generar un link para que el inquilino lo acepte</p>
-      </div>
-      <div className="space-y-4">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onGenerateLinkButtonClick)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre que le vas a dar al contrato</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Contrato de alquiler de Libertador al 12000" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className="pt-4">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onGenerateLinkButtonClick)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre que le vas a dar al contrato</FormLabel>
+                <FormControl>
+                  <Input placeholder="Contrato de alquiler de Libertador al 12000" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <div className="grid grid-cols-2 items-start gap-4">
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="startDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Inicio del contrato</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                            >
-                              { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de inicio</span> }
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Fin del contrato</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
-                            >
-                              { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de fin</span> }
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus 
-                            disabled={(date) =>
-                              date <= form.getValues("startDate")
-                            }
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Monto a asegurar</FormLabel>
-                      <FormControl>
-                        <Input placeholder="$0.00" step="1.00" type="number" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+          <div className="grid grid-cols-2 items-start gap-4">
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Inicio del contrato</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                          >
+                            { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de inicio</span> }
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <Button type="submit">Generar Link</Button>
-          </form>
-        </Form>
-      </div>
+
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Fin del contrato</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                          >
+                            { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de fin</span> }
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus 
+                          disabled={(date) =>
+                            date <= form.getValues("startDate")
+                          }
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Monto a asegurar</FormLabel>
+                    <FormControl>
+                      <Input placeholder="$0.00" step="1.00" type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <Button type="submit">Generar Link</Button>
+        </form>
+      </Form>
     </div>
   )
-}
+};
