@@ -19,7 +19,7 @@ export default function ContractItem({contract, index, claimContract}: any) {
       <td className="px-6 py-3">{contract.status}</td>
       <td className="px-6 py-3">
         <Button size="sm" variant="outline" onClick={() => router.push(contractUrl)}>Ver</Button>
-        {claimContract && contract.status != "CLAIM" && (
+        {claimContract && contract.status == "ACTIVE" && (
           <Button size="sm" variant="outline" className="ml-2" onClick={() => claimContract(contract)}>Iniciar reclamo</Button>
         )}
       </td>
