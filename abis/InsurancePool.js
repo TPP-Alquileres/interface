@@ -1,4 +1,4 @@
-[
+export const insurancePoolAbi = [
   {
     "type": "constructor",
     "inputs": [
@@ -627,4 +627,4 @@
       { "name": "token", "type": "address", "internalType": "address" }
     ]
   }
-]
+];

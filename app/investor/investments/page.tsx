@@ -18,7 +18,7 @@ export default function InvestorInvestments() {
               <table className="w-full text-left border-collapse text-base">
                 <thead>
                   <tr>
-                    <th className="font-semibold px-6 py-3">Titulo</th>
+                    <th className="font-semibold px-6 py-3">Pool</th>
                     <th className="font-semibold px-6 py-3">Descripción</th>
                     <th className="font-semibold px-6 py-3">TNA</th>
                     <th className="font-semibold px-6 py-3">Acción</th>
@@ -33,7 +33,7 @@ export default function InvestorInvestments() {
                       <Button size="sm" variant="outline">Invertir</Button>
                     </td>
                   </tr>
-                  <tr key="1" className="bg-gray-100/40 dark:bg-gray-800/40">
+                  <tr key="1">
                     <td className="px-6 py-3">Mid risk pool</td>
                     <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los inquilinos confiables y nuevos</td>
                     <td className="px-6 py-3">13%</td>
