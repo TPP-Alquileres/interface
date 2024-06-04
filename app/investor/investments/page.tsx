@@ -65,7 +65,7 @@ export default function InvestorInvestments() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
+                  <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
                     <TableCell className="font-medium">Low risk pool</TableCell>
                     <TableCell className="font-medium">Este pool tiene como objetivo encapsular a los inquilinos más confiables</TableCell>
                     <TableCell>{`$ ${moneyToDisplay(totalSupplyLowRiskPoolResult.data)}`}</TableCell>
@@ -85,7 +85,7 @@ export default function InvestorInvestments() {
                       <Button size="sm" variant="outline">Invertir</Button>
                     </TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
                     <TableCell className="font-medium">High risk pool</TableCell>
                     <TableCell className="font-medium">Este pool tiene como objetivo encapsular a los inquilinos con menos información, hay más incertidumbre</TableCell>
                     <TableCell>{`$ ${moneyToDisplay(totalSupplyHighRiskPoolResult.data)}`}</TableCell>

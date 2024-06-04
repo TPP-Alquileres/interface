@@ -97,7 +97,7 @@ export default function Home() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
+            <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
               <TableCell className="font-medium">Low risk pool</TableCell>
               <TableCell>{`$ ${moneyToDisplay(lowRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">10%</TableCell>
@@ -107,7 +107,7 @@ export default function Home() {
               <TableCell>{`$ ${moneyToDisplay(mediumRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">13%</TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
               <TableCell className="font-medium">High risk pool</TableCell>
               <TableCell>{`$ ${moneyToDisplay(highRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">15%</TableCell>
