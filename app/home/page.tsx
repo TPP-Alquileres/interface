@@ -17,21 +17,45 @@ import { insurancePoolAbi } from '../../abis/InsurancePool';
 export default function Home() {
   const { data: session } = useSession();
   const [ contracts, setContracts ] = useState();
-  const { isConnected } = useAccount();
-  const lowRiskPoolResult = useReadContract({
+  const { isConnected, address } = useAccount();
+
+  const balanceOfLowRiskPoolResult = useReadContract({
     abi: insurancePoolAbi,
     address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
-    functionName: 'totalLocked',
+    functionName: 'balanceOf',
+    args: [address],
   });
-  const mediumRiskPoolResult = useReadContract({
+  const lowRiskPoolAssetsResult = useReadContract({
+    abi: insurancePoolAbi,
+    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
+    functionName: 'convertToAssets',
+    args: [balanceOfLowRiskPoolResult.data],
+  });
+
+  const balanceOfMediumRiskPoolResult = useReadContract({
     abi: insurancePoolAbi,
     address: process.env.NEXT_PUBLIC_MEDIUM_RISK_ADDRESS,
-    functionName: 'totalLocked',
+    functionName: 'balanceOf',
+    args: [address],
   });
-  const highRiskPoolResult = useReadContract({
+  const mediumRiskPoolAssetsResult = useReadContract({
+    abi: insurancePoolAbi,
+    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
+    functionName: 'convertToAssets',
+    args: [balanceOfMediumRiskPoolResult.data],
+  });
+
+  const balanceOfHighRiskPoolResult = useReadContract({
     abi: insurancePoolAbi,
     address: process.env.NEXT_PUBLIC_HIGH_RISK_ADDRESS,
-    functionName: 'totalLocked',
+    functionName: 'balanceOf',
+    args: [address],
+  });
+  const highRiskPoolAssetsResult = useReadContract({
+    abi: insurancePoolAbi,
+    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
+    functionName: 'convertToAssets',
+    args: [balanceOfHighRiskPoolResult.data],
   });
 
   useEffect(() => {
@@ -61,14 +85,6 @@ export default function Home() {
       );
     }
 
-    if (!lowRiskPoolResult.status === 'Success' || !mediumRiskPoolResult.status === 'Success' || !highRiskPoolResult.status === 'Success') {
-      return (
-        <CardContent className="p-4">
-          Cargando...
-        </CardContent>
-      );
-    }
-
     const investmentToDisplay = ( invested ) => isNaN(Number(invested)) ? '-' : (Math.round(Number(invested) * 100) / 100).toFixed(2);
 
     return (
@@ -84,17 +100,17 @@ export default function Home() {
           <TableBody>
             <TableRow>
               <TableCell className="font-medium">Low risk pool</TableCell>
-              <TableCell>{`$ ${investmentToDisplay(lowRiskPoolResult.data)}`}</TableCell>
+              <TableCell>{`$ ${investmentToDisplay(lowRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">10%</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">Mid risk pool</TableCell>
-              <TableCell>{`$ ${investmentToDisplay(mediumRiskPoolResult.data)}`}</TableCell>
+              <TableCell>{`$ ${investmentToDisplay(mediumRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">13%</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">High risk pool</TableCell>
-              <TableCell>{`$ ${investmentToDisplay(highRiskPoolResult.data)}`}</TableCell>
+              <TableCell>{`$ ${investmentToDisplay(highRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">15%</TableCell>
             </TableRow>
           </TableBody>
