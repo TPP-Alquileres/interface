@@ -13,6 +13,7 @@ import { Api } from "@/javascript/api";
 import { ContractState } from '@/utils/contract';
 import PageBase from '@/components/page-base';
 import { insurancePoolAbi } from '../../abis/InsurancePool';
+import { moneyToDisplay } from '@/utils/money';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -40,7 +41,7 @@ export default function Home() {
   });
   const mediumRiskPoolAssetsResult = useReadContract({
     abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
+    address: process.env.NEXT_PUBLIC_MEDIUM_RISK_ADDRESS,
     functionName: 'convertToAssets',
     args: [balanceOfMediumRiskPoolResult.data],
   });
@@ -53,7 +54,7 @@ export default function Home() {
   });
   const highRiskPoolAssetsResult = useReadContract({
     abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
+    address: process.env.NEXT_PUBLIC_HIGH_RISK_ADDRESS,
     functionName: 'convertToAssets',
     args: [balanceOfHighRiskPoolResult.data],
   });
@@ -85,8 +86,6 @@ export default function Home() {
       );
     }
 
-    const investmentToDisplay = ( invested ) => isNaN(Number(invested)) ? '-' : (Math.round(Number(invested) * 100) / 100).toFixed(2);
-
     return (
       <CardContent className="p-0">
         <Table>
@@ -100,17 +99,17 @@ export default function Home() {
           <TableBody>
             <TableRow>
               <TableCell className="font-medium">Low risk pool</TableCell>
-              <TableCell>{`$ ${investmentToDisplay(lowRiskPoolAssetsResult.data)}`}</TableCell>
+              <TableCell>{`$ ${moneyToDisplay(lowRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">10%</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">Mid risk pool</TableCell>
-              <TableCell>{`$ ${investmentToDisplay(mediumRiskPoolAssetsResult.data)}`}</TableCell>
+              <TableCell>{`$ ${moneyToDisplay(mediumRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">13%</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">High risk pool</TableCell>
-              <TableCell>{`$ ${investmentToDisplay(highRiskPoolAssetsResult.data)}`}</TableCell>
+              <TableCell>{`$ ${moneyToDisplay(highRiskPoolAssetsResult.data)}`}</TableCell>
               <TableCell className="text-right">15%</TableCell>
             </TableRow>
           </TableBody>
