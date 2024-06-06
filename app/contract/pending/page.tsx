@@ -41,11 +41,10 @@ export default function PendingContractPage() {
     setLoading(false);
   }
 
-  const showContract = !isLoading && !!contract && contract.status !== 'ACTIVE';
+  const showContract = !isLoading && !!contract;
 
   const renderContract = () => {
     if ( isLoading || !contract ) return <p>Cargando...</p>;
-    if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
 
     return (
       <ContractPending

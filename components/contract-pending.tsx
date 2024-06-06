@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { ContractBody } from "./contract-body"
 
 export function ContractPending( { contract, onSignContractClick } ) {
+  // if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -12,7 +14,7 @@ export function ContractPending( { contract, onSignContractClick } ) {
         <Input id="name" readOnly value={contract.description}/>
       </div>
       <ContractBody contract={contract} />
-      <Button onClick={onSignContractClick}>Firmar Documento</Button>
+      { contract?.status === 'ACTIVE' ? <p>Este contrato ya fue firmado!!</p> : <Button onClick={onSignContractClick}>Firmar Documento</Button> }
     </div>
   )
 }
