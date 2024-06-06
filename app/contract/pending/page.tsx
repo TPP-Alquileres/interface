@@ -2,9 +2,11 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSession } from "next-auth/react";
-import { ContractPending } from "@/components/contract-pending";
 import { useSearchParams } from 'next/navigation';
+import { ContractPending } from "@/components/contract-pending";
 import { Api } from "@/javascript/api";
+import ComponentWithSideBar from '@/components/component-with-side-bar';
+import PageBase from '@/components/page-base';
 
 export default function PendingContractPage() {
   const { data: session } = useSession();
@@ -39,15 +41,31 @@ export default function PendingContractPage() {
     setLoading(false);
   }
 
-  if ( isLoading || !contract ) return <p>Cargando ...</p>;
-  if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
+  const showContract = !isLoading && !!contract && contract.status !== 'ACTIVE';
 
-  return (
-    <Suspense>
-      <ContractPending 
+  const renderContract = () => {
+    if ( isLoading || !contract ) return <p>Cargando...</p>;
+    if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
+
+    return (
+      <ContractPending
         contract={contract}
         onSignContractClick={onSignContractClick}
       />
-    </Suspense>
+    );
+  };
+
+  return (
+    <PageBase>
+      <ComponentWithSideBar>
+        <div key="1" className="p-6 space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">Contrato</h1>
+            { showContract && <p className="text-gray-500 dark:text-gray-400">Por favor, leer el contrato antes de firmarlo</p> }
+          </div>
+          { renderContract() }
+        </div>
+      </ComponentWithSideBar>
+    </PageBase>
   );
 }
