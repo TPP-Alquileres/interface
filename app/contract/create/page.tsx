@@ -53,7 +53,7 @@ export default function CreateContractPage() {
       <div className='pt-4'>
         <h1>Link generado</h1>
         <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
-        <p>{`http://localhost:3000/contract/pending?contract_id=${String(contract.id)}`}</p>
+        <p>{`${process.env.BASE_URL}/contract/pending?contract_id=${String(contract.id)}`}</p>
       </div>
     );
 
