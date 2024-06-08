@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Api } from "@/javascript/api";
 import { ContractStatus } from "@/utils/contract";
 import { Contract } from "@prisma/client";
@@ -29,11 +30,18 @@ import PageBase from "@/components/page-base";
 
 export default function Home() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [contracts, setContracts] = useState<Contract[]>();
   const { isConnected } = useAccount();
 
   const { lowRiskAssets, mediumRiskAssets, highRiskAssets } =
     usePoolsBalances();
+
+  useEffect(() => {
+    if (session?.user.isAdmin) {
+      router.push("/admin/moderate");
+    }
+  }, [session?.user]);
 
   useEffect(() => {
     async function getContracts() {

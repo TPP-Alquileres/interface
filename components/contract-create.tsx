@@ -1,39 +1,59 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react';
-import { z } from "zod";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { es } from 'date-fns/locale';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { es } from "date-fns/locale";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-const formSchema = z.object({
-  description: z.string().min(1, { message: "El título es obligatorio" }),
-  startDate: z.date({ message: "La fecha de inicio es obligatoria" }),
-  endDate: z.date({ message: "La fecha de fin es obligatoria" }),
-  amount: z.coerce.number().min(1, { message: "El monto a asegurar es inválido" })
-}).refine((object) => object.endDate > object.startDate, 
-  { message: "La fecha de fin tiene que ser posterior a la de inicio", path: ["endDate"] }
-);
+const formSchema = z
+  .object({
+    description: z.string().min(1, { message: "El título es obligatorio" }),
+    startDate: z.date({ message: "La fecha de inicio es obligatoria" }),
+    endDate: z.date({ message: "La fecha de fin es obligatoria" }),
+    amount: z.coerce
+      .number()
+      .min(1, { message: "El monto a asegurar es inválido" }),
+  })
+  .refine((object) => object.endDate > object.startDate, {
+    message: "La fecha de fin tiene que ser posterior a la de inicio",
+    path: ["endDate"],
+  });
 
-export function ContractCreate( { onGenerateLinkButtonClick } ) {
-  const form = useForm( {
+export function ContractCreate({ onGenerateLinkButtonClick }) {
+  const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { description: "", startDate: "" }
-  } );
+    defaultValues: { description: "", startDate: "" },
+  });
 
   return (
     <div className="pt-4 w-1/2">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onGenerateLinkButtonClick)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onGenerateLinkButtonClick)}
+          className="space-y-8"
+        >
           <FormField
             control={form.control}
             name="description"
@@ -41,7 +61,10 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
               <FormItem>
                 <FormLabel>Nombre que le vas a dar al contrato</FormLabel>
                 <FormControl>
-                  <Input placeholder="Contrato de alquiler de Libertador al 12000" {...field} />
+                  <Input
+                    placeholder="Contrato de alquiler de Libertador al 12000"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -61,15 +84,28 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
                         <FormControl>
                           <Button
                             variant={"outline"}
-                            className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                            className={cn(
+                              "pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
                           >
-                            { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de inicio</span> }
+                            {field.value ? (
+                              format(field.value, "dd/MM/yyyy")
+                            ) : (
+                              <span>Fecha de inicio</span>
+                            )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                        <Calendar
+                          locale={es}
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
                       </PopoverContent>
                     </Popover>
                     <FormMessage />
@@ -90,15 +126,27 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
                         <FormControl>
                           <Button
                             variant={"outline"}
-                            className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                            className={cn(
+                              "pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
                           >
-                            { field.value ? format(field.value, "dd/MM/yyyy") : <span>Fecha de fin</span> }
+                            {field.value ? (
+                              format(field.value, "dd/MM/yyyy")
+                            ) : (
+                              <span>Fecha de fin</span>
+                            )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar locale={es} mode="single" selected={field.value} onSelect={field.onChange} initialFocus 
+                        <Calendar
+                          locale={es}
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
                           disabled={(date) =>
                             date <= form.getValues("startDate")
                           }
@@ -119,7 +167,12 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
                   <FormItem>
                     <FormLabel>Monto a asegurar</FormLabel>
                     <FormControl>
-                      <Input placeholder="$0.00" step="1.00" type="number" {...field} />
+                      <Input
+                        placeholder="$0.00"
+                        step="1.00"
+                        type="number"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -127,9 +180,11 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
               />
             </div>
           </div>
-          <Button type="submit" disabled={!form.formState.isValid}>Generar Link</Button>
+          <Button type="submit" disabled={!form.formState.isValid}>
+            Generar Link
+          </Button>
         </form>
       </Form>
     </div>
-  )
-};
+  );
+}

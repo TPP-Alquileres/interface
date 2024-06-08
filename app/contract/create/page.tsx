@@ -78,15 +78,7 @@ export default function CreateContractPage() {
 
     if (isConfirming) return <p className="pt-4">Confirmando...</p>;
 
-    if (!!contract)
-      return (
-        <TenantLink contract={contract} />
-        // <div className='pt-4'>
-        //   <h1>Link generado</h1>
-        //   <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
-        //   <p>{`${process.env.NEXT_PUBLIC_BASE_URL}/contract/pending?contract_id=${String(contract.id)}`}</p>
-        // </div>
-      );
+    if (!!contract) return <TenantLink contract={contract} />;
 
     return <ContractCreate onGenerateLinkButtonClick={generateLink} />;
   };

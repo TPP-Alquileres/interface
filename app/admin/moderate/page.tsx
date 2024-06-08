@@ -17,9 +17,16 @@ import PageBase from "@/components/page-base";
 
 export default function OwnerContracts() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [contracts, setContracts] = useState([]);
   const [refresh, setRefresh] = useState(false); // State to control refresh
   const claimContractsUrl = `admins/${session?.user.id}/claim_contracts`;
+
+  useEffect(() => {
+    if (!session?.user.isAdmin) {
+      router.push("/home");
+    }
+  }, [session?.user]);
 
   useEffect(() => {
     async function getContracts() {

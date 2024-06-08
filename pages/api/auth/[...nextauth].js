@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+
 import prisma from "../_base";
 
 export const authOptions = {
@@ -11,16 +12,19 @@ export const authOptions = {
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
-    })
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
   database: process.env.DATABASE_URL,
   callbacks: {
     async jwt({ token, account, user }) {
       if (account && user) {
-        const aUser = await prisma.user.findUnique( { where: { email: user.email } } );
+        const aUser = await prisma.user.findUnique({
+          where: { email: user.email },
+        });
         token.uid = aUser.id;
         token.email = user.email;
+        token.isAdmin = aUser.isAdmin;
         token.accessToken = account.access_token;
       }
       return token;
@@ -28,19 +32,22 @@ export const authOptions = {
     async session({ session, token }) {
       session.user.id = token.uid;
       session.user.email = token.email;
+      session.user.isAdmin = token.isAdmin;
       session.accessToken = token.accessToken;
       return session;
     },
-    async signIn( { user } ) {
-      const aUser = await prisma.user.findUnique( { where: { email: user.email } } );
+    async signIn({ user }) {
+      const aUser = await prisma.user.findUnique({
+        where: { email: user.email },
+      });
       if (!aUser) {
-        await prisma.user.create( { data: 
-          { email: user.email, name: user.name } 
-        } );
+        await prisma.user.create({
+          data: { email: user.email, name: user.name },
+        });
       }
       return true;
-    }
-  }
-}
+    },
+  },
+};
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
