@@ -10,7 +10,7 @@ import { CardTitle, CardHeader, CardContent, Card, CardDescription } from "@/com
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import { Api } from "@/javascript/api";
-import { ContractState } from '@/utils/contract';
+import { ContractStatus } from '@/utils/contract';
 import PageBase from '@/components/page-base';
 import { insurancePoolAbi } from '../../abis/InsurancePool';
 import { moneyToDisplay } from '@/utils/money';
@@ -73,7 +73,7 @@ export default function Home() {
     }
   }, [ session?.user ] );
 
-  const activeContracts = contracts?.filter(contract => contract.status === ContractState.ACTIVE);
+  const activeContracts = contracts?.filter(contract => contract.status === ContractStatus.ACTIVE);
   const ownerContractsCount = activeContracts?.filter(contract => contract.ownerId === session?.user.id).length || 0;
   const tenantContractsCount = activeContracts?.filter(contract => contract.tenantId === session?.user.id).length || 0;
 
