@@ -62,6 +62,7 @@ yarn prisma migrate dev
 | GOOGLE_CLIENT_SECRET | Google client secret used for auth |
 | POLYGON_MUMBAI_API_KEY | Alchemy's mumbai chain API KEY |
 | POLYGON_MAINNET_API_KEY | Alchemy's mainnet chain API KEY |
+| NEXT_PUBLIC_BASE_URL | API server base url, use http://localhost:3000 for local or https://interface-xi-cyan.vercel.app for prod |
 | NEXT_PUBLIC_RENT_INSURANCE_ADDRESS | Rent Insurance SmartContract address |
 | NEXT_PUBLIC_MY_TOKEN_ADDRESS | Token SmartContract address |
 | NEXT_PUBLIC_LOW_RISK_ADDRESS | Low risk pool SmartContract address |

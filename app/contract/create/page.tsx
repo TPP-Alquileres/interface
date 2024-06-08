@@ -10,6 +10,7 @@ import { Api } from '@/javascript/api';
 
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import PageBase from "@/components/page-base";
+import TenantLink from '@/components/tenant-link';
 
 export default function CreateContractPage() {
   const { data: session } = useSession();
@@ -50,11 +51,12 @@ export default function CreateContractPage() {
     if (isConfirming) return <p className='pt-4'>Confirmando...</p>;
 
     if (!!contract) return (
-      <div className='pt-4'>
-        <h1>Link generado</h1>
-        <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
-        <p>{`${process.env.BASE_URL}/contract/pending?contract_id=${String(contract.id)}`}</p>
-      </div>
+      <TenantLink contract={contract} />
+      // <div className='pt-4'>
+      //   <h1>Link generado</h1>
+      //   <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
+      //   <p>{`${process.env.NEXT_PUBLIC_BASE_URL}/contract/pending?contract_id=${String(contract.id)}`}</p>
+      // </div>
     );
 
     return <ContractCreate onGenerateLinkButtonClick={generateLink} />;
@@ -63,7 +65,7 @@ export default function CreateContractPage() {
   return (
     <PageBase>
       <ComponentWithSideBar>
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 w-full">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Crear contrato</h1>
             { showHeader && (

@@ -13,7 +13,7 @@ interface GetParams {
 
 export class Api {
   constructor() {
-    this.baseUrl = process.env.BASE_URL + '/api/';
+    this.baseUrl = process.env.NEXT_PUBLIC_BASE_URL + '/api/';
   }
 
   async post( { url, body, currentUser } : PostParams) {

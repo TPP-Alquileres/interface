@@ -31,7 +31,7 @@ export function ContractCreate( { onGenerateLinkButtonClick } ) {
   } );
 
   return (
-    <div className="pt-4">
+    <div className="pt-4 w-1/2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onGenerateLinkButtonClick)} className="space-y-8">
           <FormField
