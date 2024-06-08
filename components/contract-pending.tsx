@@ -3,10 +3,11 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ContractBody } from "./contract-body"
+import { ContractState } from "@/utils/contract"
 
 export function ContractPending( { contract, currentUser, onSignContractClick } ) {
   const renderFooter = () => {
-    if ( contract?.status === 'ACTIVE' ) { return <p>Este contrato ya fue firmado!!</p>; }
+    if ( contract?.status === ContractState.ACTIVE ) { return <p>Este contrato ya fue firmado!!</p>; }
     if ( contract?.ownerId === currentUser.id ) { return <p>Vos sos el propietario</p>; }
 
     return <Button onClick={onSignContractClick}>Firmar Documento</Button>;
