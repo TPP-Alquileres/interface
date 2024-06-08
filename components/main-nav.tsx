@@ -1,19 +1,20 @@
 import * as React from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import { NavItem } from "@/types/nav";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { useSession } from "next-auth/react";
 
 interface MainNavProps {
-  items?: NavItem[]
-};
+  items?: NavItem[];
+}
 
 export function MainNav({ items }: MainNavProps) {
   const { data: session } = useSession();
 
-  const redirectUrl = session?.user ? "/home" : "/";
+  const landingPage = session?.user?.isAdmin ? "/admin/moderate" : "/home";
+  const redirectUrl = session?.user ? landingPage : "/";
 
   return (
     <div className="flex gap-6 md:gap-10">
@@ -22,5 +23,5 @@ export function MainNav({ items }: MainNavProps) {
         <span className="inline-block font-bold">Seguros</span>
       </Link>
     </div>
-  )
-};
+  );
+}

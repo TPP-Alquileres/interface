@@ -1,43 +1,64 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Api } from "@/javascript/api";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/navigation';
 
-import { CardHeader, CardContent, Card, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
-import { Api } from "@/javascript/api";
 import PageBase from "@/components/page-base";
 
 export default function OwnerContracts() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [contracts, setContracts] = useState([]);
   const [refresh, setRefresh] = useState(false); // State to control refresh
   const claimContractsUrl = `admins/${session?.user.id}/claim_contracts`;
 
   useEffect(() => {
+    if (!session?.user.isAdmin) {
+      router.push("/home");
+    }
+  }, [session?.user]);
+
+  useEffect(() => {
     async function getContracts() {
-      const contractsJson = await (new Api()).get( { url: claimContractsUrl, currentUser: session.user } );
+      const contractsJson = await new Api().get({
+        url: claimContractsUrl,
+        currentUser: session.user,
+      });
       setContracts(contractsJson);
       return contractsJson;
     }
 
-    if ( session?.user ) {
+    if (session?.user) {
       getContracts();
     }
-  }, [ session?.user, refresh]);
+  }, [session?.user, refresh]);
 
   async function claimContractAccept(contractId) {
     const claimContractAcceptURL = `admins/${session?.user.id}/claim_contracts/${contractId}/accept`;
-    await (new Api()).post( { url: claimContractAcceptURL, currentUser: session.user });
-    setRefresh(prev => !prev);
+    await new Api().post({
+      url: claimContractAcceptURL,
+      currentUser: session.user,
+    });
+    setRefresh((prev) => !prev);
   }
 
   async function claimContractDecline(contractId) {
     const claimContractDeclineURL = `admins/${session?.user.id}/claim_contracts/${contractId}/decline`;
-    await (new Api()).post( { url: claimContractDeclineURL, currentUser: session.user });
-    setRefresh(prev => !prev);
+    await new Api().post({
+      url: claimContractDeclineURL,
+      currentUser: session.user,
+    });
+    setRefresh((prev) => !prev);
   }
 
   return (
@@ -52,7 +73,7 @@ export default function OwnerContracts() {
               <table className="w-full text-left border-collapse text-base">
                 <thead>
                   <tr>
-                    <th className="font-semibold px-6 py-3">Titulo</th>
+                    <th className="font-semibold px-6 py-3">Descripción</th>
                     <th className="font-semibold px-6 py-3">Propietario</th>
                     <th className="font-semibold px-6 py-3">Inquilino</th>
                     <th className="font-semibold px-6 py-3">Monto Asegurado</th>
@@ -61,16 +82,25 @@ export default function OwnerContracts() {
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    contracts.length === 0 && (
-                      <tr className="bg-gray-100/40 dark:bg-gray-800/40">
-                        <td className="px-6 py-3 text-center text-gray-500 dark:text-gray-400" colSpan={6}>
-                          No tenés ningún contrato como propietario.
-                        </td>
-                      </tr>
-                    )
-                  }
-                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} claimContractAccept={claimContractAccept} claimContractDecline={claimContractDecline}/> ) }
+                  {contracts.length === 0 && (
+                    <tr className="bg-gray-100/40 dark:bg-gray-800/40">
+                      <td
+                        className="px-6 py-3 text-center text-gray-500 dark:text-gray-400"
+                        colSpan={6}
+                      >
+                        No tenés ningún contrato como propietario.
+                      </td>
+                    </tr>
+                  )}
+                  {contracts.map((contract, index) => (
+                    <ContractItem
+                      key={contract.id}
+                      contract={contract}
+                      index={index}
+                      claimContractAccept={claimContractAccept}
+                      claimContractDecline={claimContractDecline}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -78,5 +108,5 @@ export default function OwnerContracts() {
         </Card>
       </ComponentWithSideBar>
     </PageBase>
-  )
+  );
 }

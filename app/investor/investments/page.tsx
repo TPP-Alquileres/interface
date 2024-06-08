@@ -49,7 +49,7 @@ export default function InvestorInvestments() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Pool</TableHead>
+                    <TableHead>Fondo</TableHead>
                     <TableHead>Descripción</TableHead>
                     <TableHead>Total Supply</TableHead>
                     <TableHead>Total Locked</TableHead>
@@ -63,7 +63,9 @@ export default function InvestorInvestments() {
                 </TableHeader>
                 <TableBody>
                   <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
-                    <TableCell className="font-medium">Low risk pool</TableCell>
+                    <TableCell className="font-medium">
+                      Fondo de riesgo bajo
+                    </TableCell>
                     <TableCell className="font-medium">
                       Este pool tiene como objetivo encapsular a los inquilinos
                       más confiables
@@ -86,7 +88,9 @@ export default function InvestorInvestments() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="font-medium">Mid risk pool</TableCell>
+                    <TableCell className="font-medium">
+                      Fondo de riesgo medio
+                    </TableCell>
                     <TableCell className="font-medium">
                       Este pool tiene como objetivo encapsular a los inquilinos
                       confiables y nuevos
@@ -113,7 +117,7 @@ export default function InvestorInvestments() {
                   </TableRow>
                   <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
                     <TableCell className="font-medium">
-                      High risk pool
+                      Fondo de riesgo alto
                     </TableCell>
                     <TableCell className="font-medium">
                       Este pool tiene como objetivo encapsular a los inquilinos

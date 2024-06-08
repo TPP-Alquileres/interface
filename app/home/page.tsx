@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Api } from "@/javascript/api";
 import { ContractStatus } from "@/utils/contract";
 import { Contract } from "@prisma/client";
@@ -29,11 +30,18 @@ import PageBase from "@/components/page-base";
 
 export default function Home() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [contracts, setContracts] = useState<Contract[]>();
   const { isConnected } = useAccount();
 
   const { lowRiskAssets, mediumRiskAssets, highRiskAssets } =
     usePoolsBalances();
+
+  useEffect(() => {
+    if (session?.user.isAdmin) {
+      router.push("/admin/moderate");
+    }
+  }, [session?.user]);
 
   useEffect(() => {
     async function getContracts() {
@@ -75,24 +83,30 @@ export default function Home() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Pool</TableHead>
+              <TableHead>Fondo</TableHead>
               <TableHead>Monto invertido</TableHead>
               <TableHead className="text-right">TNA</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
-              <TableCell className="font-medium">Low risk pool</TableCell>
+              <TableCell className="font-medium">
+                Fondo de riesgo bajo
+              </TableCell>
               <TableCell>{`$ ${formatEther(lowRiskAssets)}`}</TableCell>
               <TableCell className="text-right">10%</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="font-medium">Mid risk pool</TableCell>
+              <TableCell className="font-medium">
+                Fondo de riesgo medio
+              </TableCell>
               <TableCell>{`$ ${formatEther(mediumRiskAssets)}`}</TableCell>
               <TableCell className="text-right">13%</TableCell>
             </TableRow>
             <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
-              <TableCell className="font-medium">High risk pool</TableCell>
+              <TableCell className="font-medium">
+                Fondo de riesgo alto
+              </TableCell>
               <TableCell>{`$ ${formatEther(highRiskAssets)}`}</TableCell>
               <TableCell className="text-right">15%</TableCell>
             </TableRow>

@@ -1,11 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { BellIcon } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { useRouter } from 'next/navigation';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -21,14 +28,15 @@ export function SiteHeader() {
   const modeText = theme === "light" ? "Dark Mode" : "Light Mode";
 
   const onClickToggleMode = () => {
-    setTheme(theme === "light" ? "dark" : "light")
+    setTheme(theme === "light" ? "dark" : "light");
   };
 
-  const onClickSignOut = () => signOut({ redirect: false }).then(() => {
-    router.push("/");
-  });
+  const onClickSignOut = () =>
+    signOut({ redirect: false }).then(() => {
+      router.push("/");
+    });
 
-  const onClickSignIn = () => signIn('github|google', { callbackUrl: '/home' } );
+  const onClickSignIn = () => signIn("github|google", { callbackUrl: "/home" });
 
   const renderNotSignedInHeader = () => (
     <header className=" bg-background sticky top-0 z-40 w-full border-b">
@@ -36,7 +44,12 @@ export function SiteHeader() {
         <MainNav />
         <div className="flex flex-1 items-center justify-end space-x-4 float-end">
           <nav className="flex items-center space-x-1">
-            <button className="mr-3 decoration-solid font-medium hover:opacity-75" onClick={onClickSignIn}>Sign in</button>
+            <button
+              className="mr-3 decoration-solid font-medium hover:opacity-75"
+              onClick={onClickSignIn}
+            >
+              Sign in
+            </button>
             <ThemeToggle />
           </nav>
         </div>
@@ -75,9 +88,22 @@ export function SiteHeader() {
               </DropdownMenuTrigger>
 
               <div className="bg-background">
-                <DropdownMenuContent align="end" className="bg-gray-100/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-400 cursor-pointer p-2">
-                  <DropdownMenuItem className="p-2 hover:text-gray-900 dark:hover:text-gray-50" onClick={onClickToggleMode}>{modeText}</DropdownMenuItem>
-                  <DropdownMenuItem className="p-2 hover:text-gray-900 dark:hover:text-gray-50" onClick={onClickSignOut}>Cerrar sesión</DropdownMenuItem>
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-gray-100/90 dark:bg-gray-800/90 text-gray-600 dark:text-gray-400 cursor-pointer p-2"
+                >
+                  <DropdownMenuItem
+                    className="p-2 hover:text-gray-900 dark:hover:text-gray-50"
+                    onClick={onClickToggleMode}
+                  >
+                    {modeText}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="p-2 hover:text-gray-900 dark:hover:text-gray-50"
+                    onClick={onClickSignOut}
+                  >
+                    Cerrar sesión
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </div>
             </DropdownMenu>
@@ -87,5 +113,7 @@ export function SiteHeader() {
     </header>
   );
 
-  return status === "authenticated" ? renderSignedInHeader() : renderNotSignedInHeader();
+  return status === "authenticated"
+    ? renderSignedInHeader()
+    : renderNotSignedInHeader();
 }
