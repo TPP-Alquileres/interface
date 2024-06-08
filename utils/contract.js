@@ -1,5 +1,8 @@
-export const ContractState = {
+export const ContractStatus = {
   PENDING: "PENDING",
   ACTIVE: "ACTIVE",
+  CLAIM: "CLAIM",
+  CLAIM_DECLINED: "CLAIM_DECLINED",
+  CLAIM_ACCEPTED: "CLAIM_ACCEPTED",
   CLOSE: "CLOSE"
 };

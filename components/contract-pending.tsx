@@ -3,9 +3,15 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ContractBody } from "./contract-body"
+import { ContractState } from "@/utils/contract"
 
-export function ContractPending( { contract, onSignContractClick } ) {
-  // if ( contract?.status === 'ACTIVE' ) return <p>Este contrato ya fue firmado!!</p>;
+export function ContractPending( { contract, currentUser, onSignContractClick } ) {
+  const renderFooter = () => {
+    if ( contract?.status === ContractState.ACTIVE ) { return <p>Este contrato ya fue firmado!!</p>; }
+    if ( contract?.ownerId === currentUser.id ) { return <p>Vos sos el propietario</p>; }
+
+    return <Button onClick={onSignContractClick}>Firmar Documento</Button>;
+  };
 
   return (
     <div className="space-y-4">
@@ -14,7 +20,7 @@ export function ContractPending( { contract, onSignContractClick } ) {
         <Input id="name" readOnly value={contract.description}/>
       </div>
       <ContractBody contract={contract} />
-      { contract?.status === 'ACTIVE' ? <p>Este contrato ya fue firmado!!</p> : <Button onClick={onSignContractClick}>Firmar Documento</Button> }
+      { renderFooter() }
     </div>
   )
-}
+};

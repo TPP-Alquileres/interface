@@ -36,6 +36,24 @@ export class Api {
     throw new ApiError(data.error);
   }
 
+  async put({ url, body, currentUser }: PostParams) {
+    const response = await fetch(`${this.baseUrl}${url}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        user_email: currentUser.email,
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+
+    if (response.status >= 200 && response.status < 300) {
+      return data;
+    }
+
+    throw new ApiError(data.error);
+  }
+
   async get({ url, currentUser }: GetParams) {
     const response = await fetch(`${this.baseUrl}${url}`, {
       method: "GET",

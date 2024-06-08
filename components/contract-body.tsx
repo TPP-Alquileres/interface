@@ -5,6 +5,10 @@ import { Input } from "@/components/ui/input"
 export function ContractBody( { contract } ) {
   return (
     <div className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="start-date">Propietario</Label>
+        <Input className="capitalize" id="start-date" readOnly value={contract?.owner?.name} />
+      </div>
       <div className="grid grid-cols-2 items-start gap-4">
         <div className="space-y-2">
           <Label htmlFor="start-date">Inicio del contrato</Label>

@@ -14,6 +14,7 @@ import {
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import { ContractCreate } from "@/components/contract-create";
 import PageBase from "@/components/page-base";
+import TenantLink from "@/components/tenant-link";
 
 import { rentInsuranceAbi } from "../../../abis/RentInsurance";
 
@@ -79,15 +80,12 @@ export default function CreateContractPage() {
 
     if (!!contract)
       return (
-        <div className="pt-4">
-          <h1>Link generado</h1>
-          <p>
-            Mandale este link a tu inquilino para que pueda abrirlo y firmarlo
-          </p>
-          <p>{`${
-            process.env.NEXT_PUBLIC_BASE_URL
-          }/contract/pending?contract_id=${String(contract?.id)}`}</p>
-        </div>
+        <TenantLink contract={contract} />
+        // <div className='pt-4'>
+        //   <h1>Link generado</h1>
+        //   <p>Mandale este link a tu inquilino para que pueda abrirlo y firmarlo</p>
+        //   <p>{`${process.env.NEXT_PUBLIC_BASE_URL}/contract/pending?contract_id=${String(contract.id)}`}</p>
+        // </div>
       );
 
     return <ContractCreate onGenerateLinkButtonClick={generateLink} />;
@@ -96,7 +94,7 @@ export default function CreateContractPage() {
   return (
     <PageBase>
       <ComponentWithSideBar>
-        <div className="space-y-6 p-6">
+        <div className="w-full space-y-6 p-6">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Crear contrato</h1>
             {showHeader && (

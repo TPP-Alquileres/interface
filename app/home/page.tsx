@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Api } from "@/javascript/api";
-import { ContractState } from "@/utils/contract";
+import { ContractStatus } from "@/utils/contract";
 import { Contract } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { formatEther } from "viem";
@@ -51,17 +51,14 @@ export default function Home() {
   }, [session?.user]);
 
   const activeContracts = contracts?.filter(
-    (contract) => contract.status === ContractState.ACTIVE
+    (contract) => contract.status === ContractStatus.ACTIVE
   );
-
   const ownerContractsCount =
-    activeContracts?.filter(
-      (contract) => contract.ownerId === session?.user?.id
-    ).length || 0;
-
+    activeContracts?.filter((contract) => contract.ownerId === session?.user.id)
+      .length || 0;
   const tenantContractsCount =
     activeContracts?.filter(
-      (contract) => contract.tenantId === session?.user?.id
+      (contract) => contract.tenantId === session?.user.id
     ).length || 0;
 
   const renderInvestments = () => {

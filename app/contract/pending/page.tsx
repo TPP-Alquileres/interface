@@ -52,6 +52,7 @@ export default function PendingContractPage() {
     return (
       <ContractPending
         contract={contract}
+        currentUser={session?.user}
         onSignContractClick={onSignContractClick}
       />
     );

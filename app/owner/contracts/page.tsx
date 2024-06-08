@@ -17,6 +17,7 @@ export default function OwnerContracts() {
   const { data: session } = useSession();
   const router = useRouter();
   const [contracts, setContracts] = useState<Contract[]>([]);
+  const [refresh, setRefresh] = useState(false); // State to control refresh
 
   const contractCreateUrl = "/contract/create";
 
@@ -36,6 +37,15 @@ export default function OwnerContracts() {
       getContracts();
     }
   }, [session?.user]);
+
+  async function claimContract(contractId: string) {
+    const claimContractAcceptURL = `owners/${session?.user.id}/contracts/${contractId}/claim`;
+    await new Api().post({
+      url: claimContractAcceptURL,
+      currentUser: session?.user,
+    });
+    setRefresh((prev) => !prev);
+  }
 
   return (
     <PageBase>
@@ -73,6 +83,7 @@ export default function OwnerContracts() {
                       key={contract.id}
                       contract={contract}
                       index={index}
+                      claimContract={claimContract}
                     />
                   ))}
                 </tbody>
