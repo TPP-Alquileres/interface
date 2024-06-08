@@ -75,24 +75,30 @@ export default function Home() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Pool</TableHead>
+              <TableHead>Fondo</TableHead>
               <TableHead>Monto invertido</TableHead>
               <TableHead className="text-right">TNA</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
-              <TableCell className="font-medium">Low risk pool</TableCell>
+              <TableCell className="font-medium">
+                Fondo de riesgo bajo
+              </TableCell>
               <TableCell>{`$ ${formatEther(lowRiskAssets)}`}</TableCell>
               <TableCell className="text-right">10%</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="font-medium">Mid risk pool</TableCell>
+              <TableCell className="font-medium">
+                Fondo de riesgo medio
+              </TableCell>
               <TableCell>{`$ ${formatEther(mediumRiskAssets)}`}</TableCell>
               <TableCell className="text-right">13%</TableCell>
             </TableRow>
             <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
-              <TableCell className="font-medium">High risk pool</TableCell>
+              <TableCell className="font-medium">
+                Fondo de riesgo alto
+              </TableCell>
               <TableCell>{`$ ${formatEther(highRiskAssets)}`}</TableCell>
               <TableCell className="text-right">15%</TableCell>
             </TableRow>

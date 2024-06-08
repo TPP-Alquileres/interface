@@ -43,7 +43,7 @@ export default function TenantContracts() {
               <table className="w-full border-collapse text-left text-base">
                 <thead>
                   <tr>
-                    <th className="px-6 py-3 font-semibold">Titulo</th>
+                    <th className="px-6 py-3 font-semibold">Descripción</th>
                     <th className="px-6 py-3 font-semibold">Propietario</th>
                     <th className="px-6 py-3 font-semibold">Inquilino</th>
                     <th className="px-6 py-3 font-semibold">Monto Asegurado</th>
