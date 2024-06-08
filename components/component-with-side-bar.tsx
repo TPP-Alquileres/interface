@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link  from "next/link";
 import { usePathname } from 'next/navigation';
-import { LayoutGridIcon, PackageIcon, ShoppingCartIcon, Home, Tent, Coins } from "lucide-react";
+import { LayoutGridIcon, PackageIcon, ShoppingCartIcon, Home, Tent, Coins, FileSliders } from "lucide-react";
 
 export default function ComponentWithSideBar( { children } : any ) {
   const pathName = usePathname();
@@ -13,7 +13,7 @@ export default function ComponentWithSideBar( { children } : any ) {
     { path: "/owner/contracts", label: "Propietario", iconComponent: Home }, 
     { path: "/tenant/contracts", label: "Inquilino", iconComponent: Tent }, 
     { path: "/investor/investments", label: "Inversiones", iconComponent: Coins },
-    { path: "/admin/moderate", label: "Moderar", iconComponent: PackageIcon }
+    { path: "/admin/moderate", label: "Admin", iconComponent: FileSliders }
   ];
 
   const sidebarItem = ( { item } ) => (
