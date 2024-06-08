@@ -1,4 +1,4 @@
-[
+export const rentInsuranceAbi = [
   {
     "type": "constructor",
     "inputs": [

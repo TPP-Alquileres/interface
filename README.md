@@ -62,7 +62,11 @@ yarn prisma migrate dev
 | GOOGLE_CLIENT_SECRET | Google client secret used for auth |
 | POLYGON_MUMBAI_API_KEY | Alchemy's mumbai chain API KEY |
 | POLYGON_MAINNET_API_KEY | Alchemy's mainnet chain API KEY |
-| NEXT_PUBLIC_RENT_INSURANCE_ADDRESS | Smart contract address |
+| NEXT_PUBLIC_RENT_INSURANCE_ADDRESS | Rent Insurance SmartContract address |
+| NEXT_PUBLIC_MY_TOKEN_ADDRESS | Token SmartContract address |
+| NEXT_PUBLIC_LOW_RISK_ADDRESS | Low risk pool SmartContract address |
+| NEXT_PUBLIC_MEDIUM_RISK_ADDRESS | Medium risk pool SmartContract address |
+| NEXT_PUBLIC_HIGH_RISK_ADDRESS | High risk pool SmartContract address |
 
 ## License
 
