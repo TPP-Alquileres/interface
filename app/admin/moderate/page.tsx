@@ -1,58 +1,84 @@
 "use client";
 
-import { CardHeader, CardContent, Card } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation';
+import Link from "next/link";
+import { LayoutGridIcon, PackageIcon, PlusIcon, ShoppingCartIcon } from "lucide-react";
+
+import { CardHeader, CardContent, Card, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
+import ContractItem from "@/components/contract-item";
+import { Api } from "@/javascript/api";
 import PageBase from "@/components/page-base";
 
-export default function AdminModerate() {
+export default function OwnerContracts() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [contracts, setContracts] = useState([]);
+
+  const url = `owners/${session?.user.id}/contracts`;
+  const contractCreateUrl = '/contract/create';
+
+  useEffect(() => {
+    async function getContracts() {
+      const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
+      setContracts(contractsJson);
+      return contractsJson;
+    }
+
+    if ( session?.user ) {
+      getContracts();
+    }
+  }, [ session?.user ]);
+
+  async function claimContract(contractId) {
+    const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
+    setContracts(contractsJson);
+    return contractsJson;
+  }
+
   return (
     <PageBase>
       <ComponentWithSideBar>
         <Card className="w-full overflow-auto">
           <CardHeader className="pb-2">
-            <div className="text-xl font-bold">Productos para invertir</div>
+            <div className="text-xl font-bold">Contratos Propietario</div>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="overflow-auto w-full max-h-[500px]">
+            <div className="w-full">
               <table className="w-full text-left border-collapse text-base">
                 <thead>
                   <tr>
                     <th className="font-semibold px-6 py-3">Titulo</th>
-                    <th className="font-semibold px-6 py-3">Descripción</th>
-                    <th className="font-semibold px-6 py-3">TNA</th>
-                    <th className="font-semibold px-6 py-3">Acción</th>
+                    <th className="font-semibold px-6 py-3">Propietario</th>
+                    <th className="font-semibold px-6 py-3">Inquilino</th>
+                    <th className="font-semibold px-6 py-3">Monto Asegurado</th>
+                    <th className="font-semibold px-6 py-3">Estado</th>
+                    <th className="font-semibold px-6 py-3">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr key="0" className="bg-gray-100/40 dark:bg-gray-800/40">
-                    <td className="px-6 py-3">Low risk pool</td>
-                    <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los inquilinos más confiables</td>
-                    <td className="px-6 py-3">10%</td>
-                    <td className="px-6 py-3">
-                      <Button size="sm" variant="outline">Invertir</Button>
-                    </td>
-                  </tr>
-                  <tr key="1" className="bg-gray-100/40 dark:bg-gray-800/40">
-                    <td className="px-6 py-3">Mid risk pool</td>
-                    <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los inquilinos confiables y nuevos</td>
-                    <td className="px-6 py-3">13%</td>
-                    <td className="px-6 py-3">
-                      <Button size="sm" variant="outline">Invertir</Button>
-                    </td>
-                  </tr>
-                  <tr key="2" className="bg-gray-100/40 dark:bg-gray-800/40">
-                    <td className="px-6 py-3">High risk pool</td>
-                    <td className="px-6 py-3">Este pool tiene como objetivo encapsular a los inquilinos con menos información, si bien el riesgo es bajo, hay más incertidumbre </td>
-                    <td className="px-6 py-3">15%</td>
-                    <td className="px-6 py-3">
-                      <Button size="sm" variant="outline">Invertir</Button>
-                    </td>
-                  </tr>
+                  {
+                    contracts.length === 0 && (
+                      <tr className="bg-gray-100/40 dark:bg-gray-800/40">
+                        <td className="px-6 py-3 text-center text-gray-500 dark:text-gray-400" colSpan={6}>
+                          No tenés ningún contrato como propietario.
+                        </td>
+                      </tr>
+                    )
+                  }
+                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} claimContract={claimContract}/> ) }
                 </tbody>
               </table>
             </div>
           </CardContent>
+          <Button className="absolute h-10 w-10 p-2 rounded-full bottom-10 right-10 transition-all bg-[color:rgb(3,7,18)] dark:bg-white hover:scale-125 hover:bg-[color:rgb(3,7,18)]" size="sm" variant="outline" 
+            onClick={() => router.push(contractCreateUrl)}
+          >
+            <PlusIcon className="h-full w-full text-white dark:text-[color:rgb(3,7,18)]"/>
+          </Button>
         </Card>
       </ComponentWithSideBar>
     </PageBase>
