@@ -1,47 +1,40 @@
 "use client";
 
-import { useReadContract } from 'wagmi';
-import { CardHeader, CardContent, Card, CardTitle, CardDescription } from "@/components/ui/card";
-import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
-import { Button } from "@/components/ui/button";
+import { formatEther } from "viem";
+
+import { pools, usePoolsBalances, usePoolsTotals } from "@/hooks/usePools";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
+import { InvestDialog } from "@/components/invest-dialog";
 import PageBase from "@/components/page-base";
-import { insurancePoolAbi } from '../../../abis/InsurancePool';
-import { moneyToDisplay } from '@/utils/money';
+import { WithdrawDialog } from "@/components/withdraw-dialog";
 
 export default function InvestorInvestments() {
-  const totalSupplyLowRiskPoolResult = useReadContract({
-    abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
-    functionName: 'totalSupply'
-  });
-  const totalLockedLowRiskPoolResult = useReadContract({
-    abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_LOW_RISK_ADDRESS,
-    functionName: 'totalLocked'
-  });
+  const {
+    lowRiskTotalSupply,
+    lowRiskTotalLocked,
+    mediumRiskTotalSupply,
+    mediumRiskTotalLocked,
+    highRiskTotalSupply,
+    highRiskTotalLocked,
+  } = usePoolsTotals();
 
-  const totalSupplyMediumRiskPoolResult = useReadContract({
-    abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_MEDIUM_RISK_ADDRESS,
-    functionName: 'totalSupply'
-  });
-  const totalLockedMediumRiskPoolResult = useReadContract({
-    abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_MEDIUM_RISK_ADDRESS,
-    functionName: 'totalLocked'
-  });
-
-  const totalSupplyHighRiskPoolResult = useReadContract({
-    abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_HIGH_RISK_ADDRESS,
-    functionName: 'totalSupply'
-  });
-  const totalLockedHighRiskPoolResult = useReadContract({
-    abi: insurancePoolAbi,
-    address: process.env.NEXT_PUBLIC_HIGH_RISK_ADDRESS,
-    functionName: 'totalLocked'
-  });
+  const { lowRiskAssets, mediumRiskAssets, highRiskAssets } =
+    usePoolsBalances();
 
   return (
     <PageBase>
@@ -60,39 +53,90 @@ export default function InvestorInvestments() {
                     <TableHead>Descripción</TableHead>
                     <TableHead>Total Supply</TableHead>
                     <TableHead>Total Locked</TableHead>
-                    <TableHead className="text-right">TNA</TableHead>
+                    <TableHead>TNA</TableHead>
+                    <TableHead className="text-center">
+                      Monto invertido
+                    </TableHead>
+                    <TableHead></TableHead>
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
                     <TableCell className="font-medium">Low risk pool</TableCell>
-                    <TableCell className="font-medium">Este pool tiene como objetivo encapsular a los inquilinos más confiables</TableCell>
-                    <TableCell>{`$ ${moneyToDisplay(totalSupplyLowRiskPoolResult.data)}`}</TableCell>
-                    <TableCell>{`$ ${moneyToDisplay(totalLockedLowRiskPoolResult.data)}`}</TableCell>
-                    <TableCell className="text-right">10%</TableCell>
-                    <TableCell className="text-right">
-                      <Button size="sm" variant="outline">Invertir</Button>
+                    <TableCell className="font-medium">
+                      Este pool tiene como objetivo encapsular a los inquilinos
+                      más confiables
+                    </TableCell>
+                    <TableCell>{`$ ${formatEther(
+                      lowRiskTotalSupply
+                    )}`}</TableCell>
+                    <TableCell>{`$ ${formatEther(
+                      lowRiskTotalLocked
+                    )}`}</TableCell>
+                    <TableCell>10%</TableCell>
+                    <TableCell className="text-center">{`$ ${formatEther(
+                      lowRiskAssets
+                    )}`}</TableCell>
+                    <TableCell>
+                      <InvestDialog pool={pools[0]} />
+                    </TableCell>
+                    <TableCell>
+                      <WithdrawDialog pool={pools[0]} balance={lowRiskAssets} />
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-medium">Mid risk pool</TableCell>
-                    <TableCell className="font-medium">Este pool tiene como objetivo encapsular a los inquilinos confiables y nuevos</TableCell>
-                    <TableCell>{`$ ${moneyToDisplay(totalSupplyMediumRiskPoolResult.data)}`}</TableCell>
-                    <TableCell>{`$ ${moneyToDisplay(totalLockedMediumRiskPoolResult.data)}`}</TableCell>
-                    <TableCell className="text-right">13%</TableCell>
-                    <TableCell className="text-right">
-                      <Button size="sm" variant="outline">Invertir</Button>
+                    <TableCell className="font-medium">
+                      Este pool tiene como objetivo encapsular a los inquilinos
+                      confiables y nuevos
+                    </TableCell>
+                    <TableCell>{`$ ${formatEther(
+                      mediumRiskTotalSupply
+                    )}`}</TableCell>
+                    <TableCell>{`$ ${formatEther(
+                      mediumRiskTotalLocked
+                    )}`}</TableCell>
+                    <TableCell>13%</TableCell>
+                    <TableCell className="text-center">
+                      {`$ ${formatEther(mediumRiskAssets)}`}
+                    </TableCell>
+                    <TableCell>
+                      <InvestDialog pool={pools[1]} />
+                    </TableCell>
+                    <TableCell>
+                      <WithdrawDialog
+                        pool={pools[1]}
+                        balance={mediumRiskAssets}
+                      />
                     </TableCell>
                   </TableRow>
                   <TableRow className="bg-gray-100/40 dark:bg-gray-800/40">
-                    <TableCell className="font-medium">High risk pool</TableCell>
-                    <TableCell className="font-medium">Este pool tiene como objetivo encapsular a los inquilinos con menos información, hay más incertidumbre</TableCell>
-                    <TableCell>{`$ ${moneyToDisplay(totalSupplyHighRiskPoolResult.data)}`}</TableCell>
-                    <TableCell>{`$ ${moneyToDisplay(totalLockedHighRiskPoolResult.data)}`}</TableCell>
-                    <TableCell className="text-right">15%</TableCell>
-                    <TableCell className="text-right">
-                      <Button size="sm" variant="outline">Invertir</Button>
+                    <TableCell className="font-medium">
+                      High risk pool
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      Este pool tiene como objetivo encapsular a los inquilinos
+                      con menos información, hay más incertidumbre
+                    </TableCell>
+                    <TableCell>{`$ ${formatEther(
+                      highRiskTotalSupply
+                    )}`}</TableCell>
+                    <TableCell>{`$ ${formatEther(
+                      highRiskTotalLocked
+                    )}`}</TableCell>
+                    <TableCell>15%</TableCell>
+                    <TableCell className="text-center">{`$ ${formatEther(
+                      highRiskAssets
+                    )}`}</TableCell>
+                    <TableCell>
+                      <InvestDialog pool={pools[2]} />
+                    </TableCell>
+                    <TableCell>
+                      <WithdrawDialog
+                        pool={pools[2]}
+                        balance={highRiskAssets}
+                      />
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -102,5 +146,5 @@ export default function InvestorInvestments() {
         </main>
       </ComponentWithSideBar>
     </PageBase>
-  )
+  );
 }

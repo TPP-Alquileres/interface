@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import "@/styles/globals.css"
-import { SessionProvider } from "next-auth/react"
-import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { WagmiProvider, http } from 'wagmi';
-import { polygon, polygonMumbai, sepolia } from 'wagmi/chains';
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import "@/styles/globals.css";
+import { SessionProvider, SessionProviderProps } from "next-auth/react";
 
-import { fontSans } from "@/lib/fonts"
-import { cn } from "@/lib/utils"
-import { SiteHeader } from "@/components/site-header"
-import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { ThemeProvider } from "@/components/theme-provider"
-import { AuthProvider } from "@/components/auth-provider"
+import "@rainbow-me/rainbowkit/styles.css";
+import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider, http } from "wagmi";
+import { sepolia } from "wagmi/chains";
+
+import { fontSans } from "@/lib/fonts";
+import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/components/auth-provider";
+import { SiteHeader } from "@/components/site-header";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { ThemeProvider } from "@/components/theme-provider";
 
 interface RootLayoutProps {
-  children: React.ReactNode,
-  session: SessionProviderProps
+  children: React.ReactNode;
+  session: SessionProviderProps & { expires: string; user: { id: string } };
 }
 
 const config = getDefaultConfig({
-  appName: 'Alquileres',
-  projectId: 'e5e67a4d0dd7a2df9793a84b1acc6b28',
-  chains: [polygon, polygonMumbai, sepolia],
+  appName: "Alquileres",
+  projectId: "e5e67a4d0dd7a2df9793a84b1acc6b28",
+  chains: [sepolia],
   ssr: true,
   transports: {
-    [polygonMumbai.id]: http(`https://polygon-mumbai.g.alchemy.com/v2/${process.env.POLYGON_MUMBAI_API_KEY}`),
-    [polygon.id]: http(`https://polygon-mainnet.g.alchemy.com/v2/${process.env.POLYGON_MAINNET_API_KEY}`),
     [sepolia.id]: http(),
   },
 });
@@ -50,10 +50,11 @@ export default function RootLayout({ children, session }: RootLayoutProps) {
               <AuthProvider>
                 <WagmiProvider config={config}>
                   <QueryClientProvider client={queryClient}>
-                    <RainbowKitProvider>
+                    <RainbowKitProvider showRecentTransactions={true}>
                       <div className="relative flex min-h-screen flex-col">
                         <SiteHeader />
                         <div className="flex-1">{children}</div>
+                        <Toaster />
                       </div>
                     </RainbowKitProvider>
                   </QueryClientProvider>
@@ -65,5 +66,5 @@ export default function RootLayout({ children, session }: RootLayoutProps) {
         </body>
       </html>
     </>
-  )
+  );
 }

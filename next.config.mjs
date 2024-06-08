@@ -9,7 +9,6 @@ const nextConfig = {
   },
   reactStrictMode: true,
   experimental: {
-    appDir: true,
     missingSuspenseWithCSRBailout: false,
   },
 }
