@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id    String     @id @default(uuid())
-  email String  @unique
-  name String
-  ownerContracts Contract[] @relation("owner")
-  tenantContracts Contract[] @relation("tenant")
+  id              String      @id @default(uuid())
+  email           String      @unique
+  name            String
+  isAdmin         Boolean     @default(false)
+  ownerContracts  Contract[]  @relation("owner")
+  tenantContracts Contract[]  @relation("tenant")
 }
 
 model Contract {

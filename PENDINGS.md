@@ -5,7 +5,7 @@
 ### Crear Contrato -> DONE
 - Como propietario, creo un contrato, se almacena en la base de datos y se disponibiliza un link para que el inquilino pueda firmar -> DONE
 
-### Ejecutar Reclamo -> TODO
+### Ejecutar Reclamo -> DONE
 - Como propietario, inicio el reclamo de un contrato para que los ADMINISTRADORES puedan ejecutar decidir en qué estado dejar el contrato y queda el contrato en estado IN-REVIEW.
 
 ## INQUILINO
@@ -16,4 +16,4 @@
 ##
 
 ## Admins
-- Cuando hay un reclamo (CONTRATOS EN ESTADO IN_REVIEW) pueden pasarlos a EXCECUTED, que ejecuta la transferencia del POOL al PROPIETARIO. 
+- Cuando hay un reclamo (CONTRATOS EN ESTADO IN_REVIEW) pueden pasarlos a EXCECUTED, que ejecuta la transferencia del POOL al PROPIETARIO.  -> DONE
