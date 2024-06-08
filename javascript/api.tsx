@@ -13,7 +13,7 @@ interface GetParams {
 
 export class Api {
   constructor() {
-    this.baseUrl = 'http://localhost:3000/api/';
+    this.baseUrl = process.env.BASE_URL + '/api/';
   }
 
   async post( { url, body, currentUser } : PostParams) {

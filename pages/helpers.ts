@@ -1,3 +1,7 @@
+const  Context = ()=>{}
+
+export default Context
+
 interface RenderErrorParams { 
   res: any;
   status: number;

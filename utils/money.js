@@ -1,0 +1,1 @@
+export const moneyToDisplay = ( money ) => isNaN(Number(money)) ? '-' : (Math.round(Number(money) * 100) / 100).toFixed(2);
