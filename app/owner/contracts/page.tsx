@@ -17,6 +17,7 @@ export default function OwnerContracts() {
   const { data: session } = useSession();
   const router = useRouter();
   const [contracts, setContracts] = useState([]);
+  const [refresh, setRefresh] = useState(false); // State to control refresh
 
   const url = `owners/${session?.user.id}/contracts`;
   const contractCreateUrl = '/contract/create';
@@ -34,9 +35,9 @@ export default function OwnerContracts() {
   }, [ session?.user ]);
 
   async function claimContract(contractId) {
-    const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
-    setContracts(contractsJson);
-    return contractsJson;
+    const claimContractAcceptURL = `owners/${session?.user.id}/contracts/${contractId}/claim`;
+    await (new Api()).post( { url: claimContractAcceptURL, currentUser: session.user });
+    setRefresh(prev => !prev);
   }
 
   return (

@@ -3,11 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
-import Link from "next/link";
-import { LayoutGridIcon, PackageIcon, PlusIcon, ShoppingCartIcon } from "lucide-react";
 
 import { CardHeader, CardContent, Card, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
 import { Api } from "@/javascript/api";
@@ -15,15 +12,13 @@ import PageBase from "@/components/page-base";
 
 export default function OwnerContracts() {
   const { data: session } = useSession();
-  const router = useRouter();
   const [contracts, setContracts] = useState([]);
-
-  const url = `owners/${session?.user.id}/contracts`;
-  const contractCreateUrl = '/contract/create';
+  const [refresh, setRefresh] = useState(false); // State to control refresh
+  const claimContractsUrl = `admins/${session?.user.id}/claim_contracts`;
 
   useEffect(() => {
     async function getContracts() {
-      const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
+      const contractsJson = await (new Api()).get( { url: claimContractsUrl, currentUser: session.user } );
       setContracts(contractsJson);
       return contractsJson;
     }
@@ -31,12 +26,18 @@ export default function OwnerContracts() {
     if ( session?.user ) {
       getContracts();
     }
-  }, [ session?.user ]);
+  }, [ session?.user, refresh]);
 
-  async function claimContract(contractId) {
-    const contractsJson = await (new Api()).get( { url, currentUser: session.user } );
-    setContracts(contractsJson);
-    return contractsJson;
+  async function claimContractAccept(contractId) {
+    const claimContractAcceptURL = `admins/${session?.user.id}/claim_contracts/${contractId}/accept`;
+    await (new Api()).post( { url: claimContractAcceptURL, currentUser: session.user });
+    setRefresh(prev => !prev);
+  }
+
+  async function claimContractDecline(contractId) {
+    const claimContractDeclineURL = `admins/${session?.user.id}/claim_contracts/${contractId}/decline`;
+    await (new Api()).post( { url: claimContractDeclineURL, currentUser: session.user });
+    setRefresh(prev => !prev);
   }
 
   return (
@@ -69,16 +70,11 @@ export default function OwnerContracts() {
                       </tr>
                     )
                   }
-                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} claimContract={claimContract}/> ) }
+                  { contracts.map( ( contract, index ) => <ContractItem key={contract.id} contract={contract} index={index} claimContractAccept={claimContractAccept} claimContractDecline={claimContractDecline}/> ) }
                 </tbody>
               </table>
             </div>
           </CardContent>
-          <Button className="absolute h-10 w-10 p-2 rounded-full bottom-10 right-10 transition-all bg-[color:rgb(3,7,18)] dark:bg-white hover:scale-125 hover:bg-[color:rgb(3,7,18)]" size="sm" variant="outline" 
-            onClick={() => router.push(contractCreateUrl)}
-          >
-            <PlusIcon className="h-full w-full text-white dark:text-[color:rgb(3,7,18)]"/>
-          </Button>
         </Card>
       </ComponentWithSideBar>
     </PageBase>

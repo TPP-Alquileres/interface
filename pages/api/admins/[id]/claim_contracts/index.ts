@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "../../../_base";
-import { ContractState } from "../../../../../utils/contract";
+import { ContractStatus } from "../../../../../utils/contract";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const currentUser = await prisma.user.findUnique({ where: { email: req.headers.user_email } });
@@ -20,11 +20,10 @@ const getHandler = async ( { currentUser, req, res } ) => {
     const contracts = await prisma.contract.findMany({
         where: { 
             tenantId: currentUser.id, 
-            status: ContractState.CLAIM
+            status: ContractStatus.CLAIM
         }, 
         include: { owner: true, tenant: true }
       });
   
     res.status(200).json(contracts);
 };
-
