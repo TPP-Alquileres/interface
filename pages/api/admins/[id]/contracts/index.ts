@@ -25,7 +25,7 @@ export default async function handler(
   }
 
   if (req.method === "GET") {
-    getHandler({ currentUser, req, res });
+    return getHandler({ currentUser, req, res });
   } else {
     res.status(404).json({ message: "Method not allowed" });
   }

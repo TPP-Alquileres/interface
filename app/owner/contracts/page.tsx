@@ -44,14 +44,6 @@ export default function OwnerContracts() {
     }
   }, [session?.user]);
 
-  async function claimContract(contractId: string) {
-    const claimContractAcceptURL = `owners/${session?.user.id}/contracts/${contractId}/claim`;
-    await new Api().post({
-      url: claimContractAcceptURL,
-      currentUser: session?.user,
-    });
-  }
-
   return (
     <PageBase>
       <ComponentWithSideBar>

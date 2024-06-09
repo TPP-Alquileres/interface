@@ -152,19 +152,25 @@ export default function AdminContracts() {
     }));
   };
 
-  const claimContractAccept = async (contractId) => {
-    const claimContractAcceptURL = `admins/${session.user.id}/claim_contracts/${contractId}/accept`;
+  const claim = async (contractId) => {
     await new Api().post({
-      url: claimContractAcceptURL,
+      url: `owners/${session.user.id}/contracts/${contractId}/claim`,
       currentUser: session.user,
     });
     getContracts();
   };
 
-  const claimContractDecline = async (contractId) => {
-    const claimContractDeclineURL = `admins/${session.user.id}/claim_contracts/${contractId}/decline`;
+  const acceptClaim = async (contractId) => {
     await new Api().post({
-      url: claimContractDeclineURL,
+      url: `admins/${session.user.id}/contracts/${contractId}/acceptClaim`,
+      currentUser: session.user,
+    });
+    getContracts();
+  };
+
+  const declineClaim = async (contractId) => {
+    await new Api().post({
+      url: `admins/${session.user.id}/contracts/${contractId}/declineClaim`,
       currentUser: session.user,
     });
     getContracts();
@@ -331,10 +337,12 @@ export default function AdminContracts() {
                   <ContractItem
                     key={contract.id}
                     contract={contract}
+                    currentUser={session.user}
                     index={index}
                     showAmount={false}
-                    claimContractAccept={claimContractAccept}
-                    claimContractDecline={claimContractDecline}
+                    claim={claim}
+                    acceptClaim={acceptClaim}
+                    declineClaim={declineClaim}
                   />
                 ))}
               </TableBody>

@@ -20,11 +20,11 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
-    postHandler(req, res, currentUser);
+    return postHandler(req, res, currentUser);
   } else if (req.method === "GET") {
-    getHandler(res, currentUser);
+    return getHandler(res, currentUser);
   } else {
-    res.status(404).json({ message: "Method not allowed" });
+    return res.status(404).json({ message: "Method not allowed" });
   }
 }
 
@@ -59,9 +59,9 @@ const postHandler = async (
       insuranceId,
     };
     const response = await prisma.contract.create({ data: contract });
-    res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (error) {
-    res.status(400).json({ message: error });
+    return res.status(400).json({ message: error });
   }
 };
 
@@ -69,5 +69,5 @@ const getHandler = async (res: NextApiResponse, currentUser: User) => {
   const contracts = await prisma.contract.findMany({
     where: { OR: [{ ownerId: currentUser.id }, { tenantId: currentUser.id }] },
   });
-  res.status(200).json(contracts);
+  return res.status(200).json(contracts);
 };

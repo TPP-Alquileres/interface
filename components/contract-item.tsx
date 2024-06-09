@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Api } from "@/javascript/api";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 
@@ -9,11 +10,12 @@ import { Button } from "./ui/button";
 
 export default function ContractItem({
   contract,
+  currentUser,
   index,
   showAmount = true,
-  claimContract,
-  claimContractAccept,
-  claimContractDecline,
+  claim,
+  acceptClaim,
+  declineClaim,
 }: any) {
   const router = useRouter();
 
@@ -42,32 +44,34 @@ export default function ContractItem({
         >
           Ver
         </Button>
-        {claimContract && contract.status == ContractStatus.ACTIVE && (
+        {contract.status == ContractStatus.ACTIVE &&
+          contract.ownerId === currentUser.id &&
+          !currentUser.isAdmin && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-2"
+              onClick={() => claim(contract.id)}
+            >
+              Iniciar reclamo
+            </Button>
+          )}
+        {contract.status == ContractStatus.CLAIM && currentUser.isAdmin && (
           <Button
             size="sm"
             variant="outline"
             className="ml-2"
-            onClick={() => claimContract(contract.id)}
-          >
-            Iniciar reclamo
-          </Button>
-        )}
-        {claimContractAccept && (
-          <Button
-            size="sm"
-            variant="outline"
-            className="ml-2"
-            onClick={() => claimContractAccept(contract.id)}
+            onClick={() => acceptClaim(contract.id)}
           >
             Aceptar reclamo
           </Button>
         )}
-        {claimContractDecline && (
+        {contract.status == ContractStatus.CLAIM && currentUser.isAdmin && (
           <Button
             size="sm"
             variant="outline"
             className="ml-2"
-            onClick={() => claimContractDecline(contract.id)}
+            onClick={() => declineClaim(contract.id)}
           >
             Rechazar reclamo
           </Button>
