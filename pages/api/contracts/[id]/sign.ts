@@ -20,8 +20,7 @@ export default async function handler(
 
   if (req.method === "POST") {
     if (currentUser.isAdmin) {
-      res.status(400).json({ message: "You are an admin" });
-      return;
+      return res.status(400).json({ message: "You are an admin" });
     }
 
     const contract = await prisma.contract.findUnique({
@@ -37,8 +36,8 @@ export default async function handler(
       data: { status: ContractStatus.ACTIVE, tenantId: currentUser.id },
       include: { owner: true, tenant: true },
     });
-    res.status(200).json(updatedContract);
+    return res.status(200).json(updatedContract);
   } else {
-    res.status(404).json({ message: "Method not allowed" });
+    return res.status(404).json({ message: "Method not allowed" });
   }
 }

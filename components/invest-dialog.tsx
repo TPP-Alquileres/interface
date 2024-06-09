@@ -67,7 +67,7 @@ export function InvestDialog(props: InvestDialogProps) {
         <DialogHeader>
           <DialogTitle>Invertir</DialogTitle>
           <DialogDescription>
-            Elegi el monto que queres invertir en el {pool.name} pool
+            Elegí el monto que queres invertir en el fondo de {pool.name}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

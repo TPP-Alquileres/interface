@@ -152,19 +152,25 @@ export default function AdminContracts() {
     }));
   };
 
-  const claimContractAccept = async (contractId) => {
-    const claimContractAcceptURL = `admins/${session.user.id}/claim_contracts/${contractId}/accept`;
+  const acceptClaim = async (contractId) => {
     await new Api().post({
-      url: claimContractAcceptURL,
+      url: `admins/${session.user.id}/contracts/${contractId}/acceptClaim`,
       currentUser: session.user,
     });
     getContracts();
   };
 
-  const claimContractDecline = async (contractId) => {
-    const claimContractDeclineURL = `admins/${session.user.id}/claim_contracts/${contractId}/decline`;
+  const declineClaim = async (contractId) => {
     await new Api().post({
-      url: claimContractDeclineURL,
+      url: `admins/${session.user.id}/contracts/${contractId}/declineClaim`,
+      currentUser: session.user,
+    });
+    getContracts();
+  };
+
+  const finishContract = async (contractId) => {
+    await new Api().post({
+      url: `admins/${session.user.id}/contracts/${contractId}/finish`,
       currentUser: session.user,
     });
     getContracts();
@@ -177,7 +183,7 @@ export default function AdminContracts() {
           <CardHeader className="pb-2">
             <div className="text-xl font-bold">Contratos</div>
           </CardHeader>
-          <CardContent className="pt-2">
+          <CardContent className="h-full pt-2">
             <div className="w-full flex items-center gap-4">
               <Input
                 type="search"
@@ -276,8 +282,8 @@ export default function AdminContracts() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Table className="mt-4">
-              <TableHeader>
+            <Table containerClassname="h-full overflow-y-auto relative">
+              <TableHeader className="sticky mt-4 top-0 bg-[color:rgb(255,255,255)] dark:bg-[color:rgb(3,7,17)] z-10">
                 <TableRow>
                   <TableHead
                     className="cursor-pointer"
@@ -326,15 +332,17 @@ export default function AdminContracts() {
                   <TableHead>Acciones</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="overflow-y-hidden">
                 {filteredData.map((contract, index) => (
                   <ContractItem
                     key={contract.id}
                     contract={contract}
+                    currentUser={session.user}
                     index={index}
                     showAmount={false}
-                    claimContractAccept={claimContractAccept}
-                    claimContractDecline={claimContractDecline}
+                    acceptClaim={acceptClaim}
+                    declineClaim={declineClaim}
+                    finishContract={finishContract}
                   />
                 ))}
               </TableBody>

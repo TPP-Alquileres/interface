@@ -24,7 +24,7 @@ export default function ShowContractPage({
   const showLink =
     !!contract &&
     contract.status === ContractStatus.PENDING &&
-    contract.ownerId === session?.user.id;
+    (contract.ownerId === session?.user.id || session?.user.isAdmin);
 
   useEffect(() => {
     async function getContract() {

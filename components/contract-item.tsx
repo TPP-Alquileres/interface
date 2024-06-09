@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Api } from "@/javascript/api";
+import { format } from "date-fns";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 
@@ -9,11 +11,13 @@ import { Button } from "./ui/button";
 
 export default function ContractItem({
   contract,
+  currentUser,
   index,
   showAmount = true,
-  claimContract,
-  claimContractAccept,
-  claimContractDecline,
+  claim,
+  acceptClaim,
+  declineClaim,
+  finishContract,
 }: any) {
   const router = useRouter();
 
@@ -21,8 +25,10 @@ export default function ContractItem({
     index % 2 === 0 ? "bg-gray-100/40 dark:bg-gray-800/40" : "";
   const contractUrl = `/contract/${contract.id}`;
 
+  const formatDate = (date) => format(date, "dd/MM/yyyy");
+
   return (
-    <TableRow key={contract.id}>
+    <TableRow key={contract.id} className={tableRowClassName}>
       <TableCell>{contract.description}</TableCell>
       <TableCell className="capitalize">{contract.owner.name}</TableCell>
       <TableCell className="capitalize">
@@ -42,36 +48,50 @@ export default function ContractItem({
         >
           Ver
         </Button>
-        {claimContract && contract.status == ContractStatus.ACTIVE && (
+        {contract.status == ContractStatus.ACTIVE &&
+          contract.ownerId === currentUser.id &&
+          !currentUser.isAdmin && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-2"
+              onClick={() => claim(contract.id)}
+            >
+              Iniciar reclamo
+            </Button>
+          )}
+        {contract.status == ContractStatus.CLAIM && currentUser.isAdmin && (
           <Button
             size="sm"
             variant="outline"
             className="ml-2"
-            onClick={() => claimContract(contract.id)}
-          >
-            Iniciar reclamo
-          </Button>
-        )}
-        {claimContractAccept && (
-          <Button
-            size="sm"
-            variant="outline"
-            className="ml-2"
-            onClick={() => claimContractAccept(contract.id)}
+            onClick={() => acceptClaim(contract.id)}
           >
             Aceptar reclamo
           </Button>
         )}
-        {claimContractDecline && (
+        {contract.status == ContractStatus.CLAIM && currentUser.isAdmin && (
           <Button
             size="sm"
             variant="outline"
             className="ml-2"
-            onClick={() => claimContractDecline(contract.id)}
+            onClick={() => declineClaim(contract.id)}
           >
             Rechazar reclamo
           </Button>
         )}
+        {contract.status == ContractStatus.ACTIVE &&
+          currentUser.isAdmin &&
+          formatDate(contract.endDate) >= formatDate(new Date()) && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-2"
+              onClick={() => finishContract(contract.id)}
+            >
+              Finalizar contrato
+            </Button>
+          )}
       </TableCell>
     </TableRow>
   );

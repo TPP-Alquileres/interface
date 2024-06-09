@@ -30,15 +30,17 @@ export function ContractBody(props: ContractBodyProps) {
           value={owner?.name}
         />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="start-date">Inquilino</Label>
-        <Input
-          className="capitalize"
-          id="start-date"
-          readOnly
-          value={tenant?.name || "-"}
-        />
-      </div>
+      {tenant && (
+        <div className="space-y-2">
+          <Label htmlFor="start-date">Inquilino</Label>
+          <Input
+            className="capitalize"
+            id="start-date"
+            readOnly
+            value={tenant?.name || "-"}
+          />
+        </div>
+      )}
       <div className="grid grid-cols-2 items-start gap-4">
         <div className="space-y-2">
           <Label htmlFor="start-date">Inicio del contrato</Label>
