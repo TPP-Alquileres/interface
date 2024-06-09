@@ -12,18 +12,15 @@ export default async function handler(
   });
 
   if (!currentUser) {
-    return res
-      .status(401)
-      .json({
-        error:
-          "You must be signed in to view the protected content on this page.",
-      });
+    return res.status(401).json({
+      error:
+        "You must be signed in to view the protected content on this page.",
+    });
   }
 
   if (req.method === "POST") {
     if (currentUser.isAdmin) {
-      res.status(400).json({ message: "You are an admin" });
-      return;
+      return res.status(400).json({ message: "You are an admin" });
     }
 
     const contract = await prisma.contract.findUnique({
@@ -36,8 +33,8 @@ export default async function handler(
       where: { id: String(req.query.id) },
       data: { status: ContractStatus.ACTIVE, tenantId: currentUser.id },
     });
-    res.status(200).json(updatedContract);
+    return res.status(200).json(updatedContract);
   } else {
-    res.status(404).json({ message: "Method not allowed" });
+    return res.status(404).json({ message: "Method not allowed" });
   }
 }

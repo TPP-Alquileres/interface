@@ -20,14 +20,13 @@ export default async function handler(
   }
 
   if (!currentUser.isAdmin) {
-    renderError({ res, status: 403, message: "You are not an admin" });
-    return;
+    return renderError({ res, status: 403, message: "You are not an admin" });
   }
 
   if (req.method === "GET") {
     return getHandler({ currentUser, req, res });
   } else {
-    res.status(404).json({ message: "Method not allowed" });
+    return res.status(404).json({ message: "Method not allowed" });
   }
 }
 
@@ -36,5 +35,5 @@ const getHandler = async ({ currentUser, req, res }) => {
     include: { owner: true, tenant: true },
   });
 
-  res.status(200).json(contracts);
+  return res.status(200).json(contracts);
 };

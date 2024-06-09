@@ -34,8 +34,7 @@ const postHandler = async (
   currentUser: User
 ) => {
   if (currentUser.isAdmin) {
-    res.status(400).json({ message: "You are an admin" });
-    return;
+    return res.status(400).json({ message: "You are an admin" });
   }
 
   const {

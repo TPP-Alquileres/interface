@@ -19,18 +19,17 @@ export default async function handler(
   }
 
   if (!currentUser.isAdmin) {
-    renderError({ res, status: 403, message: "You are not an admin" });
-    return;
+    return renderError({ res, status: 403, message: "You are not an admin" });
   }
 
   try {
     if (req.method === "POST") {
-      postHandler({ currentUser, req, res });
+      return postHandler({ currentUser, req, res });
     } else {
-      res.status(404).json({ message: "Method not allowed" });
+      return res.status(404).json({ message: "Method not allowed" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error updating contract" });
+    return res.status(500).json({ error: "Error updating contract" });
   }
 }
 
@@ -43,5 +42,5 @@ const postHandler = async ({ currentUser, req, res }) => {
       status: ContractStatus.CLAIM_ACCEPTED,
     },
   });
-  res.status(200).json(updatedContract);
+  return res.status(200).json(updatedContract);
 };
