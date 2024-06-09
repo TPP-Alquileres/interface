@@ -128,7 +128,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="justify-content:flex-end mt-auto text-xs text-gray-500 dark:text-gray-400">
-                    {ownerContractsCount} contratos vigentes
+                    {ownerContractsCount} contratos activos
                   </p>
                 </CardContent>
               </Card>
@@ -138,7 +138,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {tenantContractsCount} contratos vigentes
+                    {tenantContractsCount} contratos activos
                   </p>
                 </CardContent>
               </Card>
