@@ -168,6 +168,14 @@ export default function AdminContracts() {
     getContracts();
   };
 
+  const finishContract = async (contractId) => {
+    await new Api().post({
+      url: `admins/${session.user.id}/contracts/${contractId}/finish`,
+      currentUser: session.user,
+    });
+    getContracts();
+  };
+
   return (
     <PageBase>
       <ComponentWithSideBar>
@@ -334,6 +342,7 @@ export default function AdminContracts() {
                     showAmount={false}
                     acceptClaim={acceptClaim}
                     declineClaim={declineClaim}
+                    finishContract={finishContract}
                   />
                 ))}
               </TableBody>

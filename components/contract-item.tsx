@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Api } from "@/javascript/api";
+import { format } from "date-fns";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 
@@ -16,12 +17,15 @@ export default function ContractItem({
   claim,
   acceptClaim,
   declineClaim,
+  finishContract,
 }: any) {
   const router = useRouter();
 
   const tableRowClassName =
     index % 2 === 0 ? "bg-gray-100/40 dark:bg-gray-800/40" : "";
   const contractUrl = `/contract/${contract.id}`;
+
+  const formatDate = (date) => format(date, "dd/MM/yyyy");
 
   return (
     <TableRow key={contract.id}>
@@ -76,6 +80,18 @@ export default function ContractItem({
             Rechazar reclamo
           </Button>
         )}
+        {contract.status == ContractStatus.ACTIVE &&
+          currentUser.isAdmin &&
+          formatDate(contract.endDate) >= formatDate(new Date()) && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-2"
+              onClick={() => finishContract(contract.id)}
+            >
+              Finalizar contrato
+            </Button>
+          )}
       </TableCell>
     </TableRow>
   );

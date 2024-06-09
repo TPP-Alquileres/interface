@@ -37,15 +37,15 @@ export type Pool = {
 
 export const pools: Pool[] = [
   {
-    name: "Low Risk",
+    name: "bajo riesgo",
     contract: lowRiskPoolContract,
   },
   {
-    name: "Medium Risk",
+    name: "mediano riesgo",
     contract: mediumRiskPoolContract,
   },
   {
-    name: "High Risk",
+    name: "alto riesgo",
     contract: highRiskPoolContract,
   },
 ];
