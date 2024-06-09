@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { User } from "@prisma/client";
 
 import { ContractStatus } from "../../../utils/contract";
 import prisma from "../_base";
@@ -8,7 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const currentUser = await prisma.user.findUnique({
-    where: { email: req.headers.user_email },
+    where: { email: req.headers.user_email?.toString() },
   });
 
   if (!currentUser) {
@@ -19,25 +20,32 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
-    postHandler({ currentUser, req, res });
+    postHandler(req, res, currentUser);
   } else if (req.method === "GET") {
-    getHandler({ currentUser, res });
+    getHandler(res, currentUser);
   } else {
     res.status(404).json({ message: "Method not allowed" });
   }
 }
 
-const postHandler = async ({ currentUser, req, res }) => {
+const postHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  currentUser: User
+) => {
   if (currentUser.isAdmin) {
     res.status(400).json({ message: "You are an admin" });
     return;
   }
 
-  const description = req.body["description"];
-  const startDate = req.body["start_date"];
-  const endDate = req.body["end_date"];
-  const amount = Number(req.body["amount"]);
-  const documentUrl = req.body["document_url"] || "";
+  const {
+    description,
+    startDate,
+    endDate,
+    amount,
+    documentUrl = "",
+    insuranceId,
+  } = req.body;
 
   try {
     const contract = {
@@ -48,6 +56,7 @@ const postHandler = async ({ currentUser, req, res }) => {
       amount,
       documentUrl,
       status: ContractStatus.PENDING,
+      insuranceId,
     };
     const response = await prisma.contract.create({ data: contract });
     res.status(200).json(response);
@@ -56,7 +65,7 @@ const postHandler = async ({ currentUser, req, res }) => {
   }
 };
 
-const getHandler = async ({ currentUser, res }) => {
+const getHandler = async (res: NextApiResponse, currentUser: DefaultUser) => {
   const contracts = await prisma.contract.findMany({
     where: { OR: [{ ownerId: currentUser.id }, { tenantId: currentUser.id }] },
   });

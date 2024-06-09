@@ -169,7 +169,7 @@ export const usePoolsTotals = () => {
 
 export const useApprove = (pool: Pool, amount: string) => {
   const { address = "" } = useAccount();
-  const { contract } = pool;
+  const { contract, name } = pool;
 
   // Check if the contract is already approved
   const allowanceResult = useReadContract({
@@ -216,7 +216,7 @@ export const useApprove = (pool: Pool, amount: string) => {
 
   // Adding the transaction to the recent transactions list
   const addRecentTransaction = useAddRecentTransaction();
-  const description = `Approve ${formattedAmount} to ${contract.address}`;
+  const description = `Approve ${amount} to ${name}`;
   useEffect(() => {
     if (hash) {
       addRecentTransaction({
@@ -266,7 +266,7 @@ export const useApprove = (pool: Pool, amount: string) => {
 
 export const useDeposit = (pool: Pool, amount: string) => {
   const { address = "" } = useAccount();
-  const { contract } = pool;
+  const { contract, name } = pool;
 
   const formattedAmount = parseEther(amount);
 
@@ -295,7 +295,7 @@ export const useDeposit = (pool: Pool, amount: string) => {
 
   // Adding the transaction to the recent transactions list
   const addRecentTransaction = useAddRecentTransaction();
-  const description = `Deposit ${formattedAmount} to ${contract.address}`;
+  const description = `Deposit ${amount} to ${name}`;
   useEffect(() => {
     if (hash) {
       addRecentTransaction({
@@ -342,7 +342,7 @@ export const useDeposit = (pool: Pool, amount: string) => {
 
 export const useWithdraw = (pool: Pool, amount: string) => {
   const { address = "" } = useAccount();
-  const { contract } = pool;
+  const { contract, name } = pool;
 
   const formattedAmount = parseEther(amount);
 
@@ -371,7 +371,7 @@ export const useWithdraw = (pool: Pool, amount: string) => {
 
   // Adding the transaction to the recent transactions list
   const addRecentTransaction = useAddRecentTransaction();
-  const description = `Withdraw ${formattedAmount} from ${contract.address}`;
+  const description = `Withdraw ${amount} from ${name}`;
   useEffect(() => {
     if (hash) {
       addRecentTransaction({

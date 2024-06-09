@@ -20,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -41,14 +40,20 @@ const formSchema = z
     path: ["endDate"],
   });
 
-export function ContractCreate({ onGenerateLinkButtonClick }) {
+interface ContractCreateProps {
+  onGenerateLinkButtonClick: (data: any) => void;
+}
+
+export function ContractCreate(props: ContractCreateProps) {
+  const { onGenerateLinkButtonClick } = props;
+
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { description: "", startDate: "" },
+    defaultValues: { description: "", startDate: "", endDate: "", amount: "" },
   });
 
   return (
-    <div className="pt-4 w-1/2">
+    <div className="w-1/2 pt-4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onGenerateLinkButtonClick)}
@@ -148,7 +153,7 @@ export function ContractCreate({ onGenerateLinkButtonClick }) {
                           onSelect={field.onChange}
                           initialFocus
                           disabled={(date) =>
-                            date <= form.getValues("startDate")
+                            date <= new Date(form.getValues("startDate"))
                           }
                         />
                       </PopoverContent>
