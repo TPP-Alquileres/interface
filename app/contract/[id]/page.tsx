@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Api } from "@/javascript/api";
-import { ContractStatus } from "@/utils/contract";
+import { ContractStatus, ContractStatusToDisplay } from "@/utils/contract";
 import { Contract } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
@@ -48,8 +48,11 @@ export default function ShowContractPage({
     return (
       <div>
         <div className="w-1/2">
-          <div className="space-y-2">
+          <div className="flex items-center justify-between space-y-2">
             <h1 className="text-3xl font-bold">{contract?.description}</h1>
+            <h1 className="text-xl">
+              {ContractStatusToDisplay[contract?.status]}
+            </h1>
           </div>
           {!!contract && <ContractBody contract={contract} />}
         </div>

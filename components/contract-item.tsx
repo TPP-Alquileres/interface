@@ -74,51 +74,5 @@ export default function ContractItem({
         )}
       </TableCell>
     </TableRow>
-    // <tr key={contract.id} className={tableRowClassName}>
-    //   <td className="px-6 py-3">{contract.description}</td>
-    //   <td className="px-6 py-3 capitalize">{contract.owner.name}</td>
-    //   <td className="px-6 py-3 capitalize">{contract.tenant?.name || "-"}</td>
-    //   <td className="px-6 py-3">${contract.amount}</td>
-    //   <td className="px-6 py-3">{ContractStatusToDisplay[contract.status]}</td>
-    //   <td className="px-6 py-3">
-    //     <Button
-    //       size="sm"
-    //       variant="outline"
-    //       onClick={() => router.push(contractUrl)}
-    //     >
-    //       Ver
-    //     </Button>
-    //     {claimContract && contract.status == ContractStatus.ACTIVE && (
-    //       <Button
-    //         size="sm"
-    //         variant="outline"
-    //         className="ml-2"
-    //         onClick={() => claimContract(contract.id)}
-    //       >
-    //         Iniciar reclamo
-    //       </Button>
-    //     )}
-    //     {claimContractAccept && (
-    //       <Button
-    //         size="sm"
-    //         variant="outline"
-    //         className="ml-2"
-    //         onClick={() => claimContractAccept(contract.id)}
-    //       >
-    //         Aceptar reclamo
-    //       </Button>
-    //     )}
-    //     {claimContractDecline && (
-    //       <Button
-    //         size="sm"
-    //         variant="outline"
-    //         className="ml-2"
-    //         onClick={() => claimContractDecline(contract.id)}
-    //       >
-    //         Rechazar reclamo
-    //       </Button>
-    //     )}
-    //   </td>
-    // </tr>
   );
 }
