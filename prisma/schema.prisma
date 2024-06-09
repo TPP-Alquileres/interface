@@ -11,31 +11,32 @@ datasource db {
 }
 
 model User {
-  id              String      @id @default(uuid())
-  email           String      @unique
+  id              String     @id @default(uuid())
+  email           String     @unique
   name            String
-  isAdmin         Boolean     @default(false)
-  ownerContracts  Contract[]  @relation("owner")
-  tenantContracts Contract[]  @relation("tenant")
+  isAdmin         Boolean    @default(false)
+  ownerContracts  Contract[] @relation("owner")
+  tenantContracts Contract[] @relation("tenant")
 }
 
 model Contract {
-  id String @id @default(uuid()) 
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   // Owner
-  owner User @relation("owner", fields: [ownerId], references: [id])
-  ownerId String
+  owner     User     @relation("owner", fields: [ownerId], references: [id])
+  ownerId   String
 
   // Tenant
-  tenant User? @relation("tenant", fields: [tenantId], references: [id])
+  tenant   User?   @relation("tenant", fields: [tenantId], references: [id])
   tenantId String?
 
   // Attributes
   description String
-  startDate DateTime
-  endDate DateTime
-  amount  Float
+  startDate   DateTime
+  endDate     DateTime
+  amount      Float
   documentUrl String?
-  status String
+  status      String
+  insuranceId String
 }

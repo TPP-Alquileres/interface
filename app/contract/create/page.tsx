@@ -1,86 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { Api } from "@/javascript/api";
-import { Contract } from "@prisma/client";
-import { useSession } from "next-auth/react";
-import { Address } from "viem";
-import {
-  useAccount,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
+import { useAccount } from "wagmi";
 
+import { useCreateContract } from "@/hooks/useCreateContract";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import { ContractCreate } from "@/components/contract-create";
 import PageBase from "@/components/page-base";
 import TenantLink from "@/components/tenant-link";
 
-import { rentInsuranceAbi } from "../../../abis/RentInsurance";
-
 export default function CreateContractPage() {
-  const { data: session } = useSession();
-  const { data: hash, isPending, writeContract } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({ hash });
   const { isConnected } = useAccount();
 
-  const [contract, setContract] = useState<Contract>();
-  const [isLoading, setLoading] = useState(false);
+  const { create, contract, isLoading, isConfirming } = useCreateContract();
 
-  const showHeader =
-    !isPending && !isLoading && !isConfirming && isConnected && !contract;
-
-  const generateLink = async (values: {
-    startDate: any;
-    endDate: any;
-    amount: any;
-    description: any;
-  }) => {
-    const startDate = values.startDate;
-    const endDate = values.endDate;
-    const amount = values.amount;
-    const body = {
-      description: values.description,
-      start_date: startDate,
-      end_date: endDate,
-      amount,
-    };
-
-    setLoading(true);
-
-    const contractResponse = await new Api().post({
-      url: "contracts",
-      currentUser: session?.user,
-      body,
-    });
-
-    const durationInSeconds =
-      (Number(new Date(endDate)) - Number(new Date(startDate))) / 1000;
-
-    writeContract({
-      address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS as Address,
-      abi: rentInsuranceAbi,
-      functionName: "initializeInsurance",
-      args: [BigInt(amount), BigInt(durationInSeconds)],
-    });
-
-    setContract(contractResponse);
-    setLoading(false);
-  };
+  const showHeader = !isLoading && !isConfirming && isConnected && !contract;
 
   const renderPage = () => {
     if (!isConnected) {
       return <p className="pt-4">Conecta tu wallet para crear el contrato</p>;
     }
 
-    if (isPending || isLoading) return <p className="pt-4">Cargando...</p>;
+    if (isLoading) return <p className="pt-4">Cargando...</p>;
 
     if (isConfirming) return <p className="pt-4">Confirmando...</p>;
 
     if (!!contract) return <TenantLink contract={contract} />;
 
-    return <ContractCreate onGenerateLinkButtonClick={generateLink} />;
+    return <ContractCreate onGenerateLinkButtonClick={create} />;
   };
 
   return (
