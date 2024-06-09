@@ -1,38 +1,26 @@
 import { useEffect, useState } from "react";
 import { rentInsuranceAbi } from "@/abis/RentInsurance";
 import { Api } from "@/javascript/api";
-import { Contract } from "@prisma/client";
+import { SignatureData } from "@/pages/api/signature";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { useSession } from "next-auth/react";
 import { Address } from "viem";
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 import { useToast } from "@/components/ui/use-toast";
+import { FullContract } from "@/app/contract/pending/page";
 
-type GenerateLinkParams = {
-  startDate: any;
-  endDate: any;
-  amount: any;
-  description: any;
-};
-
-export const useCreateContract = () => {
+export const useAcceptContract = (
+  onSign: (contract: FullContract) => void,
+  data?: SignatureData
+) => {
   const { toast } = useToast();
   const { data: session } = useSession();
-  const [contract, setContract] = useState<Contract>();
   const [isLoading, setLoading] = useState(false);
 
-  const { data: hash, writeContractAsync } = useWriteContract();
+  const { contractId, insuranceId, payment, pool, signature } = data || {};
 
-  const { data: insuranceId } = useReadContract({
-    address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS as Address,
-    abi: rentInsuranceAbi,
-    functionName: "insuranceCounter",
-  });
+  const { data: hash, writeContractAsync } = useWriteContract();
 
   const {
     isSuccess,
@@ -42,7 +30,7 @@ export const useCreateContract = () => {
 
   // Adding the transaction to the recent transactions list
   const addRecentTransaction = useAddRecentTransaction();
-  const description = `Creación de contrato de seguro de alquiler`;
+  const description = `Seguro de alquiler aceptado`;
   useEffect(() => {
     if (hash) {
       addRecentTransaction({
@@ -68,20 +56,20 @@ export const useCreateContract = () => {
     }
   }, [isError, isSuccess, toast]);
 
-  const create = async (values: GenerateLinkParams) => {
-    const { startDate, endDate, amount, description } = values;
-
-    const durationInSeconds =
-      (Number(new Date(endDate)) - Number(new Date(startDate))) / 1000;
-
+  const accept = async () => {
     setLoading(true);
 
     try {
       await writeContractAsync({
         address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS as Address,
         abi: rentInsuranceAbi,
-        functionName: "initializeInsurance",
-        args: [BigInt(amount), BigInt(durationInSeconds)],
+        functionName: "acceptInsurance",
+        args: [
+          BigInt(insuranceId || 0),
+          BigInt(payment || 0),
+          pool as Address,
+          signature as Address,
+        ],
       });
     } catch (error) {
       setLoading(false);
@@ -93,27 +81,18 @@ export const useCreateContract = () => {
       return;
     }
 
-    const body = {
-      description,
-      startDate,
-      endDate,
-      amount,
-      insuranceId: insuranceId?.toString(),
-    };
-
     try {
       const contractResponse = await new Api().post({
-        url: "contracts",
+        url: `contracts/${contractId}/sign`,
         currentUser: session?.user,
-        body,
       });
 
-      setContract(contractResponse);
+      onSign(contractResponse);
     } catch (error) {
       setLoading(false);
       toast({
         title: "Error",
-        description: "Error al crear el contrato.",
+        description: "Error al aceptar el contrato.",
         variant: "destructive",
       });
       return;
@@ -123,8 +102,7 @@ export const useCreateContract = () => {
   };
 
   return {
-    create,
-    contract,
+    accept,
     isLoading,
     isConfirming,
   };

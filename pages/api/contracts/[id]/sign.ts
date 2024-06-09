@@ -8,16 +8,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const currentUser = await prisma.user.findUnique({
-    where: { email: req.headers.user_email },
+    where: { email: req.headers.user_email?.toString() },
   });
 
   if (!currentUser) {
-    return res
-      .status(401)
-      .json({
-        error:
-          "You must be signed in to view the protected content on this page.",
-      });
+    return res.status(401).json({
+      error:
+        "You must be signed in to view the protected content on this page.",
+    });
   }
 
   if (req.method === "POST") {
@@ -29,12 +27,15 @@ export default async function handler(
     const contract = await prisma.contract.findUnique({
       where: { id: String(req.query.id) },
     });
-    if (contract.ownerId === currentUser.id) {
+
+    if (contract?.ownerId === currentUser.id) {
       return res.status(400).json({ message: "You are the owner" });
     }
+
     const updatedContract = await prisma.contract.update({
       where: { id: String(req.query.id) },
       data: { status: ContractStatus.ACTIVE, tenantId: currentUser.id },
+      include: { owner: true, tenant: true },
     });
     res.status(200).json(updatedContract);
   } else {

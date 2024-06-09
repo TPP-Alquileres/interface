@@ -3,7 +3,8 @@ import { Loader2 } from "lucide-react";
 import { Address } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
-import { Pool, useApprove, useDeposit } from "@/hooks/usePools";
+import { useApprove } from "@/hooks/useApprove";
+import { Pool, useDeposit } from "@/hooks/usePools";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,7 +42,7 @@ export function InvestDialog(props: InvestDialogProps) {
     needApproval,
     approve,
     isLoading: approveLoading,
-  } = useApprove(pool, amount);
+  } = useApprove(pool.contract.address, amount);
 
   const { deposit, isLoading: depositLoading } = useDeposit(pool, amount);
 
