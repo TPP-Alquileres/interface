@@ -3,7 +3,7 @@ import moment from "moment";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function ContractBody({ contract }) {
+export function ContractBody({ contract, showTenant = true }) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -15,15 +15,17 @@ export function ContractBody({ contract }) {
           value={contract?.owner?.name}
         />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="start-date">Inquilino</Label>
-        <Input
-          className="capitalize"
-          id="start-date"
-          readOnly
-          value={contract?.tenant?.name || "-"}
-        />
-      </div>
+      {showTenant && (
+        <div className="space-y-2">
+          <Label htmlFor="start-date">Inquilino</Label>
+          <Input
+            className="capitalize"
+            id="start-date"
+            readOnly
+            value={contract?.tenant?.name || "-"}
+          />
+        </div>
+      )}
       <div className="grid grid-cols-2 items-start gap-4">
         <div className="space-y-2">
           <Label htmlFor="start-date">Inicio del contrato</Label>

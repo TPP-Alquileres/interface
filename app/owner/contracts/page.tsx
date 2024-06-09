@@ -27,22 +27,28 @@ export default function OwnerContracts() {
 
   const contractCreateUrl = "/contract/create";
 
+  const getContracts = async () => {
+    const contractsJson = await new Api().get({
+      url: `owners/${session?.user.id}/contracts`,
+      currentUser: session.user,
+    });
+    setContracts(contractsJson);
+    return contractsJson;
+  };
+
   useEffect(() => {
-    const url = `owners/${session?.user.id}/contracts`;
-
-    async function getContracts() {
-      const contractsJson = await new Api().get({
-        url,
-        currentUser: session?.user,
-      });
-      setContracts(contractsJson);
-      return contractsJson;
-    }
-
     if (session?.user) {
       getContracts();
     }
   }, [session?.user]);
+
+  const claim = async (contractId) => {
+    await new Api().post({
+      url: `owners/${session.user.id}/contracts/${contractId}/claim`,
+      currentUser: session.user,
+    });
+    getContracts();
+  };
 
   return (
     <PageBase>
@@ -79,8 +85,9 @@ export default function OwnerContracts() {
                     <ContractItem
                       key={contract.id}
                       contract={contract}
+                      currentUser={session.user}
                       index={index}
-                      claimContract={claimContract}
+                      claim={claim}
                     />
                   ))}
                 </TableBody>

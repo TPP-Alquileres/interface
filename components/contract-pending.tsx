@@ -1,26 +1,36 @@
-import moment from "moment"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { ContractBody } from "./contract-body"
-import { ContractState } from "@/utils/contract"
+import { ContractStatus } from "@/utils/contract";
+import moment from "moment";
 
-export function ContractPending( { contract, currentUser, onSignContractClick } ) {
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { ContractBody } from "./contract-body";
+
+export function ContractPending({
+  contract,
+  currentUser,
+  onSignContractClick,
+}) {
   const renderFooter = () => {
-    if ( contract?.status === ContractState.ACTIVE ) { return <p>Este contrato ya fue firmado!!</p>; }
-    if ( contract?.ownerId === currentUser.id ) { return <p>Vos sos el propietario</p>; }
+    if (contract?.status === ContractStatus.ACTIVE) {
+      return <p>Este contrato ya fue firmado!!</p>;
+    }
+    if (contract?.ownerId === currentUser.id) {
+      return <p>Vos sos el propietario</p>;
+    }
 
-    return <Button onClick={onSignContractClick}>Firmar Documento</Button>;
+    return <Button onClick={onSignContractClick}>Firmar contrato</Button>;
   };
 
   return (
     <div className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="name">Descripción</Label>
-        <Input id="name" readOnly value={contract.description}/>
+        <Input id="name" readOnly value={contract.description} />
       </div>
-      <ContractBody contract={contract} />
-      { renderFooter() }
+      <ContractBody contract={contract} showTenant={false} />
+      {renderFooter()}
     </div>
-  )
-};
+  );
+}

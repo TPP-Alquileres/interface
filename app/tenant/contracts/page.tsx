@@ -73,6 +73,7 @@ export default function TenantContracts() {
                     <ContractItem
                       key={contract.id}
                       contract={contract}
+                      currentUser={session?.user}
                       index={index}
                     />
                   ))}

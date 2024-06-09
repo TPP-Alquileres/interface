@@ -152,14 +152,6 @@ export default function AdminContracts() {
     }));
   };
 
-  const claim = async (contractId) => {
-    await new Api().post({
-      url: `owners/${session.user.id}/contracts/${contractId}/claim`,
-      currentUser: session.user,
-    });
-    getContracts();
-  };
-
   const acceptClaim = async (contractId) => {
     await new Api().post({
       url: `admins/${session.user.id}/contracts/${contractId}/acceptClaim`,
@@ -340,7 +332,6 @@ export default function AdminContracts() {
                     currentUser={session.user}
                     index={index}
                     showAmount={false}
-                    claim={claim}
                     acceptClaim={acceptClaim}
                     declineClaim={declineClaim}
                   />
