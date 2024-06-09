@@ -183,7 +183,7 @@ export default function AdminContracts() {
           <CardHeader className="pb-2">
             <div className="text-xl font-bold">Contratos</div>
           </CardHeader>
-          <CardContent className="pt-2">
+          <CardContent className="h-full pt-2">
             <div className="w-full flex items-center gap-4">
               <Input
                 type="search"
@@ -282,8 +282,8 @@ export default function AdminContracts() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Table className="mt-4">
-              <TableHeader>
+            <Table containerClassname="h-full overflow-y-auto relative">
+              <TableHeader className="sticky mt-4 top-0 bg-[color:rgb(255,255,255)] dark:bg-[color:rgb(3,7,17)] z-10">
                 <TableRow>
                   <TableHead
                     className="cursor-pointer"
@@ -332,7 +332,7 @@ export default function AdminContracts() {
                   <TableHead>Acciones</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="overflow-y-hidden">
                 {filteredData.map((contract, index) => (
                   <ContractItem
                     key={contract.id}

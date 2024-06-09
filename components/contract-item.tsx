@@ -28,7 +28,7 @@ export default function ContractItem({
   const formatDate = (date) => format(date, "dd/MM/yyyy");
 
   return (
-    <TableRow key={contract.id}>
+    <TableRow key={contract.id} className={tableRowClassName}>
       <TableCell>{contract.description}</TableCell>
       <TableCell className="capitalize">{contract.owner.name}</TableCell>
       <TableCell className="capitalize">
