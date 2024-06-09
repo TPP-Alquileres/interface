@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const currentUser = await prisma.user.findUnique({
-    where: { email: req.headers.user_email },
+    where: { email: req.headers.user_email?.toString() },
   });
 
   if (!currentUser) {
@@ -26,9 +26,11 @@ export default async function handler(
     const contract = await prisma.contract.findUnique({
       where: { id: String(req.query.id) },
     });
-    if (contract.ownerId === currentUser.id) {
+
+    if (contract?.ownerId === currentUser.id) {
       return res.status(400).json({ message: "You are the owner" });
     }
+
     const updatedContract = await prisma.contract.update({
       where: { id: String(req.query.id) },
       data: { status: ContractStatus.ACTIVE, tenantId: currentUser.id },

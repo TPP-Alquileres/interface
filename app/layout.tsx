@@ -6,8 +6,9 @@ import { SessionProvider, SessionProviderProps } from "next-auth/react";
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider, http } from "wagmi";
+import { WagmiProvider, fallback, http, unstable_connector } from "wagmi";
 import { sepolia } from "wagmi/chains";
+import { injected } from "wagmi/connectors";
 
 import { fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -31,7 +32,11 @@ const config = getDefaultConfig({
   chains: [sepolia],
   ssr: true,
   transports: {
-    [sepolia.id]: http(),
+    [sepolia.id]: fallback([
+      http(process.env.NEXT_PUBLIC_SEPOLIA_RPC, { batch: true }),
+      unstable_connector(injected),
+      http(),
+    ]),
   },
 });
 
