@@ -29,6 +29,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
 import { Icons } from "@/components/icons";
@@ -112,7 +119,15 @@ export default function AdminContracts() {
         return descriptionMatch || ownerMatch || tenantMatch;
       })
       .sort((a, b) => {
-        const sortValue = a[sortColumn].localeCompare(b[sortColumn]);
+        let sortValue;
+        if (sortColumn === "ownerName") {
+          sortValue = a.owner.name.localeCompare(b.owner.name);
+        } else if (sortColumn === "tenantName") {
+          sortValue = a.tenant?.name.localeCompare(b.tenant?.name);
+        } else {
+          sortValue = a[sortColumn].localeCompare(b[sortColumn]);
+        }
+
         return sortDirection === "asc" ? sortValue : -sortValue;
       });
   }, [contracts, filters, searchTerm, sortColumn, sortDirection]);
@@ -261,39 +276,69 @@ export default function AdminContracts() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <table className="w-full text-left border-collapse text-base">
-              <thead>
-                <tr>
-                  <th className="font-semibold px-6 py-3">Descripción</th>
-                  <th className="font-semibold px-6 py-3">Propietario</th>
-                  <th className="font-semibold px-6 py-3">Inquilino</th>
-                  <th className="font-semibold px-6 py-3">Fecha de creación</th>
-                  <th className="font-semibold px-6 py-3">Estado</th>
-                  <th className="font-semibold px-6 py-3">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.length === 0 && (
-                  <tr className="bg-gray-100/40 dark:bg-gray-800/40">
-                    <td
-                      className="px-6 py-3 text-center text-gray-500 dark:text-gray-400"
-                      colSpan={6}
-                    >
-                      No hay contratos con esos filtros
-                    </td>
-                  </tr>
-                )}
+            <Table className="mt-4">
+              <TableHeader>
+                <TableRow>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort("description")}
+                  >
+                    Descripción
+                    {sortColumn === "description" && (
+                      <span className="ml-1">
+                        {sortDirection === "asc" ? "\u2191" : "\u2193"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort("ownerName")}
+                  >
+                    Propietario
+                    {sortColumn === "ownerName" && (
+                      <span className="ml-1">
+                        {sortDirection === "asc" ? "\u2191" : "\u2193"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort("tenantName")}
+                  >
+                    Inquilino
+                    {sortColumn === "tenantName" && (
+                      <span className="ml-1">
+                        {sortDirection === "asc" ? "\u2191" : "\u2193"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort("status")}
+                  >
+                    Estado
+                    {sortColumn === "status" && (
+                      <span className="ml-1">
+                        {sortDirection === "asc" ? "\u2191" : "\u2193"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead>Acciones</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {filteredData.map((contract, index) => (
                   <ContractItem
                     key={contract.id}
                     contract={contract}
                     index={index}
+                    showAmount={false}
                     claimContractAccept={claimContractAccept}
                     claimContractDecline={claimContractDecline}
                   />
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </ComponentWithSideBar>

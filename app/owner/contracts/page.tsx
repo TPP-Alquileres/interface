@@ -9,6 +9,13 @@ import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
 import PageBase from "@/components/page-base";
@@ -17,7 +24,6 @@ export default function OwnerContracts() {
   const { data: session } = useSession();
   const router = useRouter();
   const [contracts, setContracts] = useState<Contract[]>([]);
-  const [refresh, setRefresh] = useState(false); // State to control refresh
 
   const contractCreateUrl = "/contract/create";
 
@@ -44,7 +50,6 @@ export default function OwnerContracts() {
       url: claimContractAcceptURL,
       currentUser: session?.user,
     });
-    setRefresh((prev) => !prev);
   }
 
   return (
@@ -56,18 +61,18 @@ export default function OwnerContracts() {
           </CardHeader>
           <CardContent className="pt-2">
             <div className="w-full">
-              <table className="w-full border-collapse text-left text-base">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-3 font-semibold">Descripción</th>
-                    <th className="px-6 py-3 font-semibold">Propietario</th>
-                    <th className="px-6 py-3 font-semibold">Inquilino</th>
-                    <th className="px-6 py-3 font-semibold">Monto Asegurado</th>
-                    <th className="px-6 py-3 font-semibold">Estado</th>
-                    <th className="px-6 py-3 font-semibold">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Descripción</TableHead>
+                    <TableHead>Propietario</TableHead>
+                    <TableHead>Inquilino</TableHead>
+                    <TableHead>Monto Asegurado</TableHead>
+                    <TableHead>Estado</TableHead>
+                    <TableHead>Acciones</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {contracts.length === 0 && (
                     <tr className="bg-gray-100/40 dark:bg-gray-800/40">
                       <td
@@ -86,8 +91,8 @@ export default function OwnerContracts() {
                       claimContract={claimContract}
                     />
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </CardContent>
           <Button

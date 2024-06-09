@@ -6,6 +6,13 @@ import { Contract } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
 import PageBase from "@/components/page-base";
@@ -39,19 +46,19 @@ export default function TenantContracts() {
             <div className="text-xl font-bold">Contratos Inquilino</div>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="max-h-[500px] w-full overflow-auto">
-              <table className="w-full border-collapse text-left text-base">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-3 font-semibold">Descripción</th>
-                    <th className="px-6 py-3 font-semibold">Propietario</th>
-                    <th className="px-6 py-3 font-semibold">Inquilino</th>
-                    <th className="px-6 py-3 font-semibold">Monto Asegurado</th>
-                    <th className="px-6 py-3 font-semibold">Estado</th>
-                    <th className="px-6 py-3 font-semibold">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="w-full">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Descripción</TableHead>
+                    <TableHead>Propietario</TableHead>
+                    <TableHead>Inquilino</TableHead>
+                    <TableHead>Monto Asegurado</TableHead>
+                    <TableHead>Estado</TableHead>
+                    <TableHead>Acciones</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {contracts.length === 0 && (
                     <tr className="bg-gray-100/40 dark:bg-gray-800/40">
                       <td
@@ -69,8 +76,8 @@ export default function TenantContracts() {
                       index={index}
                     />
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </CardContent>
         </Card>

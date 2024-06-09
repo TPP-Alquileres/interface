@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 
+import { TableCell, TableRow } from "@/components/ui/table";
+
 import { ContractStatus, ContractStatusToDisplay } from "../utils/contract";
 import { Button } from "./ui/button";
 
 export default function ContractItem({
   contract,
   index,
+  showAmount = true,
   claimContract,
   claimContractAccept,
   claimContractDecline,
@@ -19,13 +22,19 @@ export default function ContractItem({
   const contractUrl = `/contract/${contract.id}`;
 
   return (
-    <tr key={contract.id} className={tableRowClassName}>
-      <td className="px-6 py-3">{contract.description}</td>
-      <td className="px-6 py-3 capitalize">{contract.owner.name}</td>
-      <td className="px-6 py-3 capitalize">{contract.tenant?.name || "-"}</td>
-      <td className="px-6 py-3">${contract.amount}</td>
-      <td className="px-6 py-3">{ContractStatusToDisplay[contract.status]}</td>
-      <td className="px-6 py-3">
+    <TableRow key={contract.id}>
+      <TableCell>{contract.description}</TableCell>
+      <TableCell className="capitalize">{contract.owner.name}</TableCell>
+      <TableCell className="capitalize">
+        {contract.tenant?.name || "-"}
+      </TableCell>
+      {showAmount && (
+        <TableCell className="capitalize">${contract.amount}</TableCell>
+      )}
+      <TableCell className="capitalize">
+        {ContractStatusToDisplay[contract.status]}
+      </TableCell>
+      <TableCell className="capitalize">
         <Button
           size="sm"
           variant="outline"
@@ -63,7 +72,53 @@ export default function ContractItem({
             Rechazar reclamo
           </Button>
         )}
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
+    // <tr key={contract.id} className={tableRowClassName}>
+    //   <td className="px-6 py-3">{contract.description}</td>
+    //   <td className="px-6 py-3 capitalize">{contract.owner.name}</td>
+    //   <td className="px-6 py-3 capitalize">{contract.tenant?.name || "-"}</td>
+    //   <td className="px-6 py-3">${contract.amount}</td>
+    //   <td className="px-6 py-3">{ContractStatusToDisplay[contract.status]}</td>
+    //   <td className="px-6 py-3">
+    //     <Button
+    //       size="sm"
+    //       variant="outline"
+    //       onClick={() => router.push(contractUrl)}
+    //     >
+    //       Ver
+    //     </Button>
+    //     {claimContract && contract.status == ContractStatus.ACTIVE && (
+    //       <Button
+    //         size="sm"
+    //         variant="outline"
+    //         className="ml-2"
+    //         onClick={() => claimContract(contract.id)}
+    //       >
+    //         Iniciar reclamo
+    //       </Button>
+    //     )}
+    //     {claimContractAccept && (
+    //       <Button
+    //         size="sm"
+    //         variant="outline"
+    //         className="ml-2"
+    //         onClick={() => claimContractAccept(contract.id)}
+    //       >
+    //         Aceptar reclamo
+    //       </Button>
+    //     )}
+    //     {claimContractDecline && (
+    //       <Button
+    //         size="sm"
+    //         variant="outline"
+    //         className="ml-2"
+    //         onClick={() => claimContractDecline(contract.id)}
+    //       >
+    //         Rechazar reclamo
+    //       </Button>
+    //     )}
+    //   </td>
+    // </tr>
   );
 }
