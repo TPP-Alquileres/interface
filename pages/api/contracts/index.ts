@@ -65,7 +65,7 @@ const postHandler = async (
   }
 };
 
-const getHandler = async (res: NextApiResponse, currentUser: DefaultUser) => {
+const getHandler = async (res: NextApiResponse, currentUser: User) => {
   const contracts = await prisma.contract.findMany({
     where: { OR: [{ ownerId: currentUser.id }, { tenantId: currentUser.id }] },
   });

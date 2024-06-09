@@ -19,7 +19,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  session: SessionProviderProps & { expires: string; user: { id: string } };
+  session: SessionProviderProps & {
+    expires: string;
+    user: { id: string; isAdmin: boolean };
+  };
 }
 
 const config = getDefaultConfig({

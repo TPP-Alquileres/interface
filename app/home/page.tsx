@@ -41,7 +41,7 @@ export default function Home() {
     if (session?.user.isAdmin) {
       router.push("/admin/moderate");
     }
-  }, [session?.user]);
+  }, [session?.user, router]);
 
   useEffect(() => {
     async function getContracts() {
