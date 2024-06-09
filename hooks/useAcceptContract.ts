@@ -85,6 +85,10 @@ export const useAcceptContract = (
       const contractResponse = await new Api().post({
         url: `contracts/${contractId}/sign`,
         currentUser: session?.user,
+        body: {
+          payment,
+          pool,
+        },
       });
 
       onSign(contractResponse);

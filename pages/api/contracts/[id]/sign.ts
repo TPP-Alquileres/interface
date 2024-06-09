@@ -31,9 +31,16 @@ export default async function handler(
       return res.status(400).json({ message: "You are the owner" });
     }
 
+    const { payment, pool } = req.body;
+
     const updatedContract = await prisma.contract.update({
       where: { id: String(req.query.id) },
-      data: { status: ContractStatus.ACTIVE, tenantId: currentUser.id },
+      data: {
+        status: ContractStatus.ACTIVE,
+        tenantId: currentUser.id,
+        payment,
+        pool,
+      },
       include: { owner: true, tenant: true },
     });
     return res.status(200).json(updatedContract);

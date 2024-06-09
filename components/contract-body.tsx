@@ -14,8 +14,19 @@ interface ContractBodyProps {
 
 export function ContractBody(props: ContractBodyProps) {
   const { contract, signatureData } = props;
-  const { owner, tenant, startDate, endDate, amount } = contract || {};
-  const { payment = "0", pool: poolAddress } = signatureData || {};
+  const {
+    owner,
+    tenant,
+    startDate,
+    endDate,
+    amount,
+    payment: cPayment,
+    pool: cPool,
+  } = contract || {};
+  const { payment: sPayment, pool: sPool } = signatureData || {};
+
+  const payment = sPayment || cPayment || "0";
+  const poolAddress = sPool || cPool;
 
   const pool = pools.find((p) => p.contract.address === poolAddress);
 
@@ -69,7 +80,7 @@ export function ContractBody(props: ContractBodyProps) {
           />
         </div>
 
-        {signatureData && (
+        {payment && pool && (
           <div className="grid grid-cols-2 items-start gap-4">
             <div className="space-y-2">
               <Label htmlFor="start-date">Monto a pagar (USD)</Label>

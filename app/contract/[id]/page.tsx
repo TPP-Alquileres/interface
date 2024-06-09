@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { Api } from "@/javascript/api";
 import { ContractStatus, ContractStatusToDisplay } from "@/utils/contract";
-import { Contract } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
 import ComponentWithSideBar from "@/components/component-with-side-bar";
 import { ContractBody } from "@/components/contract-body";
 import PageBase from "@/components/page-base";
 import TenantLink from "@/components/tenant-link";
+
+import { FullContract } from "../pending/page";
 
 export default function ShowContractPage({
   params,
@@ -18,7 +19,7 @@ export default function ShowContractPage({
 }) {
   const { data: session } = useSession();
 
-  const [contract, setContract] = useState<Contract>();
+  const [contract, setContract] = useState<FullContract>();
   const [isLoading, setLoading] = useState(true);
 
   const showLink =
