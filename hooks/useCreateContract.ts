@@ -4,7 +4,7 @@ import { Api } from "@/javascript/api";
 import { Contract } from "@prisma/client";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { useSession } from "next-auth/react";
-import { Address } from "viem";
+import { Address, parseEther } from "viem";
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -81,7 +81,10 @@ export const useCreateContract = () => {
         address: process.env.NEXT_PUBLIC_RENT_INSURANCE_ADDRESS as Address,
         abi: rentInsuranceAbi,
         functionName: "initializeInsurance",
-        args: [BigInt(amount), BigInt(durationInSeconds)],
+        args: [
+          parseEther(BigInt(amount).toString()),
+          BigInt(durationInSeconds),
+        ],
       });
     } catch (error) {
       setLoading(false);
