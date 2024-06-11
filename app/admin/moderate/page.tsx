@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { Api } from "@/javascript/api";
 import { ContractStatus, ContractStatusToDisplay } from "@/utils/contract";
-import { ChevronDown } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,11 +40,12 @@ import ComponentWithSideBar from "@/components/component-with-side-bar";
 import ContractItem from "@/components/contract-item";
 import { Icons } from "@/components/icons";
 import PageBase from "@/components/page-base";
+import { FullContract } from "@/app/contract/pending/page";
 
 export default function AdminContracts() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [contracts, setContracts] = useState([]);
+  const [contracts, setContracts] = useState<FullContract[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortColumn, setSortColumn] = useState("createdAt");
   const [sortDirection, setSortDirection] = useState("desc");
@@ -54,31 +55,36 @@ export default function AdminContracts() {
     tenantName: "",
     status: "",
   });
+  const [isLoading, setLoading] = useState(false);
 
   const appliedFilters = Object.values(filters).filter(
     (filter) => !!filter
   ).length;
 
-  const getContracts = async () => {
+  const getContracts = useCallback(async () => {
+    setLoading(true);
+
     const contractsJson = await new Api().get({
-      url: `admins/${session.user.id}/contracts`,
-      currentUser: session.user,
+      url: `admins/${session?.user.id}/contracts`,
+      currentUser: session?.user,
     });
+
+    setLoading(false);
     setContracts(contractsJson);
     return contractsJson;
-  };
+  }, [session?.user]);
 
   useEffect(() => {
     if (!session?.user.isAdmin) {
       router.push("/home");
     }
-  }, [session?.user]);
+  }, [session?.user, router]);
 
   useEffect(() => {
     if (session?.user) {
       getContracts();
     }
-  }, [session?.user]);
+  }, [session?.user, getContracts]);
 
   const filteredData = useMemo(() => {
     return contracts
@@ -132,11 +138,11 @@ export default function AdminContracts() {
       });
   }, [contracts, filters, searchTerm, sortColumn, sortDirection]);
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: { target: { value: SetStateAction<string> } }) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSort = (column) => {
+  const handleSort = (column: string) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -145,34 +151,46 @@ export default function AdminContracts() {
     }
   };
 
-  const handleFilterChange = (field, value) => {
+  const handleFilterChange = (field: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [field]: value,
     }));
   };
 
-  const acceptClaim = async (contractId) => {
+  const acceptClaim = async (contractId: string) => {
+    setLoading(true);
+
     await new Api().post({
-      url: `admins/${session.user.id}/contracts/${contractId}/acceptClaim`,
-      currentUser: session.user,
+      url: `admins/${session?.user.id}/contracts/${contractId}/acceptClaim`,
+      currentUser: session?.user,
     });
+
+    setLoading(false);
     getContracts();
   };
 
-  const declineClaim = async (contractId) => {
+  const declineClaim = async (contractId: string) => {
+    setLoading(true);
+
     await new Api().post({
-      url: `admins/${session.user.id}/contracts/${contractId}/declineClaim`,
-      currentUser: session.user,
+      url: `admins/${session?.user.id}/contracts/${contractId}/declineClaim`,
+      currentUser: session?.user,
     });
+
+    setLoading(false);
     getContracts();
   };
 
-  const finishContract = async (contractId) => {
+  const finishContract = async (contractId: string) => {
+    setLoading(true);
+
     await new Api().post({
-      url: `admins/${session.user.id}/contracts/${contractId}/finish`,
-      currentUser: session.user,
+      url: `admins/${session?.user.id}/contracts/${contractId}/finish`,
+      currentUser: session?.user,
     });
+
+    setLoading(false);
     getContracts();
   };
 
@@ -184,7 +202,7 @@ export default function AdminContracts() {
             <div className="text-xl font-bold">Contratos</div>
           </CardHeader>
           <CardContent className="h-full pt-2">
-            <div className="w-full flex items-center gap-4">
+            <div className="flex w-full items-center gap-4">
               <Input
                 type="search"
                 placeholder="Buscar..."
@@ -198,7 +216,7 @@ export default function AdminContracts() {
                   <Button variant="outline" className="flex items-center gap-2">
                     <div className="relative">
                       {appliedFilters > 0 && (
-                        <Badge className="absolute justify-center -top-2 p-0 h-4 w-4">
+                        <Badge className="absolute -top-2 h-4 w-4 justify-center p-0">
                           {appliedFilters}
                         </Badge>
                       )}
@@ -207,7 +225,7 @@ export default function AdminContracts() {
                     Filtros
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[300px] p-4 space-y-4">
+                <DropdownMenuContent className="w-[300px] space-y-4 p-4">
                   <div className="space-y-2">
                     <Label htmlFor="name-filter">Estado</Label>
                     <Select
@@ -282,8 +300,8 @@ export default function AdminContracts() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Table containerClassname="h-full overflow-y-auto relative">
-              <TableHeader className="sticky mt-4 top-0 bg-[color:rgb(255,255,255)] dark:bg-[color:rgb(3,7,17)] z-10">
+            <Table className="relative h-full overflow-y-auto">
+              <TableHeader className="sticky top-0 z-10 mt-4 bg-[color:rgb(255,255,255)] dark:bg-[color:rgb(3,7,17)]">
                 <TableRow>
                   <TableHead
                     className="cursor-pointer"
@@ -337,12 +355,13 @@ export default function AdminContracts() {
                   <ContractItem
                     key={contract.id}
                     contract={contract}
-                    currentUser={session.user}
+                    currentUser={session?.user}
                     index={index}
                     showAmount={false}
                     acceptClaim={acceptClaim}
                     declineClaim={declineClaim}
                     finishContract={finishContract}
+                    isLoading={isLoading}
                   />
                 ))}
               </TableBody>

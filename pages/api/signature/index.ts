@@ -57,7 +57,7 @@ export default async function handler(
     const durationInSeconds = duration / 1000;
     const yearInSeconds = 60 * 60 * 24 * 365;
 
-    const pool = pools[0]; // TODO: Assign a pool to the user
+    const pool = pools[2]; // TODO: Assign a pool to the user
 
     const payment = amount * pool.apy * (durationInSeconds / yearInSeconds);
     const formattedPayment = parseEther(payment.toString());

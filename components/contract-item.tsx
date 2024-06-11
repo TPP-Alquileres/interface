@@ -18,6 +18,7 @@ export default function ContractItem({
   acceptClaim,
   declineClaim,
   finishContract,
+  isLoading,
 }: any) {
   const router = useRouter();
 
@@ -49,8 +50,8 @@ export default function ContractItem({
           Ver
         </Button>
         {contract.status == ContractStatus.ACTIVE &&
-          contract.ownerId === currentUser.id &&
-          !currentUser.isAdmin && (
+          contract.ownerId === currentUser?.id &&
+          !currentUser?.isAdmin && (
             <Button
               size="sm"
               variant="outline"
@@ -60,36 +61,39 @@ export default function ContractItem({
               Iniciar reclamo
             </Button>
           )}
-        {contract.status == ContractStatus.CLAIM && currentUser.isAdmin && (
+        {contract.status == ContractStatus.CLAIM && currentUser?.isAdmin && (
           <Button
             size="sm"
             variant="outline"
             className="ml-2"
             onClick={() => acceptClaim(contract.id)}
+            disabled={isLoading}
           >
-            Aceptar reclamo
+            {isLoading ? "Cargando..." : "Aceptar reclamo"}
           </Button>
         )}
-        {contract.status == ContractStatus.CLAIM && currentUser.isAdmin && (
+        {contract.status == ContractStatus.CLAIM && currentUser?.isAdmin && (
           <Button
             size="sm"
             variant="outline"
             className="ml-2"
             onClick={() => declineClaim(contract.id)}
+            disabled={isLoading}
           >
-            Rechazar reclamo
+            {isLoading ? "Cargando..." : "Rechazar reclamo"}
           </Button>
         )}
         {contract.status == ContractStatus.ACTIVE &&
-          currentUser.isAdmin &&
-          formatDate(contract.endDate) >= formatDate(new Date()) && (
+          currentUser?.isAdmin &&
+          formatDate(new Date()) >= formatDate(contract.endDate) && (
             <Button
               size="sm"
               variant="outline"
               className="ml-2"
               onClick={() => finishContract(contract.id)}
+              disabled={isLoading}
             >
-              Finalizar contrato
+              {isLoading ? "Cargando..." : "Finalizar contrato"}
             </Button>
           )}
       </TableCell>
