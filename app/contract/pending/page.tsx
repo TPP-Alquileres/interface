@@ -52,7 +52,9 @@ export default function PendingContractPage() {
 
     if (session?.user) {
       getContract();
-      getSignature();
+      if (!!address) {
+        getSignature();
+      }
     }
   }, [session?.user, contractId, address]);
 
@@ -92,6 +94,9 @@ export default function PendingContractPage() {
     !!contract;
 
   const renderContract = () => {
+    if (!address)
+      return <p className="pt-4">Conecta tu wallet para crear el contrato</p>;
+
     if (
       contractLoading ||
       signatureLoading ||
