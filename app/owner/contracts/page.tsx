@@ -50,6 +50,14 @@ export default function OwnerContracts() {
     getContracts();
   };
 
+  const claimUnpaid = async (contractId) => {
+    await new Api().post({
+      url: `owners/${session.user.id}/contracts/${contractId}/claimUnpaid`,
+      currentUser: session.user,
+    });
+    getContracts();
+  };
+
   return (
     <PageBase>
       <ComponentWithSideBar>
@@ -88,6 +96,7 @@ export default function OwnerContracts() {
                       currentUser={session.user}
                       index={index}
                       claim={claim}
+                      claimUnpaid={claimUnpaid}
                     />
                   ))}
                 </TableBody>
