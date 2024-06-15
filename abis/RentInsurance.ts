@@ -1,8 +1,18 @@
 export const rentInsuranceAbi = [
   {
     type: "constructor",
-    inputs: [{ name: "_signer", type: "address", internalType: "address" }],
+    inputs: [
+      { name: "_signer", type: "address", internalType: "address" },
+      { name: "_rent", type: "address", internalType: "address" },
+    ],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "RENT",
+    inputs: [],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
   },
   {
     type: "function",
@@ -256,109 +266,5 @@ export const rentInsuranceAbi = [
     type: "error",
     name: "OwnableUnauthorizedAccount",
     inputs: [{ name: "account", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "AddressEmptyCode",
-    inputs: [{ name: "target", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "AddressInsufficientBalance",
-    inputs: [{ name: "account", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "ERC20InsufficientAllowance",
-    inputs: [
-      { name: "spender", type: "address", internalType: "address" },
-      { name: "allowance", type: "uint256", internalType: "uint256" },
-      { name: "needed", type: "uint256", internalType: "uint256" },
-    ],
-  },
-  {
-    type: "error",
-    name: "ERC20InsufficientBalance",
-    inputs: [
-      { name: "sender", type: "address", internalType: "address" },
-      { name: "balance", type: "uint256", internalType: "uint256" },
-      { name: "needed", type: "uint256", internalType: "uint256" },
-    ],
-  },
-  {
-    type: "error",
-    name: "ERC20InvalidApprover",
-    inputs: [{ name: "approver", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "ERC20InvalidReceiver",
-    inputs: [{ name: "receiver", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "ERC20InvalidSender",
-    inputs: [{ name: "sender", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "ERC20InvalidSpender",
-    inputs: [{ name: "spender", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "ERC4626ExceededMaxDeposit",
-    inputs: [
-      { name: "receiver", type: "address", internalType: "address" },
-      { name: "assets", type: "uint256", internalType: "uint256" },
-      { name: "max", type: "uint256", internalType: "uint256" },
-    ],
-  },
-  {
-    type: "error",
-    name: "ERC4626ExceededMaxMint",
-    inputs: [
-      { name: "receiver", type: "address", internalType: "address" },
-      { name: "shares", type: "uint256", internalType: "uint256" },
-      { name: "max", type: "uint256", internalType: "uint256" },
-    ],
-  },
-  {
-    type: "error",
-    name: "ERC4626ExceededMaxRedeem",
-    inputs: [
-      { name: "owner", type: "address", internalType: "address" },
-      { name: "shares", type: "uint256", internalType: "uint256" },
-      { name: "max", type: "uint256", internalType: "uint256" },
-    ],
-  },
-  {
-    type: "error",
-    name: "ERC4626ExceededMaxWithdraw",
-    inputs: [
-      { name: "owner", type: "address", internalType: "address" },
-      { name: "assets", type: "uint256", internalType: "uint256" },
-      { name: "max", type: "uint256", internalType: "uint256" },
-    ],
-  },
-  { type: "error", name: "FailedInnerCall", inputs: [] },
-  { type: "error", name: "InsufficientFunds", inputs: [] },
-  { type: "error", name: "InsuranceAlreadyLocked", inputs: [] },
-  { type: "error", name: "InsuranceNotLocked", inputs: [] },
-  { type: "error", name: "MathOverflowedMulDiv", inputs: [] },
-  {
-    type: "error",
-    name: "OwnableInvalidOwner",
-    inputs: [{ name: "owner", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "OwnableUnauthorizedAccount",
-    inputs: [{ name: "account", type: "address", internalType: "address" }],
-  },
-  {
-    type: "error",
-    name: "SafeERC20FailedOperation",
-    inputs: [{ name: "token", type: "address", internalType: "address" }],
   },
 ] as const;
